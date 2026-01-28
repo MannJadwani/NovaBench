@@ -1,0 +1,382 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive 3D Earth Globe</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <style>
+        body { margin: 0; overflow: hidden; }
+        #globe-container { width: 100vw; height: 100vh; }
+        #info-panel {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 320px;
+            background: rgba(255, 255, 255, 0.92);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            padding: 20px;
+            z-index: 100;
+            transition: all 0.3s ease;
+        }
+        #country-popup {
+            position: absolute;
+            display: none;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            z-index: 101;
+            max-width: 280px;
+        }
+        .control-hint {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 14px;
+            z-index: 100;
+        }
+    </style>
+</head>
+<body>
+    <div id="globe-container"></div>
+    
+    <div id="info-panel">
+        <h2 class="text-2xl font-bold text-gray-800 mb-4">Interactive Earth Globe</h2>
+        <p class="text-gray-600 mb-3">Explore our planet with this interactive 3D visualization:</p>
+        <ul class="text-gray-600 mb-4 space-y-2">
+            <li class="flex items-start">
+                <span class="inline-block w-5 h-5 bg-blue-500 rounded-full mr-2 mt-1"></span>
+                <span>Click on countries to see information</span>
+            </li>
+            <li class="flex items-start">
+                <span class="inline-block w-5 h-5 bg-green-500 rounded-full mr-2 mt-1"></span>
+                <span>Drag to rotate the globe</span>
+            </li>
+            <li class="flex items-start">
+                <span class="inline-block w-5 h-5 bg-purple-500 rounded-full mr-2 mt-1"></span>
+                <span>Scroll to zoom in/out</span>
+            </li>
+        </ul>
+        <div class="mt-4 pt-4 border-t border-gray-200">
+            <p class="text-sm text-gray-500">Latitude/longitude grid lines help with navigation</p>
+        </div>
+    </div>
+    
+    <div id="country-popup">
+        <h3 id="country-name" class="text-xl font-bold text-gray-800 mb-2"></h3>
+        <div id="country-details" class="text-gray-600"></div>
+    </div>
+    
+    <div class="control-hint">
+        Click & drag to rotate • Scroll to zoom
+    </div>
+
+    <script>
+        // Scene setup
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x0a0a1f);
+        
+        const container = document.getElementById('globe-container');
+        const width = window.innerWidth;
+        const height = window.innerHeight;
+        
+        // Camera setup
+        const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
+        camera.position.z = 3.5;
+        
+        // Renderer setup
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(width, height);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        container.appendChild(renderer.domElement);
+        
+        // Lighting
+        const ambientLight = new THREE.AmbientLight(0x333333);
+        scene.add(ambientLight);
+        
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+        directionalLight.position.set(5, 3, 5);
+        scene.add(directionalLight);
+        
+        // Earth group
+        const earthGroup = new THREE.Group();
+        scene.add(earthGroup);
+        
+        // Earth texture
+        const textureLoader = new THREE.TextureLoader();
+        const earthTexture = textureLoader.load('https://threejs.org/examples/textures/planets/earth_atmos_2048.jpg');
+        const bumpTexture = textureLoader.load('https://threejs.org/examples/textures/planets/earth_normal_2048.jpg');
+        const specularTexture = textureLoader.load('https://threejs.org/examples/textures/planets/earth_specular_2048.jpg');
+        
+        // Earth mesh
+        const earthGeometry = new THREE.SphereGeometry(1, 64, 64);
+        const earthMaterial = new THREE.MeshPhongMaterial({
+            map: earthTexture,
+            bumpMap: bumpTexture,
+            bumpScale: 0.05,
+            specularMap: specularTexture,
+            specular: new THREE.Color('grey')
+        });
+        const earth = new THREE.Mesh(earthGeometry, earthMaterial);
+        earthGroup.add(earth);
+        
+        // Clouds
+        const cloudGeometry = new THREE.SphereGeometry(1.01, 64, 64);
+        const cloudTexture = textureLoader.load('https://threejs.org/examples/textures/planets/earth_clouds_1024.png');
+        const cloudMaterial = new THREE.MeshPhongMaterial({
+            map: cloudTexture,
+            transparent: true,
+            opacity: 0.4
+        });
+        const clouds = new THREE.Mesh(cloudGeometry, cloudMaterial);
+        earthGroup.add(clouds);
+        
+        // Atmosphere glow
+        const atmosphereGeometry = new THREE.SphereGeometry(1.15, 64, 64);
+        const atmosphereMaterial = new THREE.ShaderMaterial({
+            vertexShader: `
+                varying vec3 vNormal;
+                void main() {
+                    vNormal = normalize(normalMatrix * normal);
+                    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+                }
+            `,
+            fragmentShader: `
+                varying vec3 vNormal;
+                void main() {
+                    float intensity = pow(0.7 - dot(vNormal, vec3(0.0, 0.0, 1.0)), 2.0);
+                    gl_FragColor = vec4(0.3, 0.6, 1.0, 1.0) * intensity;
+                }
+            `,
+            blending: THREE.AdditiveBlending,
+            side: THREE.BackSide,
+            transparent: true
+        });
+        const atmosphere = new THREE.Mesh(atmosphereGeometry, atmosphereMaterial);
+        earthGroup.add(atmosphere);
+        
+        // Latitude/longitude lines
+        const latitudeLines = new THREE.Group();
+        const longitudeLines = new THREE.Group();
+        earthGroup.add(latitudeLines);
+        earthGroup.add(longitudeLines);
+        
+        const gridMaterial = new THREE.LineBasicMaterial({ 
+            color: 0x444477, 
+            transparent: true, 
+            opacity: 0.3 
+        });
+        
+        // Latitude lines
+        for (let lat = -60; lat <= 60; lat += 30) {
+            const points = [];
+            const radius = Math.cos(THREE.MathUtils.degToRad(lat));
+            const y = Math.sin(THREE.MathUtils.degToRad(lat));
+            
+            for (let lon = 0; lon <= 360; lon += 5) {
+                const x = radius * Math.cos(THREE.MathUtils.degToRad(lon));
+                const z = radius * Math.sin(THREE.MathUtils.degToRad(lon));
+                points.push(new THREE.Vector3(x, y, z));
+            }
+            
+            const lineGeometry = new THREE.BufferGeometry().setFromPoints(points);
+            const line = new THREE.Line(lineGeometry, gridMaterial);
+            latitudeLines.add(line);
+        }
+        
+        // Longitude lines
+        for (let lon = 0; lon < 360; lon += 30) {
+            const points = [];
+            
+            for (let lat = -90; lat <= 90; lat += 5) {
+                const x = Math.cos(THREE.MathUtils.degToRad(lat)) * Math.cos(THREE.MathUtils.degToRad(lon));
+                const y = Math.sin(THREE.MathUtils.degToRad(lat));
+                const z = Math.cos(THREE.MathUtils.degToRad(lat)) * Math.sin(THREE.MathUtils.degToRad(lon));
+                points.push(new THREE.Vector3(x, y, z));
+            }
+            
+            const lineGeometry = new THREE.BufferGeometry().setFromPoints(points);
+            const line = new THREE.Line(lineGeometry, gridMaterial);
+            longitudeLines.add(line);
+        }
+        
+        // Country data with approximate positions
+        const countries = [
+            {
+                name: "United States",
+                lat: 39.8283,
+                lon: -98.5795,
+                info: "The U.S. is the world's third-largest country by land area. Known for its cultural influence, technological innovation, and diverse landscapes."
+            },
+            {
+                name: "Brazil",
+                lat: -14.2350,
+                lon: -51.9253,
+                info: "The largest country in South America, famous for the Amazon rainforest, Carnival, and soccer."
+            },
+            {
+                name: "Russia",
+                lat: 61.5240,
+                lon: 105.3188,
+                info: "The world's largest country by land area, spanning Eastern Europe and Northern Asia."
+            },
+            {
+                name: "China",
+                lat: 35.8617,
+                lon: 104.1954,
+                info: "The world's most populous country with over 1.4 billion people. Home to the Great Wall and rich cultural heritage."
+            },
+            {
+                name: "Australia",
+                lat: -25.2744,
+                lon: 133.7751,
+                info: "The world's sixth-largest country, known for its unique wildlife, natural wonders, and vibrant cities."
+            },
+            {
+                name: "Egypt",
+                lat: 26.0975,
+                lon: 31.2357,
+                info: "Home to ancient civilizations and the famous pyramids of Giza. Located in Northeast Africa."
+            },
+            {
+                name: "South Africa",
+                lat: -30.5595,
+                lon: 22.9375,
+                info: "The southernmost country in Africa, known for its diverse ecosystems, multicultural society, and gold mines."
+            },
+            {
+                name: "India",
+                lat: 20.5937,
+                lon: 78.9629,
+                info: "The world's second-most populous country and seventh-largest by land area. Known for its cultural diversity and spices."
+            },
+            {
+                name: "Japan",
+                lat: 36.2048,
+                lon: 138.2529,
+                info: "An island nation in East Asia known for its advanced technology, traditional arts, and unique cuisine."
+            },
+            {
+                name: "France",
+                lat: 46.2276,
+                lon: 2.2137,
+                info: "A country in Western Europe known for its wine, cuisine, fashion, art, and landmarks like the Eiffel Tower."
+            }
+        ];
+        
+        // Country markers
+        const markers = new THREE.Group();
+        earthGroup.add(markers);
+        
+        countries.forEach(country => {
+            const phi = (90 - country.lat) * (Math.PI / 180);
+            const theta = (country.lon + 180) * (Math.PI / 180);
+            
+            const x = -(1.01 * Math.sin(phi) * Math.cos(theta));
+            const y = 1.01 * Math.cos(phi);
+            const z = 1.01 * Math.sin(phi) * Math.sin(theta);
+            
+            const markerGeometry = new THREE.SphereGeometry(0.02, 16, 16);
+            const markerMaterial = new THREE.MeshBasicMaterial({ 
+                color: 0xff5555,
+                emissive: 0xff0000,
+                emissiveIntensity: 0.5
+            });
+            const marker = new THREE.Mesh(markerGeometry, markerMaterial);
+            
+            marker.position.set(x, y, z);
+            marker.userData = { country: country };
+            markers.add(marker);
+        });
+        
+        // Orbit controls
+        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+        controls.rotateSpeed = 0.5;
+        controls.minDistance = 1.8;
+        controls.maxDistance = 10;
+        
+        // Raycaster for country selection
+        const raycaster = new THREE.Raycaster();
+        const mouse = new THREE.Vector2();
+        const countryPopup = document.getElementById('country-popup');
+        const countryName = document.getElementById('country-name');
+        const countryDetails = document.getElementById('country-details');
+        
+        function onMouseClick(event) {
+            mouse.x = (event.clientX / width) * 2 - 1;
+            mouse.y = -(event.clientY / height) * 2 + 1;
+            
+            raycaster.setFromCamera(mouse, camera);
+            const intersects = raycaster.intersectObjects(markers.children);
+            
+            if (intersects.length > 0) {
+                const country = intersects[0].object.userData.country;
+                countryName.textContent = country.name;
+                countryDetails.innerHTML = `
+                    <div class="flex items-start mb-2">
+                        <svg class="w-5 h-5 text-blue-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
+                        </svg>
+                        <div>
+                            <span class="font-medium">Position:</span> 
+                            ${Math.abs(country.lat).toFixed(2)}°${country.lat >= 0 ? 'N' : 'S'}, 
+                            ${Math.abs(country.lon).toFixed(2)}°${country.lon >= 0 ? 'E' : 'W'}
+                        </div>
+                    </div>
+                    <p>${country.info}</p>
+                `;
+                
+                countryPopup.style.display = 'block';
+                countryPopup.style.left = event.clientX + 15 + 'px';
+                countryPopup.style.top = event.clientY - 10 + 'px';
+            } else {
+                countryPopup.style.display = 'none';
+            }
+        }
+        
+        function onMouseMove(event) {
+            // Move popup with cursor when visible
+            if (countryPopup.style.display === 'block') {
+                countryPopup.style.left = event.clientX + 15 + 'px';
+                countryPopup.style.top = event.clientY - 10 + 'px';
+            }
+        }
+        
+        window.addEventListener('click', onMouseClick);
+        window.addEventListener('mousemove', onMouseMove);
+        
+        // Animation loop
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            earthGroup.rotation.y += 0.001;
+            clouds.rotation.y += 0.0012;
+            
+            controls.update();
+            renderer.render(scene, camera);
+        }
+        
+        animate();
+        
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            const newWidth = window.innerWidth;
+            const newHeight = window.innerHeight;
+            
+            camera.aspect = newWidth / newHeight;
+            camera.updateProjectionMatrix();
+            
+            renderer.setSize(newWidth, newHeight);
+        });
+    </script>
+</body>
+</html>

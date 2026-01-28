@@ -1,0 +1,12 @@
+{
+  "prompt": "Convert this design to HTML and Tailwind CSS code: https://in.pinterest.com/pin/46936021113877857/\n\nReturn only HTML. Do not wrap in markdown. Use Tailwind CSS classes.",
+  "params": {
+    "temperature": 1,
+    "maxTokens": null
+  },
+  "benchmark": {
+    "id": "img-to-code-1",
+    "title": "Image to Code #1",
+    "category": "Image to Code"
+  }
+}

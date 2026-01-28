@@ -1,0 +1,18 @@
+{
+  "id": "cee9aaa6-6ec0-4983-acdb-38a4c1dd916e",
+  "createdAt": "2026-01-27T21:36:49.355Z",
+  "provider": "zai",
+  "model": "glm-4.5",
+  "benchmark": {
+    "id": "earth-globe",
+    "title": "3D Earth Model",
+    "category": "3D"
+  },
+  "latencyMs": 130478,
+  "tokenUsage": null,
+  "params": {
+    "temperature": 1,
+    "maxTokens": null
+  },
+  "path": "runs/2026/01/28/cee9aaa6-6ec0-4983-acdb-38a4c1dd916e"
+}

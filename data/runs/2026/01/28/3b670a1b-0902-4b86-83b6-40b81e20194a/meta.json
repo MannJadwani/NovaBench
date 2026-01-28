@@ -1,0 +1,37 @@
+{
+  "id": "3b670a1b-0902-4b86-83b6-40b81e20194a",
+  "createdAt": "2026-01-27T22:47:41.277Z",
+  "provider": "openrouter",
+  "model": "moonshotai/kimi-k2.5",
+  "benchmark": {
+    "id": "photoshop-clone",
+    "title": "Photoshop Web Clone",
+    "category": "Complexity of UI"
+  },
+  "latencyMs": 122855,
+  "tokenUsage": {
+    "prompt_tokens": 81,
+    "completion_tokens": 8321,
+    "total_tokens": 8402,
+    "cost": 0.0250116,
+    "is_byok": false,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "audio_tokens": 0
+    },
+    "cost_details": {
+      "upstream_inference_cost": 0.0250116,
+      "upstream_inference_prompt_cost": 0.0000486,
+      "upstream_inference_completions_cost": 0.024963
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 823,
+      "audio_tokens": 0
+    }
+  },
+  "params": {
+    "temperature": 1,
+    "maxTokens": null
+  },
+  "path": "runs/2026/01/28/3b670a1b-0902-4b86-83b6-40b81e20194a"
+}

@@ -1,0 +1,744 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Editor Pro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .timeline-track {
+            height: 60px;
+            position: relative;
+            overflow: hidden;
+        }
+        .timeline-clip {
+            position: absolute;
+            height: 100%;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+            font-weight: 500;
+            user-select: none;
+        }
+        .video-clip {
+            background: linear-gradient(90deg, #4f46e5, #6366f1);
+        }
+        .audio-clip {
+            background: linear-gradient(90deg, #10b981, #34d399);
+        }
+        .image-clip {
+            background: linear-gradient(90deg, #f59e0b, #fbbf24);
+        }
+        .timeline-playhead {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: #ef4444;
+            z-index: 100;
+            pointer-events: none;
+        }
+        .waveform {
+            background-image: linear-gradient(to right, 
+                transparent 45%, #10b981 45%, #10b981 55%, transparent 55%),
+                linear-gradient(to right, 
+                transparent 30%, #10b981 30%, #10b981 70%, transparent 70%);
+            background-size: 4px 100%, 2px 100%;
+            background-position: 0 0, 0 0;
+            background-repeat: repeat-x;
+            opacity: 0.6;
+        }
+        .keyframe {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: #f59e0b;
+            position: absolute;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            cursor: pointer;
+            border: 2px solid white;
+        }
+        .dragging {
+            opacity: 0.7;
+            z-index: 1000;
+        }
+        .drop-zone {
+            border: 2px dashed #94a3b8;
+        }
+        .transition-effect {
+            position: absolute;
+            height: 100%;
+            width: 40px;
+            background: linear-gradient(90deg, transparent, #8b5cf6, transparent);
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-100 h-screen flex flex-col overflow-hidden">
+    <!-- Top Menu Bar -->
+    <header class="bg-gray-800 border-b border-gray-700 px-4 py-2 flex items-center justify-between">
+        <div class="flex items-center space-x-4">
+            <h1 class="text-xl font-bold text-blue-400">Video Editor Pro</h1>
+            <nav class="hidden md:flex space-x-4">
+                <button class="px-3 py-1 hover:bg-gray-700 rounded">File</button>
+                <button class="px-3 py-1 hover:bg-gray-700 rounded">Edit</button>
+                <button class="px-3 py-1 hover:bg-gray-700 rounded">View</button>
+                <button class="px-3 py-1 hover:bg-gray-700 rounded">Sequence</button>
+                <button class="px-3 py-1 hover:bg-gray-700 rounded">Effects</button>
+            </nav>
+        </div>
+        <div class="flex items-center space-x-3">
+            <button id="undoBtn" class="p-2 hover:bg-gray-700 rounded" title="Undo">
+                <i class="fas fa-undo"></i>
+            </button>
+            <button id="redoBtn" class="p-2 hover:bg-gray-700 rounded" title="Redo">
+                <i class="fas fa-redo"></i>
+            </button>
+            <button id="settingsBtn" class="p-2 hover:bg-gray-700 rounded" title="Settings">
+                <i class="fas fa-cog"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <div class="flex flex-1 overflow-hidden">
+        <!-- Left Panel: Media Library -->
+        <aside class="w-64 bg-gray-800 border-r border-gray-700 flex flex-col">
+            <div class="p-4 border-b border-gray-700">
+                <h2 class="font-semibold text-lg mb-3">Media Library</h2>
+                <div class="flex space-x-2 mb-3">
+                    <button class="px-3 py-1 bg-blue-600 rounded text-sm">All</button>
+                    <button class="px-3 py-1 bg-gray-700 rounded text-sm hover:bg-gray-600">Video</button>
+                    <button class="px-3 py-1 bg-gray-700 rounded text-sm hover:bg-gray-600">Audio</button>
+                    <button class="px-3 py-1 bg-gray-700 rounded text-sm hover:bg-gray-600">Images</button>
+                </div>
+                <button class="w-full py-2 bg-gray-700 hover:bg-gray-600 rounded flex items-center justify-center">
+                    <i class="fas fa-plus mr-2"></i> Import Media
+                </button>
+            </div>
+            <div class="flex-1 overflow-y-auto p-2">
+                <!-- Media Items -->
+                <div class="grid grid-cols-2 gap-2">
+                    <div class="media-item bg-gray-700 rounded p-2 cursor-move hover:bg-gray-600" draggable="true" data-type="video">
+                        <div class="aspect-video bg-gradient-to-br from-blue-600 to-purple-600 rounded mb-1"></div>
+                        <p class="text-xs truncate">Intro Clip.mp4</p>
+                        <p class="text-xs text-gray-400">00:15</p>
+                    </div>
+                    <div class="media-item bg-gray-700 rounded p-2 cursor-move hover:bg-gray-600" draggable="true" data-type="video">
+                        <div class="aspect-video bg-gradient-to-br from-green-600 to-teal-600 rounded mb-1"></div>
+                        <p class="text-xs truncate">Scene 1.mp4</p>
+                        <p class="text-xs text-gray-400">01:23</p>
+                    </div>
+                    <div class="media-item bg-gray-700 rounded p-2 cursor-move hover:bg-gray-600" draggable="true" data-type="audio">
+                        <div class="aspect-video bg-gradient-to-br from-yellow-600 to-orange-600 rounded mb-1"></div>
+                        <p class="text-xs truncate">Background.mp3</p>
+                        <p class="text-xs text-gray-400">03:45</p>
+                    </div>
+                    <div class="media-item bg-gray-700 rounded p-2 cursor-move hover:bg-gray-600" draggable="true" data-type="image">
+                        <div class="aspect-video bg-gradient-to-br from-pink-600 to-red-600 rounded mb-1"></div>
+                        <p class="text-xs truncate">Logo.png</p>
+                        <p class="text-xs text-gray-400">1920x1080</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Center Area: Preview and Timeline -->
+        <main class="flex-1 flex flex-col">
+            <!-- Preview Panel -->
+            <div class="bg-black relative" style="height: 360px;">
+                <div class="absolute inset-0 flex items-center justify-center">
+                    <div class="relative">
+                        <img src="https://picsum.photos/seed/preview/640/360.jpg" alt="Preview" class="max-h-[360px] max-w-full">
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <div class="bg-black bg-opacity-50 rounded-full p-4 cursor-pointer" id="playBtn">
+                                <i class="fas fa-play text-2xl"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Preview Controls -->
+                <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4">
+                    <div class="flex items-center space-x-3">
+                        <button class="text-gray-300 hover:text-white">
+                            <i class="fas fa-step-backward"></i>
+                        </button>
+                        <button id="playPauseBtn" class="bg-blue-600 hover:bg-blue-700 rounded-full w-10 h-10 flex items-center justify-center">
+                            <i class="fas fa-play"></i>
+                        </button>
+                        <button class="text-gray-300 hover:text-white">
+                            <i class="fas fa-step-forward"></i>
+                        </button>
+                        <div class="flex-1 bg-gray-700 h-2 rounded-full overflow-hidden">
+                            <div class="bg-blue-500 h-full w-1/3"></div>
+                        </div>
+                        <span class="text-sm">00:45 / 02:30</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Timeline -->
+            <div class="flex-1 bg-gray-800 flex flex-col">
+                <div class="border-b border-gray-700 p-2 flex items-center justify-between">
+                    <div class="flex items-center space-x-2">
+                        <button class="px-3 py-1 bg-gray-700 hover:bg-gray-600 rounded text-sm">
+                            <i class="fas fa-plus mr-1"></i> Add Track
+                        </button>
+                        <button class="px-3 py-1 bg-gray-700 hover:bg-gray-600 rounded text-sm">
+                            <i class="fas fa-scissors mr-1"></i> Split
+                        </button>
+                        <button class="px-3 py-1 bg-gray-700 hover:bg-gray-600 rounded text-sm">
+                            <i class="fas fa-link mr-1"></i> Link
+                        </button>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <button class="px-3 py-1 bg-gray-700 hover:bg-gray-600 rounded text-sm" id="zoomOutBtn">
+                            <i class="fas fa-search-minus"></i>
+                        </button>
+                        <span class="text-sm">100%</span>
+                        <button class="px-3 py-1 bg-gray-700 hover:bg-gray-600 rounded text-sm" id="zoomInBtn">
+                            <i class="fas fa-search-plus"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Timeline Ruler -->
+                <div class="bg-gray-900 border-b border-gray-700 h-8 relative flex items-center">
+                    <div class="absolute inset-0 flex">
+                        <div class="w-16 border-r border-gray-700"></div>
+                        <div class="flex-1 flex">
+                            <div class="w-20 border-r border-gray-700 text-xs px-2">0:00</div>
+                            <div class="w-20 border-r border-gray-700 text-xs px-2">0:10</div>
+                            <div class="w-20 border-r border-gray-700 text-xs px-2">0:20</div>
+                            <div class="w-20 border-r border-gray-700 text-xs px-2">0:30</div>
+                            <div class="w-20 border-r border-gray-700 text-xs px-2">0:40</div>
+                            <div class="w-20 border-r border-gray-700 text-xs px-2">0:50</div>
+                            <div class="w-20 border-r border-gray-700 text-xs px-2">1:00</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tracks -->
+                <div class="flex-1 overflow-auto">
+                    <div id="timeline" class="relative min-h-[400px]">
+                        <!-- Video Track 1 -->
+                        <div class="flex border-b border-gray-700">
+                            <div class="w-16 bg-gray-900 p-2 flex items-center">
+                                <span class="text-xs font-medium">V1</span>
+                            </div>
+                            <div class="flex-1 timeline-track bg-gray-850" data-track="video1">
+                                <div class="timeline-clip video-clip" style="left: 0px; width: 120px;">
+                                    Intro Clip
+                                </div>
+                                <div class="timeline-clip video-clip" style="left: 140px; width: 200px;">
+                                    Scene 1
+                                </div>
+                                <div class="transition-effect" style="left: 120px;"></div>
+                            </div>
+                        </div>
+
+                        <!-- Video Track 2 -->
+                        <div class="flex border-b border-gray-700">
+                            <div class="w-16 bg-gray-900 p-2 flex items-center">
+                                <span class="text-xs font-medium">V2</span>
+                            </div>
+                            <div class="flex-1 timeline-track bg-gray-850" data-track="video2">
+                            </div>
+                        </div>
+
+                        <!-- Audio Track 1 -->
+                        <div class="flex border-b border-gray-700">
+                            <div class="w-16 bg-gray-900 p-2 flex items-center">
+                                <span class="text-xs font-medium">A1</span>
+                            </div>
+                            <div class="flex-1 timeline-track bg-gray-850 waveform" data-track="audio1">
+                                <div class="timeline-clip audio-clip" style="left: 0px; width: 300px;">
+                                    <i class="fas fa-music mr-1"></i> Background
+                                </div>
+                                <div class="keyframe" style="left: 50px;"></div>
+                                <div class="keyframe" style="left: 150px;"></div>
+                                <div class="keyframe" style="left: 250px;"></div>
+                            </div>
+                        </div>
+
+                        <!-- Audio Track 2 -->
+                        <div class="flex border-b border-gray-700">
+                            <div class="w-16 bg-gray-900 p-2 flex items-center">
+                                <span class="text-xs font-medium">A2</span>
+                            </div>
+                            <div class="flex-1 timeline-track bg-gray-850" data-track="audio2">
+                            </div>
+                        </div>
+
+                        <!-- Playhead -->
+                        <div class="timeline-playhead" style="left: 180px;"></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Right Panel: Effects and Controls -->
+        <aside class="w-64 bg-gray-800 border-l border-gray-700 flex flex-col">
+            <!-- Effects Tab -->
+            <div class="border-b border-gray-700">
+                <div class="flex border-b border-gray-700">
+                    <button class="flex-1 py-2 px-4 text-sm font-medium border-b-2 border-blue-500" id="effectsTab">Effects</button>
+                    <button class="flex-1 py-2 px-4 text-sm font-medium hover:bg-gray-750" id="controlsTab">Controls</button>
+                </div>
+            </div>
+
+            <!-- Effects Content -->
+            <div id="effectsContent" class="flex-1 overflow-y-auto p-4">
+                <div class="mb-4">
+                    <h3 class="font-semibold mb-2">Video Effects</h3>
+                    <div class="space-y-2">
+                        <div class="p-2 bg-gray-700 rounded cursor-pointer hover:bg-gray-600">
+                            <div class="flex items-center">
+                                <i class="fas fa-adjust mr-2 text-blue-400"></i>
+                                <span>Brightness & Contrast</span>
+                            </div>
+                        </div>
+                        <div class="p-2 bg-gray-700 rounded cursor-pointer hover:bg-gray-600">
+                            <div class="flex items-center">
+                                <i class="fas fa-palette mr-2 text-purple-400"></i>
+                                <span>Color Correction</span>
+                            </div>
+                        </div>
+                        <div class="p-2 bg-gray-700 rounded cursor-pointer hover:bg-gray-600">
+                            <div class="flex items-center">
+                                <i class="fas fa-filter mr-2 text-green-400"></i>
+                                <span>Blur & Sharpen</span>
+                            </div>
+                        </div>
+                        <div class="p-2 bg-gray-700 rounded cursor-pointer hover:bg-gray-600">
+                            <div class="flex items-center">
+                                <i class="fas fa-crop mr-2 text-yellow-400"></i>
+                                <span>Transform</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <h3 class="font-semibold mb-2">Transitions</h3>
+                    <div class="space-y-2">
+                        <div class="p-2 bg-gray-700 rounded cursor-pointer hover:bg-gray-600">
+                            <div class="flex items-center">
+                                <i class="fas fa-arrow-right mr-2 text-blue-400"></i>
+                                <span>Cross Fade</span>
+                            </div>
+                        </div>
+                        <div class="p-2 bg-gray-700 rounded cursor-pointer hover:bg-gray-600">
+                            <div class="flex items-center">
+                                <i class="fas fa-expand mr-2 text-purple-400"></i>
+                                <span>Zoom</span>
+                            </div>
+                        </div>
+                        <div class="p-2 bg-gray-700 rounded cursor-pointer hover:bg-gray-600">
+                            <div class="flex items-center">
+                                <i class="fas fa-random mr-2 text-green-400"></i>
+                                <span>Dissolve</span>
+                            </div>
+                        </div>
+                        <div class="p-2 bg-gray-700 rounded cursor-pointer hover:bg-gray-600">
+                            <div class="flex items-center">
+                                <i class="fas fa-star mr-2 text-yellow-400"></i>
+                                <span>Wipe</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="font-semibold mb-2">Audio Effects</h3>
+                    <div class="space-y-2">
+                        <div class="p-2 bg-gray-700 rounded cursor-pointer hover:bg-gray-600">
+                            <div class="flex items-center">
+                                <i class="fas fa-volume-up mr-2 text-blue-400"></i>
+                                <span>Volume</span>
+                            </div>
+                        </div>
+                        <div class="p-2 bg-gray-700 rounded cursor-pointer hover:bg-gray-600">
+                            <div class="flex items-center">
+                                <i class="fas fa-equalizer mr-2 text-purple-400"></i>
+                                <span>Equalizer</span>
+                            </div>
+                        </div>
+                        <div class="p-2 bg-gray-700 rounded cursor-pointer hover:bg-gray-600">
+                            <div class="flex items-center">
+                                <i class="fas fa-wave-square mr-2 text-green-400"></i>
+                                <span>Noise Reduction</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Controls Content -->
+            <div id="controlsContent" class="flex-1 overflow-y-auto p-4 hidden">
+                <div class="mb-4">
+                    <h3 class="font-semibold mb-2">Keyframe Controls</h3>
+                    <div class="bg-gray-700 rounded p-3">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-sm">Position</span>
+                            <button class="text-xs bg-blue-600 px-2 py-1 rounded">Add Keyframe</button>
+                        </div>
+                        <div class="space-y-2">
+                            <div>
+                                <div class="flex justify-between text-xs mb-1">
+                                    <span>X</span>
+                                    <span>320</span>
+                                </div>
+                                <input type="range" min="0" max="1920" value="320" class="w-full">
+                            </div>
+                            <div>
+                                <div class="flex justify-between text-xs mb-1">
+                                    <span>Y</span>
+                                    <span>180</span>
+                                </div>
+                                <input type="range" min="0" max="1080" value="180" class="w-full">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <h3 class="font-semibold mb-2">Transform</h3>
+                    <div class="bg-gray-700 rounded p-3 space-y-3">
+                        <div>
+                            <div class="flex justify-between text-xs mb-1">
+                                <span>Scale</span>
+                                <span>100%</span>
+                            </div>
+                            <input type="range" min="0" max="200" value="100" class="w-full">
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-xs mb-1">
+                                <span>Rotation</span>
+                                <span>0°</span>
+                            </div>
+                            <input type="range" min="-180" max="180" value="0" class="w-full">
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-xs mb-1">
+                                <span>Opacity</span>
+                                <span>100%</span>
+                            </div>
+                            <input type="range" min="0" max="100" value="100" class="w-full">
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="font-semibold mb-2">Motion Path</h3>
+                    <div class="bg-gray-900 h-32 rounded flex items-center justify-center relative">
+                        <div class="absolute inset-4 border border-gray-700 rounded"></div>
+                        <div class="absolute w-3 h-3 bg-blue-500 rounded-full" style="top: 20%; left: 20%;"></div>
+                        <div class="absolute w-3 h-3 bg-blue-500 rounded-full" style="top: 50%; left: 50%;"></div>
+                        <div class="absolute w-3 h-3 bg-blue-500 rounded-full" style="top: 30%; left: 80%;"></div>
+                        <svg class="absolute inset-0">
+                            <path d="M30,100 Q80,50 200,70" stroke="#3b82f6" stroke-width="2" fill="none"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Bottom Export Bar -->
+    <div class="bg-gray-800 border-t border-gray-700 px-4 py-2 flex items-center justify-between">
+        <div class="flex items-center space-x-2">
+            <span class="text-sm text-gray-400">Duration:</span>
+            <span class="text-sm">02:30:15</span>
+            <span class="text-sm text-gray-400 ml-4">Resolution:</span>
+            <select class="bg-gray-700 text-sm rounded px-2 py-1">
+                <option>1920x1080 (Full HD)</option>
+                <option>1280x720 (HD)</option>
+                <option>3840x2160 (4K)</option>
+            </select>
+        </div>
+        <div class="flex items-center space-x-2">
+            <button class="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded">
+                <i class="fas fa-save mr-2"></i>Save Project
+            </button>
+            <button id="exportBtn" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded">
+                <i class="fas fa-file-export mr-2"></i>Export
+            </button>
+        </div>
+    </div>
+
+    <!-- Export Modal -->
+    <div id="exportModal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center hidden z-50">
+        <div class="bg-gray-800 rounded-lg w-full max-w-md p-6">
+            <h2 class="text-xl font-bold mb-4">Export Settings</h2>
+            
+            <div class="mb-4">
+                <label class="block text-sm font-medium mb-1">Format</label>
+                <select class="w-full bg-gray-700 rounded px-3 py-2">
+                    <option>MP4 (H.264)</option>
+                    <option>MOV (ProRes)</option>
+                    <option>AVI</option>
+                    <option>WebM</option>
+                </select>
+            </div>
+            
+            <div class="mb-4">
+                <label class="block text-sm font-medium mb-1">Resolution</label>
+                <select class="w-full bg-gray-700 rounded px-3 py-2">
+                    <option>1920x1080 (1080p)</option>
+                    <option>1280x720 (720p)</option>
+                    <option>3840x2160 (4K)</option>
+                    <option>Custom</option>
+                </select>
+            </div>
+            
+            <div class="mb-4">
+                <label class="block text-sm font-medium mb-1">Quality</label>
+                <div class="flex space-x-2">
+                    <button class="flex-1 py-2 bg-gray-700 hover:bg-gray-600 rounded">Low</button>
+                    <button class="flex-1 py-2 bg-blue-600 rounded">Medium</button>
+                    <button class="flex-1 py-2 bg-gray-700 hover:bg-gray-600 rounded">High</button>
+                </div>
+            </div>
+            
+            <div class="mb-6">
+                <label class="block text-sm font-medium mb-1">Output Location</label>
+                <div class="flex">
+                    <input type="text" value="/exports/video_001.mp4" class="flex-1 bg-gray-700 rounded-l px-3 py-2">
+                    <button class="bg-gray-700 px-3 rounded-r hover:bg-gray-600">
+                        <i class="fas fa-folder"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="flex justify-end space-x-3">
+                <button id="cancelExportBtn" class="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded">Cancel</button>
+                <button id="confirmExportBtn" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded">Export</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Timeline drag and drop functionality
+        let draggedElement = null;
+        let playheadPosition = 180; // Starting position in pixels
+
+        // Handle drag start from media library
+        document.querySelectorAll('.media-item').forEach(item => {
+            item.addEventListener('dragstart', (e) => {
+                draggedElement = e.target;
+                e.target.classList.add('dragging');
+                e.dataTransfer.effectAllowed = 'copy';
+            });
+
+            item.addEventListener('dragend', (e) => {
+                e.target.classList.remove('dragging');
+            });
+        });
+
+        // Handle drop on timeline tracks
+        document.querySelectorAll('.timeline-track').forEach(track => {
+            track.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                track.classList.add('drop-zone');
+            });
+
+            track.addEventListener('dragleave', () => {
+                track.classList.remove('drop-zone');
+            });
+
+            track.addEventListener('drop', (e) => {
+                e.preventDefault();
+                track.classList.remove('drop-zone');
+                
+                if (draggedElement) {
+                    const rect = track.getBoundingClientRect();
+                    const position = e.clientX - rect.left;
+                    const mediaType = draggedElement.dataset.type;
+                    const mediaName = draggedElement.querySelector('p').textContent;
+                    
+                    // Create new clip
+                    const clip = document.createElement('div');
+                    clip.className = `timeline-clip ${mediaType}-clip`;
+                    clip.style.left = `${position}px`;
+                    clip.style.width = '100px';
+                    clip.textContent = mediaName;
+                    
+                    track.appendChild(clip);
+                    
+                    // Add drag functionality to the new clip
+                    makeClipDraggable(clip);
+                }
+            });
+        });
+
+        // Make clips draggable within timeline
+        function makeClipDraggable(clip) {
+            let isDragging = false;
+            let startX = 0;
+            let startLeft = 0;
+
+            clip.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                startX = e.clientX;
+                startLeft = parseInt(clip.style.left, 10);
+                clip.style.cursor = 'grabbing';
+                document.addEventListener('mousemove', onMouseMove);
+                document.addEventListener('mouseup', onMouseUp);
+            });
+
+            function onMouseMove(e) {
+                if (!isDragging) return;
+                const dx = e.clientX - startX;
+                clip.style.left = `${startLeft + dx}px`;
+            }
+
+            function onMouseUp() {
+                isDragging = false;
+                clip.style.cursor = 'pointer';
+                document.removeEventListener('mousemove', onMouseMove);
+                document.removeEventListener('mouseup', onMouseUp);
+            }
+        }
+
+        // Make existing clips draggable
+        document.querySelectorAll('.timeline-clip').forEach(clip => {
+            makeClipDraggable(clip);
+        });
+
+        // Playhead functionality
+        const timeline = document.getElementById('timeline');
+        const playhead = timeline.querySelector('.timeline-playhead');
+        
+        timeline.addEventListener('click', (e) => {
+            const rect = timeline.getBoundingClientRect();
+            playheadPosition = e.clientX - rect.left;
+            playhead.style.left = `${playheadPosition}px`;
+        });
+
+        // Play/Pause button
+        const playPauseBtn = document.getElementById('playPauseBtn');
+        const playIcon = playPauseBtn.querySelector('i');
+        let isPlaying = false;
+
+        playPauseBtn.addEventListener('click', () => {
+            isPlaying = !isPlaying;
+            playIcon.className = isPlaying ? 'fas fa-pause' : 'fas fa-play';
+        });
+
+        // Zoom controls
+        const zoomInBtn = document.getElementById('zoomInBtn');
+        const zoomOutBtn = document.getElementById('zoomOutBtn');
+        let zoomLevel = 100;
+
+        zoomInBtn.addEventListener('click', () => {
+            if (zoomLevel < 200) {
+                zoomLevel += 10;
+                updateZoom();
+            }
+        });
+
+        zoomOutBtn.addEventListener('click', () => {
+            if (zoomLevel > 50) {
+                zoomLevel -= 10;
+                updateZoom();
+            }
+        });
+
+        function updateZoom() {
+            document.querySelector('#zoomInBtn').nextElementSibling.textContent = `${zoomLevel}%`;
+            // In a real editor, this would scale the timeline
+        }
+
+        // Tab switching
+        const effectsTab = document.getElementById('effectsTab');
+        const controlsTab = document.getElementById('controlsTab');
+        const effectsContent = document.getElementById('effectsContent');
+        const controlsContent = document.getElementById('controlsContent');
+
+        effectsTab.addEventListener('click', () => {
+            effectsTab.classList.add('border-b-2', 'border-blue-500');
+            controlsTab.classList.remove('border-b-2', 'border-blue-500');
+            effectsContent.classList.remove('hidden');
+            controlsContent.classList.add('hidden');
+        });
+
+        controlsTab.addEventListener('click', () => {
+            controlsTab.classList.add('border-b-2', 'border-blue-500');
+            effectsTab.classList.remove('border-b-2', 'border-blue-500');
+            controlsContent.classList.remove('hidden');
+            effectsContent.classList.add('hidden');
+        });
+
+        // Export modal
+        const exportBtn = document.getElementById('exportBtn');
+        const exportModal = document.getElementById('exportModal');
+        const cancelExportBtn = document.getElementById('cancelExportBtn');
+        const confirmExportBtn = document.getElementById('confirmExportBtn');
+
+        exportBtn.addEventListener('click', () => {
+            exportModal.classList.remove('hidden');
+        });
+
+        cancelExportBtn.addEventListener('click', () => {
+            exportModal.classList.add('hidden');
+        });
+
+        confirmExportBtn.addEventListener('click', () => {
+            // In a real app, this would start the export process
+            exportModal.classList.add('hidden');
+            
+            // Show a notification
+            const notification = document.createElement('div');
+            notification.className = 'fixed bottom-4 right-4 bg-green-600 text-white px-4 py-2 rounded shadow-lg';
+            notification.textContent = 'Export started...';
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        });
+
+        // Keyframe interaction
+        document.querySelectorAll('.keyframe').forEach(keyframe => {
+            keyframe.addEventListener('click', (e) => {
+                e.stopPropagation();
+                // In a real editor, this would open keyframe controls
+            });
+        });
+
+        // Sliders
+        document.querySelectorAll('input[type="range"]').forEach(slider => {
+            slider.addEventListener('input', (e) => {
+                const value = e.target.value;
+                const label = e.target.parentElement.querySelector('span:last-child');
+                if (label) {
+                    if (e.target.parentElement.previousElementSibling && e.target.parentElement.previousElementSibling.textContent.includes('Rotation')) {
+                        label.textContent = `${value}°`;
+                    } else if (e.target.parentElement.previousElementSibling && e.target.parentElement.previousElementSibling.textContent.includes('Scale')) {
+                        label.textContent = `${value}%`;
+                    } else if (e.target.parentElement.previousElementSibling && e.target.parentElement.previousElementSibling.textContent.includes('Opacity')) {
+                        label.textContent = `${value}%`;
+                    } else {
+                        label.textContent = value;
+                    }
+                }
+            });
+        });
+
+        // Undo/Redo
+        document.getElementById('undoBtn').addEventListener('click', () => {
+            // In a real app, this would undo the last action
+        });
+
+        document.getElementById('redoBtn').addEventListener('click', () => {
+            // In a real app, this would redo the last undone action
+        });
+    </script>
+</body>
+</html>

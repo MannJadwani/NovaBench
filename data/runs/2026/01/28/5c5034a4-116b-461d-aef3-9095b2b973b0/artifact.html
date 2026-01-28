@@ -1,0 +1,165 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Navigation Bar -->
+    <nav class="bg-white shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 flex items-center">
+                        <div class="bg-indigo-600 h-8 w-8 rounded-md flex items-center justify-center">
+                            <span class="text-white font-bold">B</span>
+                        </div>
+                        <span class="ml-2 text-xl font-bold text-gray-800">Brand</span>
+                    </div>
+                    <div class="hidden md:ml-10 md:flex md:space-x-8">
+                        <a href="#" class="text-indigo-600 border-indigo-500 border-b-2 px-1 pt-1 text-sm font-medium">Dashboard</a>
+                        <a href="#" class="text-gray-500 hover:text-gray-700 border-transparent hover:border-gray-300 border-b-2 px-1 pt-1 text-sm font-medium">Projects</a>
+                        <a href="#" class="text-gray-500 hover:text-gray-700 border-transparent hover:border-gray-300 border-b-2 px-1 pt-1 text-sm font-medium">Calendar</a>
+                        <a href="#" class="text-gray-500 hover:text-gray-700 border-transparent hover:border-gray-300 border-b-2 px-1 pt-1 text-sm font-medium">Documents</a>
+                    </div>
+                </div>
+                <div class="flex items-center">
+                    <button class="p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none">
+                        <i class="fas fa-search text-gray-500"></i>
+                    </button>
+                    <button class="ml-3 p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none">
+                        <i class="fas fa-bell text-gray-500"></i>
+                    </button>
+                    <div class="ml-3 relative flex-shrink-0">
+                        <div class="flex items-center">
+                            <img class="h-8 w-8 rounded-full" src="https://randomuser.me/api/portraits/men/1.jpg" alt="User">
+                            <span class="ml-2 text-sm font-medium text-gray-700">John Doe</span>
+                            <i class="fas fa-chevron-down ml-1 text-xs text-gray-500"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="flex flex-col md:flex-row gap-8">
+            <!-- Left Sidebar -->
+            <div class="w-full md:w-1/4">
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <div class="flex flex-col items-center">
+                        <img class="h-24 w-24 rounded-full object-cover mb-4" src="https://randomuser.me/api/portraits/men/1.jpg" alt="User">
+                        <h2 class="text-xl font-bold text-gray-800">John Doe</h2>
+                        <p class="text-gray-600 text-sm">Admin</p>
+                        <div class="mt-4 w-full">
+                            <div class="flex justify-between text-sm text-gray-600 mb-1">
+                                <span>Profile Completion</span>
+                                <span>75%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-indigo-600 h-2 rounded-full" style="width: 75%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6">
+                        <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wider mb-3">Recent Activity</h3>
+                        <ul class="space-y-2">
+                            <li class="flex items-start">
+                                <div class="flex-shrink-0">
+                                    <div class="h-2 w-2 bg-indigo-600 rounded-full mt-2"></div>
+                                </div>
+                                <div class="ml-3 text-sm text-gray-600">
+                                    <p>Updated dashboard</p>
+                                    <p class="text-xs text-gray-500">2 hours ago</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="flex-shrink-0">
+                                    <div class="h-2 w-2 bg-indigo-600 rounded-full mt-2"></div>
+                                </div>
+                                <div class="ml-3 text-sm text-gray-600">
+                                    <p>Added new project</p>
+                                    <p class="text-xs text-gray-500">1 day ago</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="flex-shrink-0">
+                                    <div class="h-2 w-2 bg-indigo-600 rounded-full mt-2"></div>
+                                </div>
+                                <div class="ml-3 text-sm text-gray-600">
+                                    <p>Completed task</p>
+                                    <p class="text-xs text-gray-500">3 days ago</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content Area -->
+            <div class="w-full md:w-3/4">
+                <!-- Welcome Banner -->
+                <div class="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-lg shadow-md p-6 mb-8">
+                    <h1 class="text-2xl font-bold text-white">Welcome back, John!</h1>
+                    <p class="text-indigo-100 mt-1">Here's what's happening with your projects today.</p>
+                    
+                    <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="bg-white bg-opacity-20 rounded-lg p-4">
+                            <p class="text-indigo-100 text-sm">Total Projects</p>
+                            <p class="text-2xl font-bold text-white">12</p>
+                        </div>
+                        <div class="bg-white bg-opacity-20 rounded-lg p-4">
+                            <p class="text-indigo-100 text-sm">Completed Tasks</p>
+                            <p class="text-2xl font-bold text-white">84</p>
+                        </div>
+                        <div class="bg-white bg-opacity-20 rounded-lg p-4">
+                            <p class="text-indigo-100 text-sm">Pending Tasks</p>
+                            <p class="text-2xl font-bold text-white">16</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chart Section -->
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-lg font-bold text-gray-800">Performance Overview</h2>
+                        <div class="flex space-x-2">
+                            <button class="px-3 py-1 text-sm bg-indigo-600 text-white rounded-md">Week</button>
+                            <button class="px-3 py-1 text-sm bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300">Month</button>
+                            <button class="px-3 py-1 text-sm bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300">Year</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Chart Placeholder -->
+                    <div class="h-64 bg-gray-100 rounded-lg flex items-center justify-center">
+                        <div class="text-center">
+                            <i class="fas fa-chart-line text-4xl text-gray-400 mb-2"></i>
+                            <p class="text-gray-500">Performance Chart</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Chart Legend -->
+                    <div class="mt-6 flex flex-wrap gap-4">
+                        <div class="flex items-center">
+                            <div class="h-3 w-3 bg-indigo-600 rounded-full"></div>
+                            <span class="ml-2 text-sm text-gray-600">Tasks Completed</span>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="h-3 w-3 bg-purple-600 rounded-full"></div>
+                            <span class="ml-2 text-sm text-gray-600">Tasks Pending</span>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="h-3 w-3 bg-green-500 rounded-full"></div>
+                            <span class="ml-2 text-sm text-gray-600">Efficiency</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

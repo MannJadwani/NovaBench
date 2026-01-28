@@ -1,0 +1,12 @@
+{
+  "prompt": "Create a night-themed landing page with dark backgrounds, muted colors, and subtle glow accents. Use Tailwind CSS classes and output a single HTML file.\n\nReturn only HTML. Do not wrap in markdown. Use Tailwind CSS classes.",
+  "params": {
+    "temperature": 1,
+    "maxTokens": null
+  },
+  "benchmark": {
+    "id": "night-ui-landing",
+    "title": "Night UI - Landing Page",
+    "category": "Design Terms"
+  }
+}

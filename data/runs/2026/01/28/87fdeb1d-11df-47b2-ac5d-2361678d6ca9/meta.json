@@ -1,0 +1,37 @@
+{
+  "id": "87fdeb1d-11df-47b2-ac5d-2361678d6ca9",
+  "createdAt": "2026-01-27T22:25:55.141Z",
+  "provider": "openrouter",
+  "model": "moonshotai/kimi-k2.5",
+  "benchmark": {
+    "id": "3d-learning",
+    "title": "3D Website for Learning",
+    "category": "Design Terms"
+  },
+  "latencyMs": 171739,
+  "tokenUsage": {
+    "prompt_tokens": 76,
+    "completion_tokens": 11832,
+    "total_tokens": 11908,
+    "cost": 0.0355416,
+    "is_byok": false,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "audio_tokens": 0
+    },
+    "cost_details": {
+      "upstream_inference_cost": 0.0355416,
+      "upstream_inference_prompt_cost": 0.0000456,
+      "upstream_inference_completions_cost": 0.035496
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 717,
+      "audio_tokens": 0
+    }
+  },
+  "params": {
+    "temperature": 1,
+    "maxTokens": null
+  },
+  "path": "runs/2026/01/28/87fdeb1d-11df-47b2-ac5d-2361678d6ca9"
+}

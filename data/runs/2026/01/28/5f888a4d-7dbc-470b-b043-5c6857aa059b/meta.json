@@ -1,0 +1,37 @@
+{
+  "id": "5f888a4d-7dbc-470b-b043-5c6857aa059b",
+  "createdAt": "2026-01-27T23:45:29.426Z",
+  "provider": "openrouter",
+  "model": "arcee-ai/trinity-large-preview:free",
+  "benchmark": {
+    "id": "photoshop-clone",
+    "title": "Photoshop Web Clone",
+    "category": "Complexity of UI"
+  },
+  "latencyMs": 30133,
+  "tokenUsage": {
+    "prompt_tokens": 94,
+    "completion_tokens": 2206,
+    "total_tokens": 2300,
+    "cost": 0,
+    "is_byok": false,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "audio_tokens": 0
+    },
+    "cost_details": {
+      "upstream_inference_cost": 0,
+      "upstream_inference_prompt_cost": 0,
+      "upstream_inference_completions_cost": 0
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 0,
+      "audio_tokens": 0
+    }
+  },
+  "params": {
+    "temperature": 1,
+    "maxTokens": null
+  },
+  "path": "runs/2026/01/28/5f888a4d-7dbc-470b-b043-5c6857aa059b"
+}

@@ -1,0 +1,12 @@
+{
+  "prompt": "Create a premium landing page with sharp edges, rich gradients, and luxurious colors. Use Tailwind CSS classes and output a single HTML file.\n\nReturn only HTML. Do not wrap in markdown. Use Tailwind CSS classes.",
+  "params": {
+    "temperature": 1,
+    "maxTokens": null
+  },
+  "benchmark": {
+    "id": "premium-gradients",
+    "title": "Sharp Premium & Rich Gradients",
+    "category": "Design Terms"
+  }
+}

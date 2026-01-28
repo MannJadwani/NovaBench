@@ -1,0 +1,18 @@
+{
+  "id": "ab158ecd-570b-4bcd-b567-ce9fb545fa91",
+  "createdAt": "2026-01-27T21:41:52.855Z",
+  "provider": "zai",
+  "model": "glm-4.5",
+  "benchmark": {
+    "id": "macos-clone",
+    "title": "macOS Clone",
+    "category": "Complexity of UI"
+  },
+  "latencyMs": 140500,
+  "tokenUsage": null,
+  "params": {
+    "temperature": 1,
+    "maxTokens": null
+  },
+  "path": "runs/2026/01/28/ab158ecd-570b-4bcd-b567-ce9fb545fa91"
+}

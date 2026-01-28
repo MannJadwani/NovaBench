@@ -1,0 +1,1068 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>macOS Desktop</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
+            overflow: hidden;
+            user-select: none;
+        }
+        
+        .glass {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        
+        .glass-dark {
+            background: rgba(30, 30, 30, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        
+        .dock-glass {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .window {
+            position: absolute;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(0, 0, 0, 0.1);
+            min-width: 300px;
+            min-height: 200px;
+        }
+        
+        .window.active {
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(0, 0, 0, 0.1);
+        }
+        
+        .title-bar {
+            background: linear-gradient(to bottom, #f0f0f0, #e0e0e0);
+            border-bottom: 1px solid #c0c0c0;
+        }
+        
+        .window-btn {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            transition: all 0.2s;
+        }
+        
+        .btn-close { background: #ff5f56; }
+        .btn-close:hover { background: #ff3b30; }
+        
+        .btn-minimize { background: #ffbd2e; }
+        .btn-minimize:hover { background: #ff9500; }
+        
+        .btn-maximize { background: #27c93f; }
+        .btn-maximize:hover { background: #34c759; }
+        
+        .dock-item {
+            transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            position: relative;
+        }
+        
+        .dock-item:hover {
+            transform: scale(1.2) translateY(-10px);
+            margin: 0 10px;
+        }
+        
+        .dock-item::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 4px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 50%;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        
+        .dock-item.active::after {
+            opacity: 1;
+        }
+        
+        .resize-handle {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 20px;
+            height: 20px;
+            cursor: se-resize;
+            background: linear-gradient(135deg, transparent 50%, rgba(0,0,0,0.1) 50%);
+            border-bottom-right-radius: 10px;
+        }
+        
+        .menu-dropdown {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 8px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            min-width: 200px;
+            z-index: 1000;
+            padding: 4px 0;
+        }
+        
+        .menu-item:hover .menu-dropdown {
+            display: block;
+        }
+        
+        .dropdown-item {
+            padding: 4px 16px;
+            font-size: 13px;
+            cursor: pointer;
+            color: #333;
+        }
+        
+        .dropdown-item:hover {
+            background: #0066cc;
+            color: white;
+        }
+        
+        .separator {
+            height: 1px;
+            background: rgba(0,0,0,0.1);
+            margin: 4px 0;
+        }
+        
+        .spotlight-input {
+            background: rgba(255,255,255,0.9);
+            border: 1px solid rgba(0,0,0,0.1);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        .notification-center {
+            transform: translateX(100%);
+            transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+        }
+        
+        .notification-center.open {
+            transform: translateX(0);
+        }
+        
+        .mission-control {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+        
+        .mission-control.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        .desktop-thumb {
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        
+        .desktop-thumb:hover {
+            transform: scale(1.05);
+            border-color: rgba(255,255,255,0.5);
+        }
+        
+        .desktop-thumb.active {
+            border-color: white;
+        }
+        
+        .calc-btn {
+            background: #e0e0e0;
+            border: 1px solid #d0d0d0;
+            transition: all 0.1s;
+        }
+        
+        .calc-btn:active {
+            background: #d0d0d0;
+            transform: scale(0.95);
+        }
+        
+        .calc-btn.orange {
+            background: #ff9f0c;
+            color: white;
+            border-color: #ff9f0c;
+        }
+        
+        .calc-btn.orange:active {
+            background: #e68a00;
+        }
+        
+        .calc-btn.gray {
+            background: #a5a5a5;
+            color: black;
+        }
+        
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+</head>
+<body class="h-screen w-screen overflow-hidden bg-gradient-to-br from-purple-600 via-blue-500 to-teal-400">
+
+    <!-- Top Menu Bar -->
+    <div id="menu-bar" class="glass fixed top-0 left-0 right-0 h-8 flex items-center justify-between px-4 z-50 text-sm text-white shadow-sm">
+        <div class="flex items-center space-x-4 h-full">
+            <div class="menu-item relative h-full flex items-center px-2 cursor-pointer hover:bg-white/20 rounded">
+                <span class="font-bold text-lg leading-none"></span>
+                <div class="menu-dropdown">
+                    <div class="dropdown-item font-medium">About This Mac</div>
+                    <div class="separator"></div>
+                    <div class="dropdown-item">System Preferences...</div>
+                    <div class="dropdown-item">App Store...</div>
+                    <div class="separator"></div>
+                    <div class="dropdown-item">Recent Items</div>
+                    <div class="separator"></div>
+                    <div class="dropdown-item">Force Quit...</div>
+                    <div class="separator"></div>
+                    <div class="dropdown-item">Sleep</div>
+                    <div class="dropdown-item">Restart...</div>
+                    <div class="dropdown-item">Shut Down...</div>
+                    <div class="separator"></div>
+                    <div class="dropdown-item">Lock Screen</div>
+                    <div class="dropdown-item">Log Out User...</div>
+                </div>
+            </div>
+            <div class="menu-item relative h-full flex items-center px-2 cursor-pointer hover:bg-white/20 rounded">
+                <span id="active-app" class="font-semibold">Finder</span>
+                <div class="menu-dropdown">
+                    <div class="dropdown-item font-medium">About Finder</div>
+                    <div class="separator"></div>
+                    <div class="dropdown-item">Preferences...</div>
+                    <div class="separator"></div>
+                    <div class="dropdown-item">Empty Trash...</div>
+                    <div class="separator"></div>
+                    <div class="dropdown-item">Services</div>
+                    <div class="separator"></div>
+                    <div class="dropdown-item">Hide Finder</div>
+                    <div class="dropdown-item">Quit Finder</div>
+                </div>
+            </div>
+            <div class="flex items-center space-x-3 text-xs h-full">
+                <div class="menu-item relative h-full flex items-center px-2 cursor-pointer hover:bg-white/20 rounded">
+                    <span>File</span>
+                    <div class="menu-dropdown">
+                        <div class="dropdown-item">New Finder Window</div>
+                        <div class="dropdown-item">New Folder</div>
+                        <div class="dropdown-item">New Folder with Selection</div>
+                        <div class="dropdown-item">New Smart Folder</div>
+                        <div class="separator"></div>
+                        <div class="dropdown-item">Open</div>
+                        <div class="dropdown-item">Open With</div>
+                    </div>
+                </div>
+                <div class="menu-item relative h-full flex items-center px-2 cursor-pointer hover:bg-white/20 rounded">
+                    <span>Edit</span>
+                    <div class="menu-dropdown">
+                        <div class="dropdown-item">Undo</div>
+                        <div class="dropdown-item">Redo</div>
+                        <div class="separator"></div>
+                        <div class="dropdown-item">Cut</div>
+                        <div class="dropdown-item">Copy</div>
+                        <div class="dropdown-item">Paste</div>
+                    </div>
+                </div>
+                <div class="menu-item relative h-full flex items-center px-2 cursor-pointer hover:bg-white/20 rounded">
+                    <span>View</span>
+                </div>
+                <div class="menu-item relative h-full flex items-center px-2 cursor-pointer hover:bg-white/20 rounded">
+                    <span>Go</span>
+                </div>
+                <div class="menu-item relative h-full flex items-center px-2 cursor-pointer hover:bg-white/20 rounded">
+                    <span>Window</span>
+                </div>
+                <div class="menu-item relative h-full flex items-center px-2 cursor-pointer hover:bg-white/20 rounded">
+                    <span>Help</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="flex items-center space-x-4 text-xs">
+            <div class="flex items-center space-x-1 cursor-pointer hover:bg-white/20 px-2 py-1 rounded">
+                <span>100%</span>
+                <span>🔋</span>
+            </div>
+            <span class="cursor-pointer hover:bg-white/20 px-2 py-1 rounded">📶</span>
+            <span class="cursor-pointer hover:bg-white/20 px-2 py-1 rounded">🔍</span>
+            <span class="cursor-pointer hover:bg-white/20 px-2 py-1 rounded" onclick="toggleNotificationCenter()">🔔</span>
+            <span id="clock" class="cursor-pointer hover:bg-white/20 px-2 py-1 rounded font-medium min-w-[60px] text-center"></span>
+        </div>
+    </div>
+
+    <!-- Desktop -->
+    <div id="desktop" class="absolute top-8 left-0 right-0 bottom-12 p-4">
+        <div class="grid grid-cols-1 gap-1 w-24">
+            <div class="flex flex-col items-center p-2 rounded hover:bg-white/20 cursor-pointer group transition-colors" onclick="openApp('finder')">
+                <div class="w-14 h-14 bg-blue-500 rounded-xl flex items-center justify-center text-3xl shadow-lg mb-1 group-hover:scale-105 transition-transform">📁</div>
+                <span class="text-white text-xs text-shadow drop-shadow-md">Finder</span>
+            </div>
+            <div class="flex flex-col items-center p-2 rounded hover:bg-white/20 cursor-pointer group transition-colors" onclick="openApp('preferences')">
+                <div class="w-14 h-14 bg-gray-300 rounded-xl flex items-center justify-center text-3xl shadow-lg mb-1 group-hover:scale-105 transition-transform">⚙️</div>
+                <span class="text-white text-xs text-shadow drop-shadow-md">System</span>
+            </div>
+            <div class="flex flex-col items-center p-2 rounded hover:bg-white/20 cursor-pointer group transition-colors" onclick="openApp('calculator')">
+                <div class="w-14 h-14 bg-orange-500 rounded-xl flex items-center justify-center text-3xl shadow-lg mb-1 group-hover:scale-105 transition-transform">🧮</div>
+                <span class="text-white text-xs text-shadow drop-shadow-md">Calculator</span>
+            </div>
+            <div class="flex flex-col items-center p-2 rounded hover:bg-white/20 cursor-pointer group transition-colors" onclick="openApp('notes')">
+                <div class="w-14 h-14 bg-yellow-300 rounded-xl flex items-center justify-center text-3xl shadow-lg mb-1 group-hover:scale-105 transition-transform">📝</div>
+                <span class="text-white text-xs text-shadow drop-shadow-md">Notes</span>
+            </div>
+            <div class="flex flex-col items-center p-2 rounded hover:bg-white/20 cursor-pointer group transition-colors" onclick="openApp('calendar')">
+                <div class="w-14 h-14 bg-white rounded-xl flex items-center justify-center text-3xl shadow-lg mb-1 group-hover:scale-105 transition-transform overflow-hidden">
+                    <div class="bg-red-500 w-full h-4 text-[8px] text-white flex items-center justify-center font-bold">JAN</div>
+                    <div class="text-red-500 font-bold text-lg">15</div>
+                </div>
+                <span class="text-white text-xs text-shadow drop-shadow-md">Calendar</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Windows Container -->
+    <div id="windows-container" class="absolute top-8 left-0 right-0 bottom-12 pointer-events-none"></div>
+
+    <!-- Dock -->
+    <div class="fixed bottom-2 left-1/2 transform -translate-x-1/2 flex items-end pb-2 px-2 dock-glass rounded-2xl z-40">
+        <div class="flex items-end space-x-1 px-2 pt-2 pb-1">
+            <div class="dock-item active cursor-pointer mb-1" onclick="openApp('finder')" data-app="finder">
+                <div class="w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center text-2xl shadow-md">📁</div>
+            </div>
+            <div class="dock-item cursor-pointer mb-1" onclick="openApp('preferences')" data-app="preferences">
+                <div class="w-12 h-12 bg-gray-300 rounded-xl flex items-center justify-center text-2xl shadow-md">⚙️</div>
+            </div>
+            <div class="dock-item cursor-pointer mb-1" onclick="openApp('calculator')" data-app="calculator">
+                <div class="w-12 h-12 bg-orange-500 rounded-xl flex items-center justify-center text-2xl shadow-md">🧮</div>
+            </div>
+            <div class="dock-item cursor-pointer mb-1" onclick="openApp('notes')" data-app="notes">
+                <div class="w-12 h-12 bg-yellow-300 rounded-xl flex items-center justify-center text-2xl shadow-md">📝</div>
+            </div>
+            <div class="dock-item cursor-pointer mb-1" onclick="openApp('calendar')" data-app="calendar">
+                <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-2xl shadow-md overflow-hidden">
+                    <div class="bg-red-500 w-full h-3 text-[6px] text-white flex items-center justify-center font-bold">JAN</div>
+                    <div class="text-red-500 font-bold text-sm">15</div>
+                </div>
+            </div>
+            <div class="w-px h-10 bg-white/30 mx-2 mb-2"></div>
+            <div class="dock-item cursor-pointer mb-1" onclick="toggleSpotlight()">
+                <div class="w-12 h-12 bg-gray-800 rounded-xl flex items-center justify-center text-2xl shadow-md">🔍</div>
+            </div>
+            <div class="dock-item cursor-pointer mb-1" onclick="toggleMissionControl()">
+                <div class="w-12 h-12 bg-gray-700 rounded-xl flex items-center justify-center text-2xl shadow-md">🗂️</div>
+            </div>
+            <div class="dock-item cursor-pointer mb-1" onclick="toggleNotificationCenter()">
+                <div class="w-12 h-12 bg-gray-600 rounded-xl flex items-center justify-center text-2xl shadow-md">🗑️</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Spotlight -->
+    <div id="spotlight" class="hidden fixed inset-0 bg-black/40 backdrop-blur-sm z-[60] flex items-start justify-center pt-48" onclick="if(event.target === this) toggleSpotlight()">
+        <div class="w-[680px] bg-white/90 backdrop-blur-xl rounded-xl shadow-2xl overflow-hidden transform transition-all">
+            <div class="flex items-center px-4 py-3 border-b border-gray-200/50">
+                <span class="text-gray-400 text-xl mr-3">🔍</span>
+                <input type="text" id="spotlight-input" placeholder="Spotlight Search" class="bg-transparent outline-none text-xl w-full text-gray-800 placeholder-gray-400" oninput="updateSpotlight(this.value)">
+            </div>
+            <div class="bg-gray-50/50 p-2 max-h-96 overflow-y-auto" id="spotlight-results">
+                <div class="text-xs text-gray-500 px-3 py-2 uppercase font-semibold tracking-wider">Top Hit</div>
+                <div class="flex items-center p-2 hover:bg-[#0066cc] hover:text-white rounded-lg cursor-pointer group transition-colors" onclick="openApp('finder'); toggleSpotlight()">
+                    <div class="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center text-xl mr-3 group-hover:scale-110 transition-transform">📁</div>
+                    <div>
+                        <div class="font-medium">Finder</div>
+                        <div class="text-xs opacity-70 group-hover:opacity-90">Application</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Center -->
+    <div id="notification-center" class="notification-center fixed top-8 right-0 bottom-0 w-80 glass-dark z-50 shadow-2xl text-white">
+        <div class="p-4 h-full overflow-y-auto scrollbar-hide">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-lg font-bold">Notifications</h2>
+                <button onclick="toggleNotificationCenter()" class="text-white/70 hover:text-white">✕</button>
+            </div>
+            
+            <div class="space-y-3 mb-6">
+                <div class="bg-white/10 rounded-2xl p-4 backdrop-blur-md border border-white/10">
+                    <div class="flex items-start justify-between mb-2">
+                        <div class="flex items-center">
+                            <div class="w-6 h-6 bg-red-500 rounded-lg flex items-center justify-center text-xs mr-2">📅</div>
+                            <span class="font-semibold text-sm">Calendar</span>
+                        </div>
+                        <span class="text-xs text-white/50">Now</span>
+                    </div>
+                    <div class="text-sm font-medium mb-1">Team Meeting</div>
+                    <div class="text-xs text-white/70">In 15 minutes • Conference Room A</div>
+                </div>
+                
+                <div class="bg-white/10 rounded-2xl p-4 backdrop-blur-md border border-white/10">
+                    <div class="flex items-start justify-between mb-2">
+                        <div class="flex items-center">
+                            <div class="w-6 h-6 bg-blue-500 rounded-lg flex items-center justify-center text-xs mr-2">💬</div>
+                            <span class="font-semibold text-sm">Messages</span>
+                        </div>
+                        <span class="text-xs text-white/50">5m ago</span>
+                    </div>
+                    <div class="text-sm text-white/90">New message from John</div>
+                </div>
+            </div>
+            
+            <h3 class="text-lg font-bold mb-3">Today</h3>
+            <div class="bg-white/10 rounded-2xl p-6 text-center backdrop-blur-md border border-white/10 mb-4">
+                <div class="text-5xl font-thin mb-2" id="nc-time">09:41</div>
+                <div class="text-sm text-white/70" id="nc-date">Monday, January 15</div>
+            </div>
+            
+            <div class="bg-white/10 rounded-2xl p-4 backdrop-blur-md border border-white/10">
+                <div class="flex justify-between items-center mb-3">
+                    <span class="font-semibold text-sm">Weather</span>
+                    <span class="text-xs text-white/50">Cupertino</span>
+                </div>
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-3xl font-light">72°</div>
+                        <div class="text-xs text-white/70">Sunny</div>
+                    </div>
+                    <div class="text-4xl">☀️</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mission Control -->
+    <div id="mission-control" class="mission-control fixed inset-0 bg-gray-900/90 backdrop-blur-xl z-[70] flex flex-col items-center justify-center" onclick="if(event.target === this) toggleMissionControl()">
+        <div class="text-white/50 text-sm mb-8 absolute top-8">Mission Control</div>
+        
+        <div class="flex space-x-6 items-center mb-20">
+            <div class="desktop-thumb active w-80 h-52 bg-gradient-to-br from-purple-600 to-blue-500 rounded-lg border-2 border-white shadow-2xl cursor-pointer relative overflow-hidden" onclick="switchDesktop(1)">
+                <div class="absolute inset-0 flex items-center justify-center">
+                    <span class="text-white/30 font-bold text-2xl">Desktop 1</span>
+                </div>
+                <div class="absolute bottom-2 left-1/2 transform -translate-x-1/2 w-1.5 h-1.5 bg-white rounded-full"></div>
+            </div>
+            
+            <div class="desktop-thumb w-80 h-52 bg-gradient-to-br from-green-600 to-teal-500 rounded-lg border-2 border-transparent shadow-2xl cursor-pointer relative overflow-hidden" onclick="switchDesktop(2)">
+                <div class="absolute inset-0 flex items-center justify-center">
+                    <span class="text-white/30 font-bold text-2xl">Desktop 2</span>
+                </div>
+                <div class="absolute bottom-2 left-1/2 transform -translate-x-1/2 w-1.5 h-1.5 bg-white rounded-full"></div>
+            </div>
+            
+            <div class="desktop-thumb w-80 h-52 bg-gradient-to-br from-orange-600 to-red-500 rounded-lg border-2 border-transparent shadow-2xl cursor-pointer relative overflow-hidden" onclick="switchDesktop(3)">
+                <div class="absolute inset-0 flex items-center justify-center">
+                    <span class="text-white/30 font-bold text-2xl">Desktop 3</span>
+                </div>
+                <div class="absolute bottom-2 left-1/2 transform -translate-x-1/2 w-1.5 h-1.5 bg-white rounded-full"></div>
+            </div>
+        </div>
+        
+        <div class="absolute bottom-8 flex space-x-4">
+            <button class="w-12 h-12 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center text-2xl transition-colors" onclick="toggleMissionControl()">+</button>
+        </div>
+    </div>
+
+    <script>
+        // Clock
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('clock').textContent = now.toLocaleTimeString('en-US', { 
+                hour: 'numeric', 
+                minute: '2-digit',
+                hour12: true 
+            });
+            document.getElementById('nc-time').textContent = now.toLocaleTimeString('en-US', { 
+                hour: 'numeric', 
+                minute: '2-digit',
+                hour12: false 
+            });
+            document.getElementById('nc-date').textContent = now.toLocaleDateString('en-US', { 
+                weekday: 'long', 
+                month: 'long', 
+                day: 'numeric' 
+            });
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // Window Management
+        let windows = {};
+        let windowCounter = 0;
+        let activeWindowId = null;
+        let zIndex = 100;
+        let currentDesktop = 1;
+
+        function createWindow(app, title, content, width = 600, height = 400) {
+            const id = `window-${++windowCounter}`;
+            const x = 100 + (windowCounter * 30) % 200;
+            const y = 50 + (windowCounter * 30) % 100;
+            
+            const win = document.createElement('div');
+            win.id = id;
+            win.className = 'window pointer-events-auto';
+            win.style.left = `${x}px`;
+            win.style.top = `${y}px`;
+            win.style.width = `${width}px`;
+            win.style.height = `${height}px`;
+            win.style.zIndex = ++zIndex;
+            win.dataset.app = app;
+            win.dataset.desktop = currentDesktop;
+            
+            win.innerHTML = `
+                <div class="title-bar h-9 flex items-center px-3 space-x-2 cursor-default select-none" onmousedown="startDrag(event, '${id}')">
+                    <div class="flex space-x-2 group">
+                        <button class="window-btn btn-close flex items-center justify-center text-[8px] text-red-900 opacity-0 group-hover:opacity-100" onclick="closeWindow('${id}')">×</button>
+                        <button class="window-btn btn-minimize flex items-center justify-center text-[8px] text-yellow-900 opacity-0 group-hover:opacity-100" onclick="minimizeWindow('${id}')">−</button>
+                        <button class="window-btn btn-maximize flex items-center justify-center text-[8px] text-green-900 opacity-0 group-hover:opacity-100" onclick="maximizeWindow('${id}')">+</button>
+                    </div>
+                    <div class="flex-1 text-center text-xs font-medium text-gray-600 truncate px-4">${title}</div>
+                </div>
+                <div class="content bg-white" style="height: calc(100% - 36px); overflow: auto;">
+                    ${content}
+                </div>
+                <div class="resize-handle" onmousedown="startResize(event, '${id}')"></div>
+            `;
+            
+            document.getElementById('windows-container').appendChild(win);
+            windows[id] = { element: win, app, x, y, width, height, minimized: false };
+            focusWindow(id);
+            updateActiveApp(app);
+            
+            return id;
+        }
+
+        function startDrag(e, id) {
+            if (e.target.tagName === 'BUTTON') return;
+            focusWindow(id);
+            
+            const win = windows[id];
+            const startX = e.clientX - win.element.offsetLeft;
+            const startY = e.clientY - win.element.offsetTop;
+            
+            function onMouseMove(e) {
+                win.element.style.left = `${e.clientX - startX}px`;
+                win.element.style.top = `${e.clientY - startY}px`;
+                win.x = e.clientX - startX;
+                win.y = e.clientY - startY;
+            }
+            
+            function onMouseUp() {
+                document.removeEventListener('mousemove', onMouseMove);
+                document.removeEventListener('mouseup', onMouseUp);
+            }
+            
+            document.addEventListener('mousemove', onMouseMove);
+            document.addEventListener('mouseup', onMouseUp);
+        }
+
+        function startResize(e, id) {
+            e.stopPropagation();
+            const win = windows[id];
+            const startX = e.clientX;
+            const startY = e.clientY;
+            const startWidth = parseInt(win.element.style.width);
+            const startHeight = parseInt(win.element.style.height);
+            
+            function onMouseMove(e) {
+                const newWidth = Math.max(300, startWidth + e.clientX - startX);
+                const newHeight = Math.max(200, startHeight + e.clientY - startY);
+                win.element.style.width = `${newWidth}px`;
+                win.element.style.height = `${newHeight}px`;
+                win.width = newWidth;
+                win.height = newHeight;
+            }
+            
+            function onMouseUp() {
+                document.removeEventListener('mousemove', onMouseMove);
+                document.removeEventListener('mouseup', onMouseUp);
+            }
+            
+            document.addEventListener('mousemove', onMouseMove);
+            document.addEventListener('mouseup', onMouseUp);
+        }
+
+        function focusWindow(id) {
+            if (!windows[id]) return;
+            zIndex++;
+            windows[id].element.style.zIndex = zIndex;
+            activeWindowId = id;
+            
+            // Update active states
+            Object.values(windows).forEach(w => w.element.classList.remove('active'));
+            windows[id].element.classList.add('active');
+            
+            // Update dock
+            document.querySelectorAll('.dock-item').forEach(item => item.classList.remove('active'));
+            const app = windows[id].app;
+            const dockItem = document.querySelector(`.dock-item[data-app="${app}"]`);
+            if (dockItem) dockItem.classList.add('active');
+            
+            updateActiveApp(app);
+        }
+
+        function closeWindow(id) {
+            if (windows[id]) {
+                windows[id].element.remove();
+                delete windows[id];
+                activeWindowId = null;
+                updateActiveApp('Finder');
+            }
+        }
+
+        function minimizeWindow(id) {
+            if (windows[id]) {
+                windows[id].element.style.display = 'none';
+                windows[id].minimized = true;
+            }
+        }
+
+        function maximizeWindow(id) {
+            const win = windows[id];
+            if (win.element.style.width === '100%') {
+                win.element.style.width = `${win.width}px`;
+                win.element.style.height = `${win.height}px`;
+                win.element.style.left = `${win.x}px`;
+                win.element.style.top = `${win.y}px`;
+            } else {
+                win.element.style.width = '100%';
+                win.element.style.height = 'calc(100vh - 32px)';
+                win.element.style.left = '0';
+                win.element.style.top = '0';
+            }
+        }
+
+        function updateActiveApp(app) {
+            const names = {
+                'finder': 'Finder',
+                'preferences': 'System Preferences',
+                'calculator': 'Calculator',
+                'notes': 'Notes',
+                'calendar': 'Calendar'
+            };
+            document.getElementById('active-app').textContent = names[app] || app;
+        }
+
+        // App Content
+        function openApp(app) {
+            switch(app) {
+                case 'finder':
+                    createWindow('finder', 'Finder', getFinderContent(), 800, 500);
+                    break;
+                case 'preferences':
+                    createWindow('preferences', 'System Preferences', getPreferencesContent(), 700, 500);
+                    break;
+                case 'calculator':
+                    createWindow('calculator', 'Calculator', getCalculatorContent(), 280, 380);
+                    break;
+                case 'notes':
+                    createWindow('notes', 'Notes', getNotesContent(), 600, 500);
+                    break;
+                case 'calendar':
+                    createWindow('calendar', 'Calendar', getCalendarContent(), 700, 500);
+                    break;
+            }
+        }
+
+        function getFinderContent() {
+            return `
+                <div class="flex h-full">
+                    <div class="w-48 bg-gray-100 border-r border-gray-200 p-3 text-xs select-none">
+                        <div class="font-semibold text-gray-500 mb-2 px-2">Favorites</div>
+                        <div class="space-y-0.5">
+                            <div class="flex items-center px-2 py-1.5 rounded hover:bg-blue-500 hover:text-white cursor-pointer transition-colors">
+                                <span class="mr-2 text-lg">💨</span> AirDrop
+                            </div>
+                            <div class="flex items-center px-2 py-1.5 rounded hover:bg-blue-500 hover:text-white cursor-pointer transition-colors">
+                                <span class="mr-2 text-lg">⏰</span> Recents
+                            </div>
+                            <div class="flex items-center px-2 py-1.5 rounded hover:bg-blue-500 hover:text-white cursor-pointer transition-colors">
+                                <span class="mr-2 text-lg">📱</span> Applications
+                            </div>
+                            <div class="flex items-center px-2 py-1.5 rounded hover:bg-blue-500 hover:text-white cursor-pointer transition-colors bg-blue-100 text-blue-900">
+                                <span class="mr-2 text-lg">👤</span> Desktop
+                            </div>
+                            <div class="flex items-center px-2 py-1.5 rounded hover:bg-blue-500 hover:text-white cursor-pointer transition-colors">
+                                <span class="mr-2 text-lg">📄</span> Documents
+                            </div>
+                            <div class="flex items-center px-2 py-1.5 rounded hover:bg-blue-500 hover:text-white cursor-pointer transition-colors">
+                                <span class="mr-2 text-lg">⬇️</span> Downloads
+                            </div>
+                        </div>
+                        <div class="font-semibold text-gray-500 mt-4 mb-2 px-2">Locations</div>
+                        <div class="space-y-0.5">
+                            <div class="flex items-center px-2 py-1.5 rounded hover:bg-blue-500 hover:text-white cursor-pointer transition-colors">
+                                <span class="mr-2 text-lg">💻</span> Macintosh HD
+                            </div>
+                            <div class="flex items-center px-2 py-1.5 rounded hover:bg-blue-500 hover:text-white cursor-pointer transition-colors">
+                                <span class="mr-2 text-lg">☁️</span> iCloud Drive
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex-1 bg-white p-4">
+                        <div class="text-sm text-gray-500 mb-3 font-medium">Desktop</div>
+                        <div class="grid grid-cols-4 gap-4">
+                            <div class="flex flex-col items-center p-3 hover:bg-gray-100 rounded-lg cursor-pointer group">
+                                <div class="w-16 h-16 bg-blue-100 rounded-xl flex items-center justify-center text-3xl mb-2 group-hover:scale-105 transition-transform">📄</div>
+                                <span class="text-xs text-center">Resume.pdf</span>
+                            </div>
+                            <div class="flex flex-col items-center p-3 hover:bg-gray-100 rounded-lg cursor-pointer group">
+                                <div class="w-16 h-16 bg-green-100 rounded-xl flex items-center justify-center text-3xl mb-2 group-hover:scale-105 transition-transform">🖼️</div>
+                                <span class="text-xs text-center">Photo.png</span>
+                            </div>
+                            <div class="flex flex-col items-center p-3 hover:bg-gray-100 rounded-lg cursor-pointer group">
+                                <div class="w-16 h-16 bg-yellow-100 rounded-xl flex items-center justify-center text-3xl mb-2 group-hover:scale-105 transition-transform">📝</div>
+                                <span class="text-xs text-center">Ideas.txt</span>
+                            </div>
+                            <div class="flex flex-col items-center p-3 hover:bg-gray-100 rounded-lg cursor-pointer group">
+                                <div class="w-16 h-16 bg-purple-100 rounded-xl flex items-center justify-center text-3xl mb-2 group-hover:scale-105 transition-transform">🎵</div>
+                                <span class="text-xs text-center">Song.mp3</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function getPreferencesContent() {
+            return `
+                <div class="bg-gray-100 h-full p-8 overflow-auto">
+                    <div class="text-2xl font-bold mb-6 text-gray-800">System Preferences</div>
+                    <div class="grid grid-cols-4 gap-6">
+                        <div class="flex flex-col items-center p-4 hover:bg-gray-200/50 rounded-2xl cursor-pointer transition-all hover:scale-105">
+                            <div class="w-16 h-16 bg-gray-400 rounded-xl mb-2 flex items-center justify-center text-3xl shadow-sm">⚙️</div>
+                            <span class="text-xs font-medium text-gray-700">General</span>
+                        </div>
+                        <div class="flex flex-col items-center p-4 hover:bg-gray-200/50 rounded-2xl cursor-pointer transition-all hover:scale-105">
+                            <div class="w-16 h-16 bg-blue-400 rounded-xl mb-2 flex items-center justify-center text-3xl shadow-sm">🖱️</div>
+                            <span class="text-xs font-medium text-gray-700">Mouse</span>
+                        </div>
+                        <div class="flex flex-col items-center p-4 hover:bg-gray-200/50 rounded-2xl cursor-pointer transition-all hover:scale-105">
+                            <div class="w-16 h-16 bg-green-400 rounded-xl mb-2 flex items-center justify-center text-3xl shadow-sm">⌨️</div>
+                            <span class="text-xs font-medium text-gray-700">Keyboard</span>
+                        </div>
+                        <div class="flex flex-col items-center p-4 hover:bg-gray-200/50 rounded-2xl cursor-pointer transition-all hover:scale-105">
+                            <div class="w-16 h-16 bg-purple-400 rounded-xl mb-2 flex items-center justify-center text-3xl shadow-sm">🖥️</div>
+                            <span class="text-xs font-medium text-gray-700">Displays</span>
+                        </div>
+                        <div class="flex flex-col items-center p-4 hover:bg-gray-200/50 rounded-2xl cursor-pointer transition-all hover:scale-105">
+                            <div class="w-16 h-16 bg-pink-400 rounded-xl mb-2 flex items-center justify-center text-3xl shadow-sm">🔋</div>
+                            <span class="text-xs font-medium text-gray-700">Battery</span>
+                        </div>
+                        <div class="flex flex-col items-center p-4 hover:bg-gray-200/50 rounded-2xl cursor-pointer transition-all hover:scale-105">
+                            <div class="w-16 h-16 bg-yellow-400 rounded-xl mb-2 flex items-center justify-center text-3xl shadow-sm">🌐</div>
+                            <span class="text-xs font-medium text-gray-700">Network</span>
+                        </div>
+                        <div class="flex flex-col items-center p-4 hover:bg-gray-200/50 rounded-2xl cursor-pointer transition-all hover:scale-105">
+                            <div class="w-16 h-16 bg-red-400 rounded-xl mb-2 flex items-center justify-center text-3xl shadow-sm">🔒</div>
+                            <span class="text-xs font-medium text-gray-700">Security</span>
+                        </div>
+                        <div class="flex flex-col items-center p-4 hover:bg-gray-200/50 rounded-2xl cursor-pointer transition-all hover:scale-105">
+                            <div class="w-16 h-16 bg-indigo-400 rounded-xl mb-2 flex items-center justify-center text-3xl shadow-sm">👤</div>
+                            <span class="text-xs font-medium text-gray-700">Users</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function getCalculatorContent() {
+            return `
+                <div class="bg-gray-800 h-full p-4 flex flex-col">
+                    <div class="bg-gray-700 h-20 mb-4 rounded-xl flex items-end justify-end px-4 pb-2 text-4xl text-white font-light" id="calc-display">0</div>
+                    <div class="grid grid-cols-4 gap-2 flex-1">
+                        <button class="calc-btn gray rounded-full text-lg font-medium" onclick="calc.clear()">AC</button>
+                        <button class="calc-btn gray rounded-full text-lg font-medium" onclick="calc.toggleSign()">+/-</button>
+                        <button class="calc-btn gray rounded-full text-lg font-medium" onclick="calc.percent()">%</button>
+                        <button class="calc-btn orange rounded-full text-2xl font-medium" onclick="calc.op('÷')">÷</button>
+                        
+                        <button class="calc-btn rounded-full text-2xl font-medium text-gray-800" onclick="calc.num('7')">7</button>
+                        <button class="calc-btn rounded-full text-2xl font-medium text-gray-800" onclick="calc.num('8')">8</button>
+                        <button class="calc-btn rounded-full text-2xl font-medium text-gray-800" onclick="calc.num('9')">9</button>
+                        <button class="calc-btn orange rounded-full text-2xl font-medium" onclick="calc.op('×')">×</button>
+                        
+                        <button class="calc-btn rounded-full text-2xl font-medium text-gray-800" onclick="calc.num('4')">4</button>
+                        <button class="calc-btn rounded-full text-2xl font-medium text-gray-800" onclick="calc.num('5')">5</button>
+                        <button class="calc-btn rounded-full text-2xl font-medium text-gray-800" onclick="calc.num('6')">6</button>
+                        <button class="calc-btn orange rounded-full text-2xl font-medium" onclick="calc.op('-')">−</button>
+                        
+                        <button class="calc-btn rounded-full text-2xl font-medium text-gray-800" onclick="calc.num('1')">1</button>
+                        <button class="calc-btn rounded-full text-2xl font-medium text-gray-800" onclick="calc.num('2')">2</button>
+                        <button class="calc-btn rounded-full text-2xl font-medium text-gray-800" onclick="calc.num('3')">3</button>
+                        <button class="calc-btn orange rounded-full text-2xl font-medium" onclick="calc.op('+')">+</button>
+                        
+                        <button class="calc-btn rounded-full text-2xl font-medium text-gray-800 col-span-2" onclick="calc.num('0')">0</button>
+                        <button class="calc-btn rounded-full text-2xl font-medium text-gray-800" onclick="calc.decimal()">.</button>
+                        <button class="calc-btn orange rounded-full text-2xl font-medium" onclick="calc.equals()">=</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function getNotesContent() {
+            return `
+                <div class="flex h-full">
+                    <div class="w-64 bg-gray-50 border-r border-gray-200 flex flex-col">
+                        <div class="p-3 border-b border-gray-200">
+                            <div class="text-xs font-semibold text-gray-500 mb-2">iCloud</div>
+                            <div class="flex items-center p-2 bg-yellow-100 rounded-lg text-sm text-gray-800 font-medium">
+                                <span class="mr-2">📝</span> All iCloud
+                            </div>
+                        </div>
+                        <div class="flex-1 overflow-y-auto">
+                            <div class="p-3 border-b border-gray-100 hover:bg-gray-100 cursor-pointer bg-yellow-50">
+                                <div class="font-medium text-sm mb-1">Shopping List</div>
+                                <div class="text-xs text-gray-500">Today, 2:30 PM</div>
+                            </div>
+                            <div class="p-3 border-b border-gray-100 hover:bg-gray-100 cursor-pointer">
+                                <div class="font-medium text-sm mb-1">Project Ideas</div>
+                                <div class="text-xs text-gray-500">Yesterday</div>
+                            </div>
+                            <div class="p-3 border-b border-gray-100 hover:bg-gray-100 cursor-pointer">
+                                <div class="font-medium text-sm mb-1">Meeting Notes</div>
+                                <div class="text-xs text-gray-500">Jan 14</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex-1 bg-white flex flex-col">
+                        <div class="p-4 border-b border-gray-100">
+                            <div class="text-xs text-gray-400 mb-1">Today, 2:30 PM</div>
+                            <input type="text" value="Shopping List" class="text-2xl font-bold outline-none w-full" />
+                        </div>
+                        <textarea class="flex-1 p-4 outline-none resize-none text-gray-700 leading-relaxed" placeholder="Type your note here...">
+- Milk
+- Eggs
+- Bread
+- Coffee beans
+- Apples
+- Bananas</textarea>
+                    </div>
+                </div>
+            `;
+        }
+
+        function getCalendarContent() {
+            const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            const today = new Date().getDate();
+            let html = `
+                <div class="flex flex-col h-full bg-white">
+                    <div class="border-b border-gray-200 p-4 flex items-center justify-between bg-gray-50">
+                        <div class="flex items-center space-x-4">
+                            <button class="px-4 py-1.5 bg-white border border-gray-300 rounded hover:bg-gray-50 text-sm font-medium shadow-sm">Today</button>
+                            <div class="text-lg font-semibold text-gray-800">January 2024</div>
+                        </div>
+                        <div class="flex space-x-1">
+                            <button class="p-1.5 hover:bg-gray-200 rounded-full w-8 h-8 flex items-center justify-center text-gray-600">‹</button>
+                            <button class="p-1.5 hover:bg-gray-200 rounded-full w-8 h-8 flex items-center justify-center text-gray-600">›</button>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-7 border-b border-gray-200 bg-gray-50">
+                        ${days.map(d => `<div class="p-3 text-center text-xs font-semibold text-gray-600 border-r border-gray-100 last:border-r-0">${d}</div>`).join('')}
+                    </div>
+                    <div class="grid grid-cols-7 flex-1 auto-rows-fr">
+            `;
+            
+            // Fill in days
+            for (let i = 0; i < 31; i++) {
+                const day = i + 1;
+                const isToday = day === today;
+                const hasEvent = [5, 12, 15, 22].includes(day);
+                html += `
+                    <div class="border-r border-b border-gray-100 p-2 text-sm hover:bg-gray-50 cursor-pointer relative ${isToday ? 'bg-blue-50' : ''}">
+                        <span class="${isToday ? 'bg-red-500 text-white w-7 h-7 rounded-full flex items-center justify-center font-medium' : 'text-gray-700'}">${day}</span>
+                        ${hasEvent ? '<div class="mt-1 text-[10px] bg-blue-500 text-white px-1.5 py-0.5 rounded truncate">Meeting</div>' : ''}
+                    </div>
+                `;
+            }
+            
+            html += `</div></div>`;
+            return html;
+        }
+
+        // Calculator Logic
+        const calc = {
+            display: '0',
+            firstNum: null,
+            operation: null,
+            waiting: false,
+            
+            update() {
+                const el = document.getElementById('calc-display');
+                if (el) el.textContent = this.display;
+            },
+            
+            num(n) {
+                if (this.waiting) {
+                    this.display = n;
+                    this.waiting = false;
+                } else {
+                    this.display = this.display === '0' ? n : this.display + n;
+                }
+                this.update();
+            },
+            
+            decimal() {
+                if (!this.display.includes('.')) {
+                    this.display += '.';
+                    this.update();
+                }
+            },
+            
+            op(operator) {
+                this.firstNum = parseFloat(this.display);
+                this.operation = operator;
+                this.waiting = true;
+            },
+            
+            equals() {
+                if (this.operation && this.firstNum !== null) {
+                    const second = parseFloat(this.display);
+                    let result;
+                    switch(this.operation) {
+                        case '+': result = this.firstNum + second; break;
+                        case '-': result = this.firstNum - second; break;
+                        case '×': result = this.firstNum * second; break;
+                        case '÷': result = this.firstNum / second; break;
+                    }
+                    this.display = String(Math.round(result * 1000000) / 1000000);
+                    this.operation = null;
+                    this.firstNum = null;
+                    this.waiting = true;
+                    this.update();
+                }
+            },
+            
+            clear() {
+                this.display = '0';
+                this.firstNum = null;
+                this.operation = null;
+                this.waiting = false;
+                this.update();
+            },
+            
+            toggleSign() {
+                this.display = String(parseFloat(this.display) * -1);
+                this.update();
+            },
+            
+            percent() {
+                this.display = String(parseFloat(this.display) / 100);
+                this.update();
+            }
+        };
+
+        // Spotlight
+        function toggleSpotlight() {
+            const el = document.getElementById('spotlight');
+            const input = document.getElementById('spotlight-input');
+            el.classList.toggle('hidden');
+            if (!el.classList.contains('hidden')) {
+                input.value = '';
+                input.focus();
+                updateSpotlight('');
+            }
+        }
+
+        function updateSpotlight(query) {
+            const results = document.getElementById('spotlight-results');
+            const apps = [
+                { name: 'Finder', icon: '📁', app: 'finder', type: 'Application' },
+                { name: 'System Preferences', icon: '⚙️', app: 'preferences', type: 'Application' },
+                { name: 'Calculator', icon: '🧮', app: 'calculator', type: 'Application' },
+                { name: 'Notes', icon: '📝', app: 'notes', type: 'Application' },
+                { name: 'Calendar', icon: '📅', app: 'calendar', type: 'Application' }
+            ];
+            
+            const filtered = apps.filter(a => a.name.toLowerCase().includes(query.toLowerCase()));
+            
+            results.innerHTML = filtered.map(app => `
+                <div class="flex items-center p-2 hover:bg-[#0066cc] hover:text-white rounded-lg cursor-pointer group transition-colors" onclick="openApp('${app.app}'); toggleSpotlight()">
+                    <div class="w-10 h-10 bg-gray-200 rounded-lg flex items-center justify-center text-xl mr-3 group-hover:scale-110 transition-transform">${app.icon}</div>
+                    <div>
+                        <div class="font-medium">${app.name}</div>
+                        <div class="text-xs opacity-70 group-hover:opacity-90">${app.type}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Notification Center
+        function toggleNotificationCenter() {
+            const el = document.getElementById('notification-center');
+            el.classList.toggle('open');
+        }
+
+        // Mission Control
+        function toggleMissionControl() {
+            const el = document.getElementById('mission-control');
+            el.classList.toggle('active');
+        }
+
+        function switchDesktop(n) {
+            currentDesktop = n;
+            toggleMissionControl();
+            
+            // Update visual indicators
+            document.querySelectorAll('.desktop-thumb').forEach((el, i) => {
+                if (i + 1 === n) {
+                    el.classList.add('active');
+                    el.style.borderColor = 'white';
+                } else {
+                    el.classList.remove('active');
+                    el.style.borderColor = 'transparent';
+                }
+            });
+            
+            // Filter windows by desktop (simulated)
+            Object.values(windows).forEach(win => {
+                win.element.style.opacity = win.element.dataset.desktop == n ? '1' : '0.3';
+            });
+        }
+
+        // Keyboard Shortcuts
+        document.addEventListener('keydown', (e) => {
+            if ((e.metaKey || e.ctrlKey) && e.key === ' ') {
+                e.preventDefault();
+                toggleSpotlight();
+            }
+            if (e.key === 'F3' || (e.key === 'ArrowUp' && e.ctrlKey)) {
+                e.preventDefault();
+                toggleMissionControl();
+            }
+        });
+
+        // Global click handlers
+        document.addEventListener('click', (e) => {
+            // Close menus when clicking outside
+            if (!e.target.closest('.menu-item')) {
+                document.querySelectorAll('.menu-dropdown').forEach(d => d.style.display = '');
+            }
+            
+            // Focus window when clicking inside
+            const windowEl = e.target.closest('.window');
+            if (windowEl) {
+                focusWindow(windowEl.id);
+            }
+        });
+
+        // Initialize
+        updateClock();
+    </script>
+</body>
+</html>

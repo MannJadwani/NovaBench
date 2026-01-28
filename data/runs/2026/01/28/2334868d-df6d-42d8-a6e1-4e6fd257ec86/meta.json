@@ -1,0 +1,18 @@
+{
+  "id": "2334868d-df6d-42d8-a6e1-4e6fd257ec86",
+  "createdAt": "2026-01-27T21:24:10.746Z",
+  "provider": "zai",
+  "model": "glm-4.5",
+  "benchmark": {
+    "id": "soft-ui-landing",
+    "title": "Soft UI - Landing Page",
+    "category": "Design Terms"
+  },
+  "latencyMs": 64323,
+  "tokenUsage": null,
+  "params": {
+    "temperature": 1,
+    "maxTokens": null
+  },
+  "path": "runs/2026/01/28/2334868d-df6d-42d8-a6e1-4e6fd257ec86"
+}

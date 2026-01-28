@@ -1,0 +1,304 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design Studio — Swiss International Style</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'Helvetica Neue', 'Arial', 'sans-serif'],
+                    },
+                    colors: {
+                        swiss: {
+                            red: '#DA291C',
+                            black: '#000000',
+                            white: '#FFFFFF',
+                            gray: '#F5F5F5'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&display=swap');
+        
+        .grid-12 {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 1.5rem;
+        }
+        
+        @media (max-width: 768px) {
+            .grid-12 {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body class="bg-white text-black font-sans antialiased selection:bg-swiss-red selection:text-white">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full bg-white border-b border-black z-50">
+        <div class="max-w-7xl mx-auto px-6 py-4 grid-12 items-center">
+            <div class="col-span-2 md:col-span-2">
+                <span class="text-sm font-bold tracking-widest uppercase">Studio</span>
+            </div>
+            <div class="col-span-8 md:col-span-8 flex justify-center gap-12">
+                <a href="#work" class="text-xs font-medium tracking-widest uppercase hover:text-swiss-red transition-colors">Work</a>
+                <a href="#about" class="text-xs font-medium tracking-widest uppercase hover:text-swiss-red transition-colors">About</a>
+                <a href="#contact" class="text-xs font-medium tracking-widest uppercase hover:text-swiss-red transition-colors">Contact</a>
+            </div>
+            <div class="col-span-2 md:col-span-2 text-right">
+                <span class="text-xs font-medium tracking-widest">2024</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="pt-32 pb-24 border-b border-black">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid-12">
+                <div class="col-span-12 md:col-span-10 md:col-start-1">
+                    <h1 class="text-6xl md:text-9xl font-black leading-[0.9] tracking-tighter uppercase mb-8">
+                        Visual<br>
+                        <span class="text-swiss-red">Communication</span><br>
+                        & Design
+                    </h1>
+                </div>
+                <div class="col-span-12 md:col-span-3 md:col-start-10 flex items-end">
+                    <p class="text-sm font-medium leading-relaxed border-l-2 border-swiss-red pl-4">
+                        Founded in 1957<br>
+                        Basel, Switzerland<br>
+                        Global Practice
+                    </p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Introduction -->
+    <section id="about" class="py-24 border-b border-black">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid-12">
+                <div class="col-span-12 md:col-span-3">
+                    <span class="text-xs font-bold tracking-widest uppercase text-swiss-red block mb-4">01 — Philosophy</span>
+                </div>
+                <div class="col-span-12 md:col-span-6 md:col-start-5">
+                    <h2 class="text-3xl md:text-5xl font-bold leading-tight mb-8 tracking-tight">
+                        Clarity. Order. Objectivity.
+                    </h2>
+                    <p class="text-lg font-light leading-relaxed mb-6 max-w-2xl">
+                        We believe design should be devoid of decoration. Through rigorous grid systems, asymmetric layouts, and objective photography, we create visual solutions that communicate without noise.
+                    </p>
+                    <div class="grid grid-cols-2 gap-8 mt-12 pt-8 border-t border-gray-200">
+                        <div>
+                            <span class="block text-4xl font-black mb-2">67</span>
+                            <span class="text-xs uppercase tracking-widest font-medium">Years of Practice</span>
+                        </div>
+                        <div>
+                            <span class="block text-4xl font-black mb-2">∞</span>
+                            <span class="text-xs uppercase tracking-widest font-medium">Grid Possibilities</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Work Grid -->
+    <section id="work" class="py-24">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid-12 mb-16 items-end">
+                <div class="col-span-8">
+                    <span class="text-xs font-bold tracking-widest uppercase text-swiss-red block mb-4">02 — Selected Work</span>
+                    <h2 class="text-4xl md:text-6xl font-black tracking-tighter uppercase">Projects</h2>
+                </div>
+                <div class="col-span-4 text-right">
+                    <span class="text-xs font-medium tracking-widest">2020—2024</span>
+                </div>
+            </div>
+
+            <!-- Project 1 -->
+            <div class="grid-12 border-t border-black py-16 group hover:bg-swiss-gray transition-colors duration-300">
+                <div class="col-span-12 md:col-span-1">
+                    <span class="text-xs font-bold">01</span>
+                </div>
+                <div class="col-span-12 md:col-span-4">
+                    <h3 class="text-2xl font-bold uppercase tracking-tight mb-4">Museum Branding</h3>
+                    <p class="text-sm font-light leading-relaxed max-w-xs">
+                        Complete visual identity system for contemporary art institution. Strict grid application across all touchpoints.
+                    </p>
+                </div>
+                <div class="col-span-12 md:col-span-6 md:col-start-7">
+                    <div class="aspect-[3/2] bg-black relative overflow-hidden">
+                        <div class="absolute inset-0 bg-swiss-red opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <span class="text-white font-bold text-4xl tracking-widest uppercase">M</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 2 -->
+            <div class="grid-12 border-t border-black py-16 group hover:bg-swiss-gray transition-colors duration-300">
+                <div class="col-span-12 md:col-span-1">
+                    <span class="text-xs font-bold">02</span>
+                </div>
+                <div class="col-span-12 md:col-span-4">
+                    <h3 class="text-2xl font-bold uppercase tracking-tight mb-4">Type Specimen</h3>
+                    <p class="text-sm font-light leading-relaxed max-w-xs">
+                        Akzidenz-Grotesk revival project. Exploring the relationship between positive and negative space.
+                    </p>
+                </div>
+                <div class="col-span-12 md:col-span-6 md:col-start-7">
+                    <div class="aspect-[3/2] bg-black relative overflow-hidden">
+                        <div class="absolute inset-0 bg-swiss-red opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <span class="text-white font-bold text-4xl tracking-widest uppercase">Ag</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 3 -->
+            <div class="grid-12 border-t border-b border-black py-16 group hover:bg-swiss-gray transition-colors duration-300">
+                <div class="col-span-12 md:col-span-1">
+                    <span class="text-xs font-bold">03</span>
+                </div>
+                <div class="col-span-12 md:col-span-4">
+                    <h3 class="text-2xl font-bold uppercase tracking-tight mb-4">Architectural Review</h3>
+                    <p class="text-sm font-light leading-relaxed max-w-xs">
+                        Editorial design for quarterly publication. Asymmetric layouts honoring classical modernist principles.
+                    </p>
+                </div>
+                <div class="col-span-12 md:col-span-6 md:col-start-7">
+                    <div class="aspect-[3/2] bg-black relative overflow-hidden">
+                        <div class="absolute inset-0 bg-swiss-red opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <span class="text-white font-bold text-4xl tracking-widest uppercase">Ar</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Process/Approach -->
+    <section class="py-24 bg-black text-white">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid-12">
+                <div class="col-span-12 md:col-span-3 mb-12 md:mb-0">
+                    <span class="text-xs font-bold tracking-widest uppercase text-swiss-red block mb-4">03 — Methodology</span>
+                    <div class="w-full h-px bg-white mt-8"></div>
+                </div>
+                
+                <div class="col-span-12 md:col-span-8 md:col-start-5">
+                    <div class="space-y-12">
+                        <div class="flex gap-8">
+                            <span class="text-swiss-red font-black text-xl">/</span>
+                            <div>
+                                <h3 class="text-xl font-bold uppercase tracking-tight mb-2">Grid Systems</h3>
+                                <p class="text-sm font-light text-gray-400 max-w-md">
+                                    Mathematical harmony through modular scales. Every element finds its rational position.
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex gap-8">
+                            <span class="text-swiss-red font-black text-xl">/</span>
+                            <div>
+                                <h3 class="text-xl font-bold uppercase tracking-tight mb-2">Objective Photography</h3>
+                                <p class="text-sm font-light text-gray-400 max-w-md">
+                                    Documentation without artifice. Pure visual information transfer.
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex gap-8">
+                            <span class="text-swiss-red font-black text-xl">/</span>
+                            <div>
+                                <h3 class="text-xl font-bold uppercase tracking-tight mb-2">Sans-Serif Typography</h3>
+                                <p class="text-sm font-light text-gray-400 max-w-md">
+                                    Neo-grotesque typefaces emphasizing readability and universal understanding.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-24 border-b border-black">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid-12">
+                <div class="col-span-12 md:col-span-5">
+                    <span class="text-xs font-bold tracking-widest uppercase text-swiss-red block mb-4">04 — Contact</span>
+                    <h2 class="text-5xl md:text-7xl font-black tracking-tighter uppercase mb-8">
+                        Let's<br>Work<br>Together
+                    </h2>
+                </div>
+                
+                <div class="col-span-12 md:col-span-4 md:col-start-7 flex flex-col justify-end">
+                    <div class="space-y-6">
+                        <div>
+                            <span class="block text-xs font-bold uppercase tracking-widest mb-2">Email</span>
+                            <a href="mailto:hello@studio.com" class="text-lg font-light hover:text-swiss-red transition-colors border-b border-black pb-1 inline-block">
+                                hello@studio.com
+                            </a>
+                        </div>
+                        
+                        <div>
+                            <span class="block text-xs font-bold uppercase tracking-widest mb-2">Location</span>
+                            <p class="text-lg font-light">
+                                Steinenvorstadt 32<br>
+                                4051 Basel<br>
+                                Switzerland
+                            </p>
+                        </div>
+                        
+                        <div>
+                            <span class="block text-xs font-bold uppercase tracking-widest mb-2">Social</span>
+                            <div class="flex gap-4">
+                                <a href="#" class="text-sm font-medium hover:text-swiss-red transition-colors">Instagram</a>
+                                <a href="#" class="text-sm font-medium hover:text-swiss-red transition-colors">LinkedIn</a>
+                                <a href="#" class="text-sm font-medium hover:text-swiss-red transition-colors">Behance</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-span-12 md:col-span-2 md:col-start-11 flex items-end justify-end">
+                    <div class="w-24 h-24 border-2 border-swiss-red flex items-center justify-center rotate-45 hover:rotate-90 transition-transform duration-500 cursor-pointer">
+                        <span class="text-xs font-bold uppercase -rotate-45 tracking-widest">Top</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-8 bg-white">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid-12 text-xs font-medium tracking-widest uppercase">
+                <div class="col-span-4 md:col-span-2">
+                    <span>© 2024</span>
+                </div>
+                <div class="col-span-4 md:col-span-2 text-center md:text-left">
+                    <span>Swiss Style</span>
+                </div>
+                <div class="col-span-4 md:col-span-8 text-right">
+                    <span>Form Follows Function</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

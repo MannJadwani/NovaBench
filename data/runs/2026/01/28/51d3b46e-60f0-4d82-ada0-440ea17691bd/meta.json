@@ -1,0 +1,18 @@
+{
+  "id": "51d3b46e-60f0-4d82-ada0-440ea17691bd",
+  "createdAt": "2026-01-27T21:37:51.926Z",
+  "provider": "zai",
+  "model": "glm-4.5",
+  "benchmark": {
+    "id": "floating-ui-3d",
+    "title": "3D Floating UI Components",
+    "category": "3D"
+  },
+  "latencyMs": 62553,
+  "tokenUsage": null,
+  "params": {
+    "temperature": 1,
+    "maxTokens": null
+  },
+  "path": "runs/2026/01/28/51d3b46e-60f0-4d82-ada0-440ea17691bd"
+}

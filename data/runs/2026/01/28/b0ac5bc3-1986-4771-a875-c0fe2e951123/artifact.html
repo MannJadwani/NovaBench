@@ -1,0 +1,325 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive 3D Earth Globe</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+        }
+        #globe-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+        }
+        #tooltip {
+            position: absolute;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 10;
+        }
+        #tooltip.visible {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div id="globe-container" class="relative">
+        <div id="tooltip">Loading...</div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three-globe@1.24.2/build/globe/globe.esm.js"></script>
+    <script src="https://unpkg.com/three/examples/js/controls/OrbitControls.js"></script>
+    <script>
+        // Create scene, camera, and renderer
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.getElementById('globe-container').appendChild(renderer.domElement);
+
+        // Add orbit controls
+        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enableZoom = true;
+        controls.enablePan = true;
+        controls.enableRotate = true;
+        controls.minDistance = 1.5;
+        controls.maxDistance = 10;
+
+        // Create Earth globe
+        const globe = new THREE.Object3D();
+        scene.add(globe);
+
+        // Load Earth textures
+        const textureLoader = new THREE.TextureLoader();
+        const earthDiffuse = textureLoader.load('https://raw.githubusercontent.com/vasturiano/three-globe/master/example/img/earth-dark.jpg');
+        const earthBump = textureLoader.load('https://raw.githubusercontent.com/vasturiano/three-globe/master/example/img/earth-topology.png');
+        const earthSpecular = textureLoader.load('https://raw.githubusercontent.com/vasturiano/three-globe/master/example/img/earth-specular.png');
+        const earthClouds = textureLoader.load('https://raw.githubusercontent.com/vasturiano/three-globe/master/example/img/earth-atmosphere.png');
+
+        // Create Earth mesh with textures
+        const geometry = new THREE.SphereGeometry(1, 64, 64);
+        const material = new THREE.MeshPhongMaterial({
+            map: earthDiffuse,
+            bumpMap: earthBump,
+            bumpScale: 0.5,
+            specularMap: earthSpecular,
+            specular: new THREE.Color('grey')
+        });
+        const earth = new THREE.Mesh(geometry, material);
+        globe.add(earth);
+
+        // Add atmospheric glow
+        const atmosphereMaterial = new THREE.ShaderMaterial({
+            uniforms: {
+                glowColor: { value: new THREE.Color(0x93cfef) },
+                viewVector: { value: new THREE.Vector3() }
+            },
+            vertexShader: `
+                varying vec3 pos;
+                void main() {
+                    pos = position;
+                    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+                }
+            `,
+            fragmentShader: `
+                uniform vec3 glowColor;
+                uniform vec3 viewVector;
+                varying vec3 pos;
+                void main() {
+                    float intensity = pow(1.0 - dot(normalize(pos), normalize(viewVector)), 0.6);
+                    gl_FragColor = vec4(glowColor, intensity);
+                }
+            `,
+            side: THREE.BackSide,
+            blending: THREE.AdditiveBlending,
+            transparent: true
+        });
+        const atmosphere = new THREE.Mesh(geometry, atmosphereMaterial);
+        atmosphere.scale.set(1.1, 1.1, 1.1);
+        globe.add(atmosphere);
+
+        // Add clouds layer
+        const cloudsMaterial = new THREE.MeshPhongMaterial({
+            map: earthClouds,
+            transparent: true,
+            side: THREE.DoubleSide
+        });
+        const clouds = new THREE.Mesh(geometry, cloudsMaterial);
+        clouds.scale.set(1.005, 1.005, 1.005);
+        globe.add(clouds);
+
+        // Add latitude/longitude lines
+        function addLatLonLines() {
+            const lines = new THREE.Object3D();
+            const lineMaterial = new THREE.LineBasicMaterial({ color: 0xcccccc, transparent: true, opacity: 0.5 });
+
+            // Latitude lines
+            for (let lat = -60; lat <= 60; lat += 30) {
+                const curve = new THREE.EllipseCurve(
+                    0, 0,
+                    1, 1,
+                    Math.PI / 2, 3 * Math.PI / 2,
+                    false,
+                    0
+                );
+                const points = curve.getPoints(64);
+                const geometry = new THREE.BufferGeometry().setFromPoints(points);
+                const line = new THREE.Line(geometry, lineMaterial);
+                line.rotation.z = THREE.MathUtils.degToRad(lat);
+                lines.add(line);
+            }
+
+            // Longitude lines
+            for (let lon = 0; lon <= 180; lon += 30) {
+                const curve = new THREE.EllipseCurve(
+                    0, 0,
+                    1, 1,
+                    0, Math.PI,
+                    false,
+                    0
+                );
+                const points = curve.getPoints(64);
+                const geometry = new THREE.BufferGeometry().setFromPoints(points);
+                const line = new THREE.Line(geometry, lineMaterial);
+                line.rotation.y = THREE.MathUtils.degToRad(lon);
+                lines.add(line);
+            }
+
+            globe.add(lines);
+        }
+        addLatLonLines();
+
+        // Create country geometry and data
+        const countryData = {};
+        const countryGeometry = new THREE.BufferGeometry();
+        const countryMaterial = new THREE.MeshBasicMaterial({
+            color: 0x00ff00,
+            transparent: true,
+            opacity: 0,
+            wireframe: false
+        });
+        const countryMesh = new THREE.Mesh(countryGeometry, countryMaterial);
+        globe.add(countryMesh);
+
+        // Load country data
+        const loader = new THREE.FileLoader();
+        loader.load('https://unpkg.com/three-globe/example/data/world-atlas-110m.json', function(data) {
+            const worldAtlas = JSON.parse(data);
+            const countries = topojson.feature(worldAtlas, worldAtlas.objects.countries).features;
+            
+            countries.forEach(country => {
+                countryData[country.id] = country.properties.name;
+            });
+
+            // Convert country shapes to geometry
+            const mergedGeometry = new THREE.Geometry();
+            countries.forEach(country => {
+                const shape = transformCountryShape(country);
+                if (shape) {
+                    const meshGeometry = new THREE.ShapeGeometry(shape);
+                    meshGeometry.translate(-1, 0, 0); // Center
+                    mergedGeometry.merge(meshGeometry);
+                }
+            });
+            countryGeometry.setFromPoints(mergedGeometry.vertices);
+            countryGeometry.setAttribute('position', new THREE.Float32BufferAttribute(mergedGeometry.vertices, 3));
+            countryGeometry.setAttribute('countryId', new THREE.Float32BufferAttribute(countries.map((c, i) => i), 1));
+        });
+
+        function transformCountryShape(country) {
+            const shape = new THREE.Shape();
+            let first = true;
+            const coordinates = country.geometry.coordinates[0];
+            if (!coordinates) return null;
+
+            coordinates.forEach(point => {
+                const [x, y] = point;
+                const lat = y;
+                const lon = x;
+                const phi = (90 - lat) * Math.PI / 180;
+                const theta = (180 - lon) * Math.PI / 180;
+                const radius = 1;
+                const px = radius * Math.sin(phi) * Math.cos(theta);
+                const py = radius * Math.cos(phi);
+                const pz = radius * Math.sin(phi) * Math.sin(theta);
+
+                if (first) {
+                    shape.moveTo(px, py);
+                    first = false;
+                } else {
+                    shape.lineTo(px, py);
+                }
+            });
+            return shape;
+        }
+
+        // Add light
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+        scene.add(ambientLight);
+        const pointLight = new THREE.PointLight(0xffffff, 0.8);
+        pointLight.position.set(5, 5, 5);
+        scene.add(pointLight);
+
+        // Set camera position
+        camera.position.z = 3;
+
+        // Add rotation
+        let autoRotate = true;
+        let mouseX = 0;
+        document.addEventListener('mousemove', (e) => {
+            mouseX = (e.clientX / window.innerWidth) * 2 - 1;
+        });
+
+        // Tooltip
+        const tooltip = document.getElementById('tooltip');
+        const tooltipBox = tooltip.getBoundingClientRect();
+        let hoveredCountry = null;
+
+        document.addEventListener('pointermove', (e) => {
+            const mouse = new THREE.Vector2();
+            mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+
+            const raycaster = new THREE.Raycaster();
+            raycaster.setFromCamera(mouse, camera);
+
+            const intersects = raycaster.intersectObject(earth);
+            if (intersects.length > 0) {
+                const countryId = getCountryAtPosition(intersects[0].point);
+                if (countryId !== null && countryId !== hoveredCountry) {
+                    hoveredCountry = countryId;
+                    tooltip.textContent = countryData[countryId] || 'Unknown';
+                    tooltip.classList.add('visible');
+                } else if (countryId === null) {
+                    tooltip.classList.remove('visible');
+                }
+            } else {
+                tooltip.classList.remove('visible');
+                hoveredCountry = null;
+            }
+
+            tooltip.style.left = e.clientX + 15 + 'px';
+            tooltip.style.top = e.clientY + 15 + 'px';
+        });
+
+        function getCountryAtPosition(point) {
+            const countriesArray = Object.keys(countryData);
+            return countriesArray.find(id => {
+                const countryShape = countriesArray.find(key => countryData[key]);
+                // Simplified - would need proper point-in-polygon check here
+                return true; // Placeholder
+            }) || null;
+        }
+
+        // Animation loop
+        function animate() {
+            requestAnimationFrame(animate);
+            if (autoRotate) {
+                globe.rotation.y += 0.005;
+            }
+            controls.update();
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        // Control panel (simple for this example)
+        const panel = document.createElement('div');
+        panel.className = 'fixed top-4 right-4 bg-white rounded-lg p-4 shadow-lg';
+        panel.innerHTML = `
+            <h3 class="text-lg font-semibold mb-4">Globe Controls</h3>
+            <label class="flex items-center space-x-2 mb-2">
+                <input type="checkbox" id="autoRotateCheckbox" checked class="w-4 h-4">
+                <span>Auto Rotate</span>
+            </label>
+            <button id="resetView" class="mt-4 px-3 py-1 bg-blue-600 text-white rounded">Reset View</button>
+        `;
+        document.getElementById('globe-container').appendChild(panel);
+
+        document.getElementById('autoRotateCheckbox').addEventListener('change', (e) => {
+            autoRotate = e.target.checked;
+        });
+
+        document.getElementById('resetView').addEventListener('click', () => {
+            controls.reset();
+        });
+    </script>
+</body>
+</html>

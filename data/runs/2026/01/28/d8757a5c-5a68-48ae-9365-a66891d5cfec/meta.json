@@ -1,0 +1,26 @@
+{
+  "id": "d8757a5c-5a68-48ae-9365-a66891d5cfec",
+  "createdAt": "2026-01-27T21:05:19.302Z",
+  "provider": "minimax",
+  "model": "MiniMax-M2.1",
+  "benchmark": {
+    "id": "glassmorphic-landing",
+    "title": "Glassmorphic UI - Landing Page",
+    "category": "Design Terms"
+  },
+  "latencyMs": 68044,
+  "tokenUsage": {
+    "total_tokens": 4945,
+    "total_characters": 0,
+    "prompt_tokens": 76,
+    "completion_tokens": 4869,
+    "completion_tokens_details": {
+      "reasoning_tokens": 1322
+    }
+  },
+  "params": {
+    "temperature": 1,
+    "maxTokens": null
+  },
+  "path": "runs/2026/01/28/d8757a5c-5a68-48ae-9365-a66891d5cfec"
+}

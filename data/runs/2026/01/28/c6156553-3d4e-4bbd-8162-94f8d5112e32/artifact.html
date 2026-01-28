@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AETHER | Futuristic Interface</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --neon-cyan: #00f3ff;
+            --neon-purple: #bc13fe;
+            --glass-bg: rgba(10, 15, 30, 0.6);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #020205;
+            font-family: 'Rajdhani', sans-serif;
+            color: white;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        /* Perspective Container */
+        #viewport {
+            width: 100%;
+            height: 100%;
+            perspective: 1200px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* The 3D World */
+        #world {
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transition: transform 0.1s ease-out; /* Smooth camera lag */
+            will-change: transform;
+        }
+
+        /* Card Base Styles */
+        .holo-card {
+            position: absolute;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.1);
+            transform-style: preserve-3d;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+            cursor: pointer;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .holo-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: 0.5s;
+            transform: skewX(-25deg);
+            pointer-events: none;
+        }
+
+        .holo-card:hover {
+            transform: translateZ(60px) scale(1.05);
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 30px rgba(0, 243, 255, 0.4), inset 0 0 10px rgba(0, 243, 255, 0.1);
+            z-index: 100;
+        }
+
+        .holo-card:hover::before {
+            left: 100%;
+            transition: 0.7s;
+        }
+
+        /* Floating Animation Keyframes */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotateX(0deg) rotateY(0deg); }
+            50% { transform: translateY(-15px) rotateX(2deg) rotateY(2deg); }
+        }
+
+        /* Background Grid */
+        #grid-floor {
+            position: absolute;
+            bottom: -50%;
+            left: -50%;
+            width: 200%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 243, 255, 0.3) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(188, 19, 254, 0.3) 1px, transparent 1px);
+            background-size: 50px 50px;
+            transform: rotateX(80deg);
+            mask-image: linear-gradient(to top, rgba(0,0,0,1) 0%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to top, rgba(0,0,0,1) 0%, transparent 100%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* Typography & UI Elements */
+        .holo-text {
+            font-family: 'Space Mono', monospace;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 5px var(--neon-cyan);
+        }
+        
+        .holo-title {
+            font-weight: 700;
+            font-size: 1.2rem;
+            background: linear-gradient(to right, #fff, var(--neon-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Particles */
+        .particle {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0.6;
+        }
+
+        /* Scanline Overlay */
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.1));
+            background-size: 100% 4px;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.3;
+        }
+
+        /* HUD Overlay */
+        .hud-corner {
+            position: fixed;
+            width: 100px;
+            height: 100px;
+            border: 2px solid var(--neon-cyan);
+            opacity: 0.5;
+            z-index: 50;
+            pointer-events: none;
+        }
+        .tl { top: 20px; left: 20px; border-right: none; border-bottom: none; }
+        .tr { top: 20px; right: 20px; border-left: none; border-bottom: none; }
+        .bl { bottom: 20px; left: 20px; border-right: none; border-top: none; }
+        .br { bottom: 20px; right: 20px; border-left: none; border-top: none; }
+
+    </style>
+</head>
+<body>
+
+    <!-- Scanline Effect -->
+    <div class="scanlines"></div>
+
+    <!-- HUD Corners -->
+    <div class="hud-corner tl"></div>
+    <div class="hud-corner tr"></div>
+    <div class="hud-corner bl"></div>
+    <div class="hud-corner br"></div>
+
+    <!-- Main Viewport -->
+    <div id="viewport">
+        
+        <!-- 3D World Container -->
+        <div id="world">
+            <!-- Background Grid -->
+            <div id="grid-floor"></div>
+            
+            <!-- Content injected via JS -->
+            <div id="card-container"></div>
+            <div id="particle-container"></div>
+        </div>
+
+        <!-- UI Overlay (Fixed) -->
+        <div class="absolute top-8 left-8 z-50 pointer-events-none">
+            <h1 class="text-4xl font-bold tracking-widest text-white" style="text-shadow: 0 0 20px rgba(0,243,255,0.5); font-family: 'Rajdhani', sans-serif;">AETHER <span class="text-cyan-400 text-sm align-top">OS v.9.2</span></h1>
+            <div class="flex items-center gap-2 mt-2">
+                <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                <span class="text-xs text-gray-300 font-mono tracking-wider">SYSTEM ONLINE // NEURAL LINK ESTABLISHED</span>
+            </div>
+        </div>
+
+        <div class="absolute bottom-8 right-8 z-50 text-right pointer-events-none">
+            <div class="text-xs text-gray-400 font-mono mb-1">CPU LOAD</div>
+            <div class="w-32 h-1 bg-gray-800 rounded overflow-hidden">
+                <div class="h-full bg-cyan-400 w-[45%] animate-pulse"></div>
+            </div>
+            <div class="text-xs text-gray-400 font-mono mt-2 mb-1">MEMORY</div>
+            <div class="w-32 h-1 bg-gray-800 rounded overflow-hidden">
+                <div class="h-full bg-purple-500 w-[72%]"></div>
+            </div>
+        </div>
+        
+        <!-- Interactive Hint -->
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 text-cyan-500/50 text-xs tracking-[0.3em] font-mono animate-pulse pointer-events-none">
+            MOVE CURSOR TO NAVIGATE // SCROLL TO ZOOM
+        </div>
+
+    </div>
+
+    <script>
+        // --- Configuration ---
+        const CONFIG = {
+            cardCount: 12,
+            perspective: 1200,
+            mouseSensitivity: 25, // Rotation intensity
+            floatSpeed: 0.002, // Speed of idle floating
+            particleCount: 60
+        };
+
+        // --- DOM Elements ---
+        const viewport = document.getElementById('viewport');
+        const world = document.getElementById('world');
+        const cardContainer = document.getElementById('card-container');
+        const particleContainer = document.getElementById('particle-container');
+
+        // --- State ---
+        let mouseX = 0;
+        let mouseY = 0;
+        let targetRotationX = 0;
+        let targetRotationY = 0;
+        let currentRotationX = 0;
+        let currentRotationY = 0;
+        let scrollZ = 0;
+        
+        // --- Utilities ---
+        const random = (min, max) => Math.random() * (max - min) + min;
+        const randomInt = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
+        const randomColor = () => {
+            const colors = ['#00f3ff', '#bc13fe', '#ffffff', '#2bffc0'];
+            return colors[Math.floor(Math.random() * colors.length)];
+        };
+
+        // --- Content Generators ---
+        
+        // Generate a random chart SVG
+        function getChart() {
+            let points = "";
+            let y = 50;
+            for(let i=0; i<=100; i+=10) {
+                y = Math.max(10, Math.min(90, y + random(-20, 20)));
+                points += `${i},${y} `;
+            }
+            return `<svg viewBox="0 0 100 100" class="w-full h-24 mt-2 opacity-80" preserveAspectRatio="none">
+                <polyline points="${points}" fill="none" stroke="var(--neon-cyan)" stroke-width="2" vector-effect="non-scaling-stroke" />
+                <polygon points="0,100 ${points} 100,100" fill="url(#grad1)" opacity="0.2" />
+                <defs>
+                    <linearGradient id="grad1" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:var(--neon-cyan);stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:transparent;stop-opacity:0" />
+                    </linearGradient>
+                </defs>
+            </svg>`;
+        }
+
+        // Generate Card Content
+        function createCardContent(type) {
+            if (type === 'stat') {
+                return `
+                    <div class="p-4 h-full flex flex-col justify-between">
+                        <div class="flex justify-between items-start">
+                            <span class="text-xs text-cyan-300 font-mono border border-cyan-500/30 px-2 py-0.5 rounded">MODULE</span>
+                            <div class="w-2 h-2 bg-cyan-400 rounded-full shadow-[0_0_10px_#00f3ff]"></div>
+                        </div>
+                        <div class="mt-4">
+                            <div class="text-4xl font-bold text-white tracking-tighter">${randomInt(10, 99)}%</div>
+                            <div class="text-xs text-gray-400 font-mono mt-1">EFFICIENCY RATING</div>
+                            ${getChart()}
+                        </div>
+                    </div>
+                `;
+            } else if (type === 'image') {
+                return `
+                    <div class="relative w-full h-full group overflow-hidden rounded-lg">
+                        <img src="https://source.unsplash.com/random/400x300?tech,neon,cyber&sig=${Math.random()}" 
+                             class="w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity duration-500 grayscale group-hover:grayscale-0"
+                             onerror="this.src='https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=400&q=80'">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+                        <div class="absolute bottom-4 left-4">
+                            <h3 class="text-white font-bold text-lg tracking-wide">SECURE FEED</h3>
+                            <p class="text-xs text-cyan-400 font-mono">CAM_0${randomInt(1,9)} // LIVE</p>
+                        </div>
+                        <!-- Reticle overlay -->
+                        <div class="absolute top-2 right-2 w-8 h-8 border-t-2 border-r-2 border-cyan-500/50"></div>
+                        <div class="absolute bottom-2 left-2 w-8 h-8 border-b-2 border-l-2 border-cyan-500/50"></div>
+                    </div>
+                `;
+            } else {
+                return `
+                    <div class="p-5 h-full flex flex-col">
+                        <h3 class="holo-title">DATA PACKET</h3>
+                        <p class="text-xs text-gray-300 font-mono leading-relaxed mb-4 opacity-80">
+                            Initializing neural handshake protocol... <br>
+                            > Decrypting stream...<br>
+                            > Access granted.
+                        </p>
+                        <div class="mt-auto">
+                            <div class="h-1 w-full bg-gray-800 rounded overflow-hidden">
+                                <div class="h-full bg-purple-500 w-full animate-[load_2s_ease-in-out_infinite]"></div>
+                            </div>
+                            <div class="flex justify-between text-[10px] text-gray-500 mt-1 font-mono">
+                                <span>UPLOAD</span>
+                                <span>COMPLETE</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        // --- Initialization ---
+
+        function init() {
+            createCards();
+            createParticles();
+            animate();
+            setupEvents();
+        }
+
+        function createCards() {
+            const types = ['stat', 'image', 'text'];
+            
+            for (let i = 0; i < CONFIG.cardCount; i++) {
+                const card = document.createElement('div');
+                card.className = 'holo-card';
+                
+                // Random properties
+                const type = types[Math.floor(Math.random() * types.length)];
+                const width = type === 'image' ? randomInt(250, 350) : randomInt(220, 300);
+                const height = type === 'image' ? randomInt(180, 220) : randomInt(180, 260);
+                
+                // 3D Positioning (Scattered cloud)
+                const x = random(-40, 40); // vw
+                const y = random(-30, 30); // vh
+                const z = random(-500, 200); // px depth
+                
+                // Apply styles
+                card.style.width = `${width}px`;
+                card.style.height = `${height}px`;
+                card.style.left = `50%`;
+                card.style.top = `50%`;
+                
+                // We use transform for positioning in 3D space
+                // Note: We apply the translation directly to the element's transform. 
+                // The 'float' animation needs to be handled carefully to not overwrite this.
+                // We will use CSS variables for the base position and update them in JS or use wrapper divs.
+                // SIMPLIFICATION: We set the initial transform, and the CSS hover effect will layer on top.
+                
+                card.style.transform = `translate3d(calc(-50% + ${x}vw), calc(-50% + ${y}vh), ${z}px)`;
+                
+                // Add content
+                card.innerHTML = createCardContent(type);
+                
+                // Add individual floating animation delay
+                card.style.animation = `float ${random(4, 8)}s ease-in-out infinite`;
+                card.style.animationDelay = `${random(0, 5)}s`;
+
+                // Interactive Click
+                card.addEventListener('click', () => {
+                    // Simple burst effect logic could go here
+                    card.style.borderColor = '#fff';
+                    setTimeout(() => {
+                        card.style.borderColor = '';
+                    }, 300);
+                });
+
+                cardContainer.appendChild(card);
+            }
+        }
+
+        function createParticles() {
+            for (let i = 0; i < CONFIG.particleCount; i++) {
+                const p = document.createElement('div');
+                p.className = 'particle';
+                const size = random(1, 3);
+                p.style.width = `${size}px`;
+                p.style.height = `${size}px`;
+                
+                // Position in 3D space
+                const x = random(-50, 50);
+                const y = random(-50, 50);
+                const z = random(-1000, -100);
+                
+                p.style.transform = `translate3d(${x}vw, ${y}vh, ${z}px)`;
+                p.style.opacity = random(0.2, 0.8);
+                p.style.background = randomColor();
+                
+                particleContainer.appendChild(p);
+            }
+        }
+
+        // --- Event Listeners ---
+
+        function setupEvents() {
+            // Mouse Movement
+            window.addEventListener('mousemove', (e) => {
+                // Normalize mouse position -1 to 1
+                mouseX = (e.clientX / window.innerWidth) * 2 - 1;
+                mouseY = (e.clientY / window.innerHeight) * 2 - 1;
+            });
+
+            // Scroll / Zoom
+            window.addEventListener('wheel', (e) => {
+                scrollZ += e.deltaY * 0.5;
+                // Clamp zoom
+                scrollZ = Math.max(-1000, Math.min(500, scrollZ));
+            });
+            
+            // Touch support for mobile
+            window.addEventListener('touchmove', (e) => {
+                const touch = e.touches[0];
+                mouseX = (touch.clientX / window.innerWidth) * 2 - 1;
+                mouseY = (touch.clientY / window.innerHeight) * 2 - 1;
+            });
+        }
+
+        // --- Animation Loop ---
+
+        function animate() {
+            // Calculate target rotation based on mouse
+            targetRotationY = mouseX * CONFIG.mouseSensitivity;
+            targetRotationX = -mouseY * CONFIG.mouseSensitivity;
+
+            // Smooth interpolation (Lerp)
+            currentRotationX += (targetRotationX - currentRotationX) * 0.05;
+            currentRotationY += (targetRotationY - currentRotationY) * 0.05;
+
+            // Apply Transform to World
+            // RotateX tilts up/down, RotateY spins left/right
+            // TranslateZ handles zoom
+            world.style.transform = `
+                translateZ(${scrollZ}px) 
+                rotateX(${currentRotationX}deg) 
+                rotateY(${currentRotationY}deg)
+            `;
+
+            // Parallax for particles (move them slightly more than the world to create depth)
+            // We access the particle container and shift it slightly opposite to rotation
+            const particleShiftX = -currentRotationY * 2;
+            const particleShiftY = currentRotationX * 2;
+            particleContainer.style.transform = `translate(${particleShiftX}px, ${particleShiftY}px)`;
+
+            requestAnimationFrame(animate);
+        }
+
+        // Run
+        document.addEventListener('DOMContentLoaded', init);
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,340 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LUXE - Premium Experience</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;600&display=swap');
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .heading-font {
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .gradient-gold {
+            background: linear-gradient(135deg, #D4AF37 0%, #F5E7B0 50%, #B8860B 100%);
+        }
+        
+        .gradient-purple {
+            background: linear-gradient(135deg, #2D00F7 0%, #6A0DAD 50%, #9D4EDD 100%);
+        }
+        
+        .gradient-dark {
+            background: linear-gradient(135deg, #000000 0%, #1A1A1A 50%, #333333 100%);
+        }
+        
+        .gradient-blue {
+            background: linear-gradient(135deg, #001F3F 0%, #003366 50%, #004080 100%);
+        }
+        
+        .gradient-gold-text {
+            background: linear-gradient(90deg, #D4AF37 0%, #F5E7B0 50%, #B8860B 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .gradient-purple-text {
+            background: linear-gradient(90deg, #2D00F7 0%, #6A0DAD 50%, #9D4EDD 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+    </style>
+</head>
+<body class="bg-black text-white">
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 bg-black/90 backdrop-blur-sm border-b border-gray-800">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="text-2xl font-bold">
+                <span class="gradient-gold-text">LUXE</span>
+            </div>
+            <div class="hidden md:flex space-x-8">
+                <a href="#home" class="hover:text-yellow-400 transition">Home</a>
+                <a href="#features" class="hover:text-yellow-400 transition">Features</a>
+                <a href="#services" class="hover:text-yellow-400 transition">Services</a>
+                <a href="#testimonials" class="hover:text-yellow-400 transition">Testimonials</a>
+                <a href="#contact" class="hover:text-yellow-400 transition">Contact</a>
+            </div>
+            <button class="px-6 py-2 gradient-gold text-black font-semibold">
+                SIGN IN
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="pt-32 pb-20 min-h-screen flex items-center relative overflow-hidden">
+        <div class="absolute inset-0 gradient-dark opacity-80"></div>
+        <div class="absolute inset-0">
+            <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-600 rounded-full mix-blend-soft-light filter blur-3xl opacity-30"></div>
+            <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-yellow-400 rounded-full mix-blend-soft-light filter blur-3xl opacity-20"></div>
+        </div>
+        
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h1 class="text-5xl md:text-7xl font-bold heading-font mb-6">
+                        Experience <span class="gradient-gold-text">LUXURY</span> Redefined
+                    </h1>
+                    <p class="text-xl text-gray-300 mb-8">
+                        Indulge in unparalleled elegance and sophistication. Our exclusive collection represents the pinnacle of premium craftsmanship.
+                    </p>
+                    <div class="flex space-x-4">
+                        <button class="px-8 py-4 gradient-gold text-black font-bold text-lg">
+                            EXPLORE COLLECTION
+                        </button>
+                        <button class="px-8 py-4 border-2 border-yellow-400 text-yellow-400 font-bold text-lg hover:bg-yellow-400 hover:text-black transition">
+                            VIEW DEMO
+                        </button>
+                    </div>
+                </div>
+                <div class="relative">
+                    <div class="gradient-gold p-1">
+                        <div class="bg-black p-2">
+                            <img src="https://picsum.photos/seed/luxury1/600/600.jpg" alt="Luxury Product" class="w-full">
+                        </div>
+                    </div>
+                    <div class="absolute -bottom-6 -left-6 w-32 h-32 gradient-purple"></div>
+                    <div class="absolute -top-6 -right-6 w-32 h-32 gradient-blue"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20 bg-black border-t border-b border-gray-800">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold heading-font mb-4">
+                    <span class="gradient-purple-text">EXCEPTIONAL</span> FEATURES
+                </h2>
+                <p class="text-xl text-gray-400 max-w-3xl mx-auto">
+                    Discover what makes our offering truly extraordinary and sets us apart from the ordinary.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-gradient-to-b from-gray-900 to-black border border-gray-800 p-8 hover:border-yellow-400 transition">
+                    <div class="w-16 h-16 gradient-gold mb-6 flex items-center justify-center">
+                        <i class="fas fa-gem text-black text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Premium Quality</h3>
+                    <p class="text-gray-400">
+                        Only the finest materials and craftsmanship go into every product we create.
+                    </p>
+                </div>
+                
+                <div class="bg-gradient-to-b from-gray-900 to-black border border-gray-800 p-8 hover:border-purple-400 transition">
+                    <div class="w-16 h-16 gradient-purple mb-6 flex items-center justify-center">
+                        <i class="fas fa-crown text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Exclusive Design</h3>
+                    <p class="text-gray-400">
+                        Unique, avant-garde designs that make a statement wherever you go.
+                    </p>
+                </div>
+                
+                <div class="bg-gradient-to-b from-gray-900 to-black border border-gray-800 p-8 hover:border-blue-400 transition">
+                    <div class="w-16 h-16 gradient-blue mb-6 flex items-center justify-center">
+                        <i class="fas fa-shield-alt text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Lifetime Warranty</h3>
+                    <p class="text-gray-400">
+                        Our commitment to excellence extends beyond purchase with our lifetime guarantee.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-20 bg-black">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold heading-font mb-4">
+                    OUR <span class="gradient-gold-text">PREMIUM</span> SERVICES
+                </h2>
+                <p class="text-xl text-gray-400 max-w-3xl mx-auto">
+                    Elevate your experience with our bespoke services tailored to meet your most discerning needs.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <div class="mb-8">
+                        <div class="gradient-gold h-1 w-20 mb-4"></div>
+                        <h3 class="text-3xl font-bold heading-font mb-4">Personal Concierge</h3>
+                        <p class="text-gray-400 mb-6">
+                            Our dedicated concierge team is available 24/7 to assist with any request, ensuring your experience is seamless and extraordinary.
+                        </p>
+                    </div>
+                    
+                    <div class="mb-8">
+                        <div class="gradient-purple h-1 w-20 mb-4"></div>
+                        <h3 class="text-3xl font-bold heading-font mb-4">Custom Design</h3>
+                        <p class="text-gray-400 mb-6">
+                            Work with our master designers to create a piece that is uniquely yours, reflecting your personal style and vision.
+                        </p>
+                    </div>
+                    
+                    <div class="mb-8">
+                        <div class="gradient-blue h-1 w-20 mb-4"></div>
+                        <h3 class="text-3xl font-bold heading-font mb-4">White Glove Delivery</h3>
+                        <p class="text-gray-400 mb-6">
+                            Experience service at the highest level with our exclusive white glove delivery and installation service.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="relative">
+                    <img src="https://picsum.photos/seed/luxury2/600/400.jpg" alt="Luxury Service" class="w-full">
+                    <div class="absolute inset-0 gradient-gold opacity-20"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section id="testimonials" class="py-20 bg-black border-t border-b border-gray-800">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold heading-font mb-4">
+                    CLIENT <span class="gradient-gold-text">TESTIMONIALS</span>
+                </h2>
+                <p class="text-xl text-gray-400 max-w-3xl mx-auto">
+                    Hear from our distinguished clients who have experienced the pinnacle of luxury.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-gradient-to-br from-gray-900 to-black border border-gray-800 p-8">
+                    <div class="flex items-center mb-6">
+                        <div class="w-16 h-16 rounded-full bg-gray-800 mr-4 flex items-center justify-center">
+                            <span class="text-xl font-bold gradient-gold-text">JD</span>
+                        </div>
+                        <div>
+                            <h4 class="text-xl font-bold">James Decker</h4>
+                            <p class="text-gray-400">CEO, Decker Industries</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 italic">
+                        "The attention to detail and quality of craftsmanship exceeded all my expectations. Truly a premium experience that defines luxury."
+                    </p>
+                    <div class="mt-6 flex text-yellow-400">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                
+                <div class="bg-gradient-to-br from-gray-900 to-black border border-gray-800 p-8">
+                    <div class="flex items-center mb-6">
+                        <div class="w-16 h-16 rounded-full bg-gray-800 mr-4 flex items-center justify-center">
+                            <span class="text-xl font-bold gradient-purple-text">SV</span>
+                        </div>
+                        <div>
+                            <h4 class="text-xl font-bold">Sophia Vanderbilt</h4>
+                            <p class="text-gray-400">Art Collector</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 italic">
+                        "I've never experienced such personalized service and exquisite products. This is the only place I trust for my luxury needs."
+                    </p>
+                    <div class="mt-6 flex text-yellow-400">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20 gradient-dark">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="text-4xl md:text-5xl font-bold heading-font mb-6">
+                READY TO EXPERIENCE <span class="gradient-gold-text">LUXURY</span>?
+            </h2>
+            <p class="text-xl text-gray-300 max-w-3xl mx-auto mb-10">
+                Join our exclusive clientele and discover what true luxury feels like.
+            </p>
+            <div class="flex flex-col md:flex-row justify-center space-y-4 md:space-y-0 md:space-x-6">
+                <button class="px-10 py-4 gradient-gold text-black font-bold text-lg">
+                    SCHEDULE CONSULTATION
+                </button>
+                <button class="px-10 py-4 border-2 border-yellow-400 text-yellow-400 font-bold text-lg hover:bg-yellow-400 hover:text-black transition">
+                    VIEW COLLECTION
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact" class="bg-black py-16 border-t border-gray-800">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <div class="text-2xl font-bold mb-4">
+                        <span class="gradient-gold-text">LUXE</span>
+                    </div>
+                    <p class="text-gray-400">
+                        Redefining luxury since 2010.
+                    </p>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-yellow-400 transition">About Us</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-yellow-400 transition">Collections</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-yellow-400 transition">Services</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-yellow-400 transition">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Contact</h3>
+                    <ul class="space-y-2">
+                        <li class="text-gray-400">123 Luxury Avenue</li>
+                        <li class="text-gray-400">New York, NY 10001</li>
+                        <li class="text-gray-400">info@luxe.com</li>
+                        <li class="text-gray-400">+1 (888) 123-4567</li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Follow Us</h3>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-yellow-400 transition text-xl">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-yellow-400 transition text-xl">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-yellow-400 transition text-xl">
+                            <i class="fab fa-facebook"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-yellow-400 transition text-xl">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400">
+                <p>© 2023 LUXE. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

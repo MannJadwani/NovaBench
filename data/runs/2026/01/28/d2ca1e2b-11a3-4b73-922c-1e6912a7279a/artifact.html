@@ -1,0 +1,204 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editorial Design</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .font-serif {
+            font-family: 'Playfair Display', serif;
+        }
+    </style>
+</head>
+<body class="bg-stone-50 text-stone-900">
+    <nav class="fixed top-0 left-0 w-full bg-stone-50/90 backdrop-blur-md z-50 border-b border-stone-200">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="text-2xl font-serif font-bold tracking-tight">MAISON</div>
+            <div class="hidden md:flex space-x-8 text-sm font-medium tracking-wide">
+                <a href="#" class="hover:text-stone-600 transition-colors">COLLECTION</a>
+                <a href="#" class="hover:text-stone-600 transition-colors">EDITORIAL</a>
+                <a href="#" class="hover:text-stone-600 transition-colors">ABOUT</a>
+                <a href="#" class="hover:text-stone-600 transition-colors">CONTACT</a>
+            </div>
+            <button class="md:hidden">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <main class="pt-24 pb-20">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center min-h-[80vh]">
+                <div class="lg:col-span-5 space-y-8">
+                    <div class="space-y-4">
+                        <p class="text-sm font-medium tracking-[0.2em] text-stone-500 uppercase">Autumn / Winter 2024</p>
+                        <h1 class="font-serif text-5xl md:text-7xl lg:text-8xl leading-[0.9] font-medium">
+                            The Art of <span class="italic text-stone-400">Simplicity</span>
+                        </h1>
+                    </div>
+                    <p class="text-stone-600 text-lg leading-relaxed max-w-md">
+                        A curated exploration of minimal aesthetics, where form meets function in perfect harmony. Discover the collection.
+                    </p>
+                    <div class="flex gap-4 pt-4">
+                        <button class="px-8 py-4 bg-stone-900 text-stone-50 text-sm font-medium tracking-wider hover:bg-stone-800 transition-colors">
+                            VIEW COLLECTION
+                        </button>
+                        <button class="px-8 py-4 border border-stone-300 text-stone-900 text-sm font-medium tracking-wider hover:border-stone-900 transition-colors">
+                            LOOKBOOK
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="lg:col-span-7 grid grid-cols-2 gap-4">
+                    <div class="space-y-4 mt-12">
+                        <div class="aspect-[3/4] bg-stone-200 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=800&auto=format&fit=crop&q=80" alt="Fashion editorial" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700">
+                        </div>
+                        <div class="aspect-square bg-stone-200 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=800&auto=format&fit=crop&q=80" alt="Detail shot" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700">
+                        </div>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="aspect-square bg-stone-200 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1509631179647-0177331693ae?w=800&auto=format&fit=crop&q=80" alt="Portrait" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700">
+                        </div>
+                        <div class="aspect-[3/4] bg-stone-200 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1496747611176-843222e1e57c?w=800&auto=format&fit=crop&q=80" alt="Fashion detail" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-6 py-24">
+            <div class="border-t border-stone-200 pt-16">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+                    <div class="space-y-4">
+                        <h3 class="font-serif text-2xl">01. Philosophy</h3>
+                        <p class="text-stone-600 leading-relaxed">Less is more. We believe in the power of subtraction, creating space for what truly matters.</p>
+                    </div>
+                    <div class="space-y-4">
+                        <h3 class="font-serif text-2xl">02. Craft</h3>
+                        <p class="text-stone-600 leading-relaxed">Every piece is meticulously crafted using traditional techniques passed down through generations.</p>
+                    </div>
+                    <div class="space-y-4">
+                        <h3 class="font-serif text-2xl">03. Vision</h3>
+                        <p class="text-stone-600 leading-relaxed">Looking forward while honoring the past. A modern interpretation of timeless elegance.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-stone-900 text-stone-50 py-24">
+            <div class="max-w-7xl mx-auto px-6">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-8">
+                    <h2 class="font-serif text-4xl md:text-6xl max-w-2xl">Curated essentials for the modern wardrobe</h2>
+                    <a href="#" class="text-sm tracking-widest border-b border-stone-50 pb-1 hover:text-stone-300 hover:border-stone-300 transition-colors">SHOP ALL</a>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                    <div class="group cursor-pointer">
+                        <div class="aspect-[3/4] bg-stone-800 mb-4 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=600&auto=format&fit=crop&q=80" alt="Product" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 opacity-80 group-hover:opacity-100">
+                        </div>
+                        <h4 class="font-medium">The Silk Blouse</h4>
+                        <p class="text-stone-400 text-sm mt-1">$289</p>
+                    </div>
+                    <div class="group cursor-pointer">
+                        <div class="aspect-[3/4] bg-stone-800 mb-4 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1551028719-00167b16eac5?w=600&auto=format&fit=crop&q=80" alt="Product" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 opacity-80 group-hover:opacity-100">
+                        </div>
+                        <h4 class="font-medium">Wool Overcoat</h4>
+                        <p class="text-stone-400 text-sm mt-1">$650</p>
+                    </div>
+                    <div class="group cursor-pointer">
+                        <div class="aspect-[3/4] bg-stone-800 mb-4 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=600&auto=format&fit=crop&q=80" alt="Product" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 opacity-80 group-hover:opacity-100">
+                        </div>
+                        <h4 class="font-medium">Cashmere Knit</h4>
+                        <p class="text-stone-400 text-sm mt-1">$425</p>
+                    </div>
+                    <div class="group cursor-pointer">
+                        <div class="aspect-[3/4] bg-stone-800 mb-4 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1548624313-0396c75e4b1a?w=600&auto=format&fit=crop&q=80" alt="Product" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 opacity-80 group-hover:opacity-100">
+                        </div>
+                        <h4 class="font-medium">Leather Tote</h4>
+                        <p class="text-stone-400 text-sm mt-1">$380</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-6 py-24">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <div class="aspect-[4/5] bg-stone-200">
+                    <img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=1000&auto=format&fit=crop&q=80" alt="Editorial" class="w-full h-full object-cover">
+                </div>
+                <div class="space-y-8">
+                    <blockquote class="font-serif text-3xl md:text-4xl leading-tight italic text-stone-800">
+                        "Elegance is not about being noticed, it's about being remembered."
+                    </blockquote>
+                    <div class="space-y-4 text-stone-600">
+                        <p class="leading-relaxed">Our latest editorial explores the intersection of architecture and fashion, drawing inspiration from brutalist forms and soft, organic textures.</p>
+                        <p class="leading-relaxed">Shot on location in Copenhagen, this series captures the essence of Nordic minimalism with a warm, inviting palette.</p>
+                    </div>
+                    <button class="text-sm font-medium tracking-widest border-b border-stone-900 pb-1 hover:text-stone-600 hover:border-stone-600 transition-colors">
+                        READ THE EDITORIAL
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-stone-100 border-t border-stone-200">
+        <div class="max-w-7xl mx-auto px-6 py-16">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12">
+                <div class="space-y-4">
+                    <h4 class="font-serif text-xl font-bold">MAISON</h4>
+                    <p class="text-stone-600 text-sm leading-relaxed">Contemporary fashion house dedicated to timeless design and sustainable practices.</p>
+                </div>
+                <div>
+                    <h5 class="font-medium mb-4 text-sm tracking-wider">SHOP</h5>
+                    <ul class="space-y-2 text-sm text-stone-600">
+                        <li><a href="#" class="hover:text-stone-900">New Arrivals</a></li>
+                        <li><a href="#" class="hover:text-stone-900">Collection</a></li>
+                        <li><a href="#" class="hover:text-stone-900">Accessories</a></li>
+                        <li><a href="#" class="hover:text-stone-900">Sale</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="font-medium mb-4 text-sm tracking-wider">INFO</h5>
+                    <ul class="space-y-2 text-sm text-stone-600">
+                        <li><a href="#" class="hover:text-stone-900">About Us</a></li>
+                        <li><a href="#" class="hover:text-stone-900">Sustainability</a></li>
+                        <li><a href="#" class="hover:text-stone-900">Shipping</a></li>
+                        <li><a href="#" class="hover:text-stone-900">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="font-medium mb-4 text-sm tracking-wider">NEWSLETTER</h5>
+                    <div class="flex border-b border-stone-300 pb-2">
+                        <input type="email" placeholder="Your email" class="bg-transparent w-full outline-none text-sm placeholder:text-stone-400">
+                        <button class="text-sm font-medium hover:text-stone-600">JOIN</button>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-stone-200 mt-16 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-stone-500">
+                <p>&copy; 2024 Maison. All rights reserved.</p>
+                <div class="flex gap-6">
+                    <a href="#" class="hover:text-stone-900">Instagram</a>
+                    <a href="#" class="hover:text-stone-900">Pinterest</a>
+                    <a href="#" class="hover:text-stone-900">Twitter</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

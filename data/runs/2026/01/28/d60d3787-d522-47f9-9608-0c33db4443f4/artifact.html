@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RAW. | Neo-Brutalist Commerce</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Space Grotesk', 'sans-serif'],
+                        display: ['Syne', 'sans-serif'],
+                    },
+                    colors: {
+                        'brutal-yellow': '#FFD600',
+                        'brutal-pink': '#FF90E8',
+                        'brutal-green': '#23A094',
+                        'brutal-black': '#000000',
+                        'brutal-white': '#FFFFFF',
+                        'brutal-gray': '#F0F0F0',
+                    },
+                    boxShadow: {
+                        'hard': '8px 8px 0px 0px rgba(0,0,0,1)',
+                        'hard-hover': '12px 12px 0px 0px rgba(0,0,0,1)',
+                        'hard-sm': '4px 4px 0px 0px rgba(0,0,0,1)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Utilities */
+        .text-outline {
+            -webkit-text-stroke: 2px black;
+            color: transparent;
+        }
+        .text-outline-white {
+            -webkit-text-stroke: 2px white;
+            color: transparent;
+        }
+        
+        /* Custom Cursor */
+        body {
+            cursor: none;
+            overflow-x: hidden;
+        }
+        #cursor {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 20px;
+            height: 20px;
+            border: 2px solid black;
+            background: white;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: width 0.2s, height 0.2s, background 0.2s;
+            mix-blend-mode: difference;
+        }
+        #cursor.hovered {
+            width: 50px;
+            height: 50px;
+            background: #FFD600;
+            mix-blend-mode: normal;
+            border-color: black;
+        }
+
+        /* Marquee Animation */
+        .marquee-container {
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        .marquee-content {
+            display: inline-block;
+            animation: marquee 20s linear infinite;
+        }
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* Glitch Effect on Hover for Links */
+        .glitch-hover:hover {
+            animation: glitch 0.3s cubic-bezier(.25, .46, .45, .94) both infinite;
+            color: #FF90E8;
+        }
+        @keyframes glitch {
+            0% { transform: translate(0) }
+            20% { transform: translate(-2px, 2px) }
+            40% { transform: translate(-2px, -2px) }
+            60% { transform: translate(2px, 2px) }
+            80% { transform: translate(2px, -2px) }
+            100% { transform: translate(0) }
+        }
+
+        /* Card Hover Lift */
+        .product-card {
+            transition: all 0.2s ease;
+        }
+        .product-card:hover {
+            transform: translate(-4px, -4px);
+            box-shadow: 12px 12px 0px 0px rgba(0,0,0,1);
+        }
+    </style>
+</head>
+<body class="bg-brutal-white text-brutal-black font-sans selection:bg-brutal-pink selection:text-black">
+
+    <!-- Custom Cursor -->
+    <div id="cursor"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 w-full z-50 bg-brutal-yellow border-b-4 border-black px-4 py-3 flex justify-between items-center">
+        <a href="#" class="text-3xl font-display font-black tracking-tighter hover:text-brutal-pink transition-colors cursor-hover">RAW.</a>
+        
+        <div class="hidden md:flex gap-8 font-bold text-lg">
+            <a href="#collection" class="hover:underline decoration-4 decoration-brutal-pink underline-offset-4 cursor-hover">COLLECTION</a>
+            <a href="#manifesto" class="hover:underline decoration-4 decoration-brutal-green underline-offset-4 cursor-hover">MANIFESTO</a>
+            <a href="#contact" class="hover:underline decoration-4 decoration-white underline-offset-4 cursor-hover">CONTACT</a>
+        </div>
+
+        <button id="cart-btn" class="bg-black text-white px-6 py-2 font-bold border-2 border-black shadow-hard-sm hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] transition-all cursor-hover flex items-center gap-2">
+            CART (<span id="cart-count">0</span>)
+        </button>
+    </nav>
+
+    <!-- Cart Drawer -->
+    <div id="cart-drawer" class="fixed top-0 right-0 h-full w-full md:w-[450px] bg-brutal-white border-l-4 border-black z-[60] transform translate-x-full transition-transform duration-300 flex flex-col">
+        <div class="p-6 border-b-4 border-black flex justify-between items-center bg-brutal-pink">
+            <h2 class="text-3xl font-display font-bold">YOUR STUFF</h2>
+            <button id="close-cart" class="text-4xl font-bold hover:rotate-90 transition-transform cursor-hover">&times;</button>
+        </div>
+        <div id="cart-items" class="flex-1 overflow-y-auto p-6 space-y-4">
+            <!-- Cart items injected here -->
+            <div class="text-center mt-20 font-bold text-gray-400 text-xl">CART IS EMPTY.</div>
+        </div>
+        <div class="p-6 border-t-4 border-black bg-brutal-gray">
+            <div class="flex justify-between text-2xl font-bold mb-4">
+                <span>TOTAL</span>
+                <span id="cart-total">$0.00</span>
+            </div>
+            <button class="w-full bg-brutal-green text-black text-xl font-bold py-4 border-4 border-black shadow-hard hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all uppercase cursor-hover">
+                Checkout
+            </button>
+        </div>
+    </div>
+    <div id="cart-overlay" class="fixed inset-0 bg-black/50 z-[55] hidden backdrop-blur-sm"></div>
+
+    <!-- Hero Section -->
+    <header class="relative pt-32 pb-20 px-4 md:px-10 min-h-screen flex flex-col justify-center overflow-hidden bg-brutal-white">
+        <!-- Background Decorative Elements -->
+        <div class="absolute top-20 right-[-10%] w-[500px] h-[500px] bg-brutal-pink rounded-full border-4 border-black blur-3xl opacity-50 -z-10"></div>
+        <div class="absolute bottom-20 left-[-10%] w-[300px] h-[300px] bg-brutal-yellow rounded-full border-4 border-black blur-3xl opacity-50 -z-10"></div>
+
+        <div class="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+            <div class="lg:col-span-8 z-10">
+                <div class="inline-block bg-brutal-black text-white px-4 py-1 font-bold mb-6 border-2 border-black rotate-[-2deg]">
+                    EST. 2024 — DIGITAL CHAOS
+                </div>
+                <h1 class="text-7xl md:text-9xl font-display font-black leading-[0.9] mb-8 tracking-tight mix-blend-multiply">
+                    BREAK THE <br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-brutal-pink via-brutal-yellow to-brutal-green text-outline" style="-webkit-text-stroke: 4px black;">ALGORITHM</span>
+                </h1>
+                <p class="text-xl md:text-2xl font-bold max-w-2xl mb-10 border-l-8 border-black pl-6">
+                    We don't do subtle. We build digital products that scream, punch, and demand attention. No gradients, no shadows (except the hard ones).
+                </p>
+                <div class="flex flex-wrap gap-4">
+                    <a href="#collection" class="bg-brutal-yellow text-black px-8 py-4 text-xl font-bold border-4 border-black shadow-hard hover:shadow-hard-hover hover:-translate-y-1 transition-all cursor-hover">
+                        SHOP NOW
+                    </a>
+                    <a href="#manifesto" class="bg-white text-black px-8 py-4 text-xl font-bold border-4 border-black shadow-hard-sm hover:shadow-hard hover:-translate-y-1 transition-all cursor-hover">
+                        READ MANIFESTO
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Hero Image / Visual -->
+            <div class="lg:col-span-4 relative group cursor-hover">
+                <div class="absolute inset-0 bg-brutal-black translate-x-4 translate-y-4 border-4 border-black z-0 transition-transform group-hover:translate-x-6 group-hover:translate-y-6"></div>
+                <div class="relative z-10 bg-white border-4 border-black aspect-[4/5] overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1000&auto=format&fit=crop" alt="Abstract Art" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500">
+                    <div class="absolute bottom-0 left-0 w-full bg-brutal-pink border-t-4 border-black p-4">
+                        <p class="font-bold text-lg">LIMITED EDITION DROP</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Marquee Strip -->
+    <div class="bg-brutal-black text-white py-4 border-y-4 border-black overflow-hidden marquee-container rotate-1 scale-105 z-20 relative">
+        <div class="marquee-content font-display font-bold text-4xl md:text-6xl">
+            NO REFUNDS /// NO EXCUSES /// HIGH CONTRAST ONLY /// NO REFUNDS /// NO EXCUSES /// HIGH CONTRAST ONLY /// NO REFUNDS /// NO EXCUSES /// HIGH CONTRAST ONLY ///
+        </div>
+        <div class="marquee-content font-display font-bold text-4xl md:text-6xl" aria-hidden="true">
+            NO REFUNDS /// NO EXCUSES /// HIGH CONTRAST ONLY /// NO REFUNDS /// NO EXCUSES /// HIGH CONTRAST ONLY /// NO REFUNDS /// NO EXCUSES /// HIGH CONTRAST ONLY ///
+        </div>
+    </div>
+
+    <!-- Product Collection -->
+    <section id="collection" class="py-24 px-4 md:px-10 bg-brutal-white relative">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
+                <h2 class="text-6xl md:text-8xl font-display font-black text-outline">MERCH</h2>
+                <div class="flex gap-2">
+                    <button class="filter-btn active bg-black text-white px-4 py-2 border-2 border-black font-bold" data-filter="all">ALL</button>
+                    <button class="filter-btn bg-white hover:bg-brutal-gray px-4 py-2 border-2 border-black font-bold transition-colors" data-filter="wearable">WEARABLE</button>
+                    <button class="filter-btn bg-white hover:bg-brutal-gray px-4 py-2 border-2 border-black font-bold transition-colors" data-filter="digital">DIGITAL</button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="product-grid">
+                <!-- Product 1 -->
+                <div class="product-card group bg-white border-4 border-black flex flex-col h-full" data-category="wearable">
+                    <div class="relative aspect-square border-b-4 border-black overflow-hidden bg-brutal-gray">
+                        <img src="https://images.unsplash.com/photo-1576566588028-4147f3842f27?q=80&w=800&auto=format&fit=crop" alt="T-Shirt" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute top-4 right-4 bg-brutal-yellow text-black font-bold px-3 py-1 border-2 border-black transform rotate-3">NEW</div>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col">
+                        <h3 class="text-2xl font-display font-bold mb-2">BRUTALIST TEE</h3>
+                        <p class="text-gray-600 mb-4 font-medium">Heavy cotton, unisex fit. Features our signature concrete texture.</p>
+                        <div class="mt-auto flex justify-between items-center">
+                            <span class="text-3xl font-bold">$45.00</span>
+                            <button class="add-to-cart bg-brutal-black text-white px-4 py-2 font-bold border-2 border-black hover:bg-brutal-green hover:text-black transition-colors cursor-hover" data-id="1" data-name="BRUTALIST TEE" data-price="45.00" data-img="https://images.unsplash.com/photo-1576566588028-4147f3842f27?q=80&w=200&auto=format&fit=crop">
+                                ADD +
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 2 -->
+                <div class="product-card group bg-white border-4 border-black flex flex-col h-full" data-category="digital">
+                    <div class="relative aspect-square border-b-4 border-black overflow-hidden bg-brutal-gray">
+                        <img src="https://images.unsplash.com/photo-1618556450994-2f1af64e0499?q=80&w=800&auto=format&fit=crop" alt="Abstract Poster" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col">
+                        <h3 class="text-2xl font-display font-bold mb-2">CHAOS POSTER</h3>
+                        <p class="text-gray-600 mb-4 font-medium">Digital download. High-res 3D rendered abstract shapes.</p>
+                        <div class="mt-auto flex justify-between items-center">
+                            <span class="text-3xl font-bold">$12.00</span>
+                            <button class="add-to-cart bg-brutal-black text-white px-4 py-2 font-bold border-2 border-black hover:bg-brutal-pink hover:text-black transition-colors cursor-hover" data-id="2" data-name="CHAOS POSTER" data-price="12.00" data-img="https://images.unsplash.com/photo-1618556450994-2f1af64e0499?q=80&w=200&auto=format&fit=crop">
+                                ADD +
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 3 -->
+                <div class="product-card group bg-white border-4 border-black flex flex-col h-full" data-category="wearable">
+                    <div class="relative aspect-square border-b-4 border-black overflow-hidden bg-brutal-gray">
+                        <img src="https://images.unsplash.com/photo-1588850561407-ed78c282e89b?q=80&w=800&auto=format&fit=crop" alt="Cap" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col">
+                        <h3 class="text-2xl font-display font-bold mb-2">CONCRETE CAP</h3>
+                        <p class="text-gray-600 mb-4 font-medium">5-panel construction. Embroidered RAW logo. Adjustable.</p>
+                        <div class="mt-auto flex justify-between items-center">
+                            <span class="text-3xl font-bold">$32.00</span>
+                            <button class="add-to-cart bg-brutal-black text-white px-4 py-2 font-bold border-2 border-black hover:bg-brutal-yellow hover:text-black transition-colors cursor-hover" data-id="3" data-name="CONCRETE CAP" data-price="32.00" data-img="https://images.unsplash.com/photo-1588850561407-ed78c282e89b?q=80&w=200&auto=format&fit=crop">
+                                ADD +
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 4 -->
+                <div class="product-card group bg-white border-4 border-black flex flex-col h-full" data-category="digital">
+                    <div class="relative aspect-square border-b-4 border-black overflow-hidden bg-brutal-gray">
+                        <img src="https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=800&auto=format&fit=crop" alt="Sticker Pack" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col">
+                        <h3 class="text-2xl font-display font-bold mb-2">STICKER BOMB</h3>
+                        <p class="text-gray-600 mb-4 font-medium">Pack of 10 vinyl stickers. Weatherproof. Aggressive.</p>
+                        <div class="mt-auto flex justify-between items-center">
+                            <span class="text-3xl font-bold">$8.00</span>
+                            <button class="add-to-cart bg-brutal-black text-white px-4 py-2 font-bold border-2 border-black hover:bg-brutal-green hover:text-black transition-colors cursor-hover" data-id="4" data-name="STICKER BOMB" data-price="8.00" data-img="https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=200&auto=format&fit=crop">
+                                ADD +
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 5 -->
+                <div class="product-card group bg-white border-4 border-black flex flex-col h-full" data-category="wearable">
+                    <div class="relative aspect-square border-b-4 border-black overflow-hidden bg-brutal-gray">
+                        <img src="https://images.unsplash.com/photo-1620799140408-ed5341cd2431?q=80&w=800&auto=format&fit=crop" alt="Hoodie" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute top-4 left-4 bg-brutal-green text-black font-bold px-3 py-1 border-2 border-black transform -rotate-3">HOT</div>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col">
+                        <h3 class="text-2xl font-display font-bold mb-2">RAW HOODIE</h3>
+                        <p class="text-gray-600 mb-4 font-medium">Oversized fit. 400gsm fleece. Screen printed chest.</p>
+                        <div class="mt-auto flex justify-between items-center">
+                            <span class="text-3xl font-bold">$85.00</span>
+                            <button class="add-to-cart bg-brutal-black text-white px-4 py-2 font-bold border-2 border-black hover:bg-brutal-pink hover:text-black transition-colors cursor-hover" data-id="5" data-name="RAW HOODIE" data-price="85.00" data-img="https://images.unsplash.com/photo-1620799140408-ed5341cd2431?q=80&w=200&auto=format&fit=crop">
+                                ADD +
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                 <!-- Product 6 -->
+                 <div class="product-card group bg-white border-4 border-black flex flex-col h-full" data-category="digital">
+                    <div class="relative aspect-square border-b-4 border-black overflow-hidden bg-brutal-gray">
+                        <img src="https://images.unsplash.com/photo-1615184697985-c9bde1b07da7?q=80&w=800&auto=format&fit=crop" alt="Zine" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col">
+                        <h3 class="text-2xl font-display font-bold mb-2">DIGITAL ZINE</h3>
+                        <p class="text-gray-600 mb-4 font-medium">PDF collection of 2024 design trends. 50 pages.</p>
+                        <div class="mt-auto flex justify-between items-center">
+                            <span class="text-3xl font-bold">$15.00</span>
+                            <button class="add-to-cart bg-brutal-black text-white px-4 py-2 font-bold border-2 border-black hover:bg-brutal-yellow hover:text-black transition-colors cursor-hover" data-id="6" data-name="DIGITAL ZINE" data-price="15.00" data-img="https://images.unsplash.com/photo-1615184697985-c9bde1b07da7?q=80&w=200&auto=format&fit=crop">
+                                ADD +
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Manifesto Section -->
+    <section id="manifesto" class="py-24 bg-brutal-black text-white border-y-4 border-brutal-yellow">
+        <div class="max-w-5xl mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h2 class="text-5xl md:text-7xl font-display font-bold mb-8 text-brutal-yellow">THE RULES</h2>
+                    <ul class="space-y-6 text-xl font-bold">
+                        <li class="flex items-start gap-4">
+                            <span class="text-brutal-pink text-3xl">01.</span>
+                            <span>Borders must be thick enough to stop a train.</span>
+                        </li>
+                        <li class="flex items-start gap-4">
+                            <span class="text-brutal-pink text-3xl">02.</span>
+                            <span>Shadows are hard, life is hard.</span>
+                        </li>
+                        <li class="flex items-start gap-4">
+                            <span class="text-brutal-pink text-3xl">03.</span>
+                            <span>Never use more than 3 fonts. Actually, use 1 font.</span>
+                        </li>
+                        <li class="flex items-start gap-4">
+                            <span class="text-brutal-pink text-3xl">04.</span>
+                            <span>If it looks comfortable, break it.</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="relative">
+                    <div class="absolute inset-0 bg-brutal-pink translate-x-4 translate-y-4 border-4 border-white z-0"></div>
+                    <div class="relative z-10 bg-black border-4 border-white p-8 aspect-square flex flex-col justify-center items-center text-center">
+                        <h3 class="text-4xl font-display font-bold mb-4">JOIN THE<br>CHAOS</h3>
+                        <p class="mb-6 font-mono text-sm">Subscribe for drops, no spam.</p>
+                        <form class="w-full space-y-4" onsubmit="event.preventDefault(); alert('WELCOME TO THE CLUB.');">
+                            <input type="email" placeholder="YOUR EMAIL" class="w-full bg-transparent border-2 border-white p-3 text-white placeholder-gray-500 focus:outline-none focus:border-brutal-yellow font-bold">
+                            <button type="submit" class="w-full bg-brutal-yellow text-black font-bold py-3 border-2 border-white hover:bg-white transition-colors">SUBSCRIBE</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-brutal-white pt-20 pb-10 px-6 border-t-4 border-black">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+            <div class="md:col-span-2">
+                <h2 class="text-6xl font-display font-black mb-6">RAW.</h2>
+                <p class="text-xl font-bold max-w-sm">Designed for the misfits, the hackers, and the noise-makers.</p>
+            </div>
+            <div>
+                <h4 class="text-2xl font-bold mb-6 border-b-4 border-black inline-block pb-1">SOCIALS</h4>
+                <ul class="space-y-2 font-bold text-lg">
+                    <li><a href="#" class="glitch-hover cursor-hover">INSTAGRAM</a></li>
+                    <li><a href="#" class="glitch-hover cursor-hover">TWITTER / X</a></li>
+                    <li><a href="#" class="glitch-hover cursor-hover">TIKTOK</a></li>
+                    <li><a href="#" class="glitch-hover cursor-hover">ARE.NA</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-2xl font-bold mb-6 border-b-4 border-black inline-block pb-1">LEGAL</h4>
+                <ul class="space-y-2 font-bold text-lg">
+                    <li><a href="#" class="glitch-hover cursor-hover">PRIVACY POLICY</a></li>
+                    <li><a href="#" class="glitch-hover cursor-hover">TERMS OF SERVICE</a></li>
+                    <li><a href="#" class="glitch-hover cursor-hover">SHIPPING INFO</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="border-t-4 border-black pt-8 flex flex-col md:flex-row justify-between items-center">
+            <p class="font-bold text-sm">&copy; 2024 RAW INC. ALL RIGHTS RESERVED.</p>
+            <p class="font-bold text-sm flex items-center gap-2">
+                MADE WITH <span class="text-brutal-pink text-xl">♥</span> AND CAFFEINE
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Custom Cursor Logic
+        const cursor = document.getElementById('cursor');
+        const hoverElements = document.querySelectorAll('.cursor-hover, a, button');
+
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
+        hoverElements.forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
+            el.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
+        });
+
+        // Cart Logic
+        let cart = [];
+        const cartDrawer = document.getElementById('cart-drawer');
+        const cartOverlay = document.getElementById('cart-overlay');
+        const cartBtn = document.getElementById('cart-btn');
+        const closeCartBtn = document.getElementById('close-cart');
+        const cartItemsContainer = document.getElementById('cart-items');
+        const cartCountEl = document.getElementById('cart-count');
+        const cartTotalEl = document.getElementById('cart-total');
+
+        function toggleCart(show) {
+            if (show) {
+                cartDrawer.classList.remove('translate-x-full');
+                cartOverlay.classList.remove('hidden');
+            } else {
+                cartDrawer.classList.add('translate-x-full');
+                cartOverlay.classList.add('hidden');
+            }
+        }
+
+        cartBtn.addEventListener('click', () => toggleCart(true));
+        closeCartBtn.addEventListener('click', () => toggleCart(false));
+        cartOverlay.addEventListener('click', () => toggleCart(false));
+
+        function updateCart() {
+            cartItemsContainer.innerHTML = '';
+            let total = 0;
+            let count = 0;
+
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = '<div class="text-center mt-20 font-bold text-gray-400 text-xl">CART IS EMPTY.</div>';
+            } else {
+                cart.forEach((item, index) => {
+                    total += item.price * item.qty;
+                    count += item.qty;
+                    
+                    const itemEl = document.createElement('div');
+                    itemEl.className = 'flex gap-4 border-b-2 border-black pb-4';
+                    itemEl.innerHTML = `
+                        <img src="${item.img}" class="w-20 h-20 object-cover border-2 border-black bg-gray-100">
+                        <div class="flex-1">
+                            <h4 class="font-bold text-lg leading-tight">${item.name}</h4>
+                            <p class="font-mono text-sm mb-2">$${item.price}</p>
+                            <div class="flex items-center gap-2">
+                                <button onclick="updateQty(${index}, -1)" class="w-6 h-6 bg-black text-white flex items-center justify-center font-bold hover:bg-brutal-pink hover:text-black">-</button>
+                                <span class="font-bold">${item.qty}</span>
+                                <button onclick="updateQty(${index}, 1)" class="w-6 h-6 bg-black text-white flex items-center justify-center font-bold hover:bg-brutal-pink hover:text-black">+</button>
+                            </div>
+                        </div>
+                        <button onclick="removeItem(${index})" class="text-red-600 font-bold hover:underline">X</button>
+                    `;
+                    cartItemsContainer.appendChild(itemEl);
+                });
+            }
+
+            cartCountEl.innerText = count;
+            cartTotalEl.innerText = '$' + total.toFixed(2);
+        }
+
+        window.updateQty = (index, change) => {
+            if (cart[index].qty + change <= 0) {
+                removeItem(index);
+            } else {
+                cart[index].qty += change;
+                updateCart();
+            }
+        };
+
+        window.removeItem = (index) => {
+            cart.splice(index, 1);
+            updateCart();
+        };
+
+        document.querySelectorAll('.add-to-cart').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const id = e.target.dataset.id;
+                const name = e.target.dataset.name;
+                const price = parseFloat(e.target.dataset.price);
+                const img = e.target.dataset.img;
+
+                const existingItem = cart.find(item => item.id === id);
+                if (existingItem) {
+                    existingItem.qty++;
+                } else {
+                    cart.push({ id, name, price, img, qty: 1 });
+                }
+
+                // Button animation
+                const originalText = btn.innerText;
+                btn.innerText = "ADDED!";
+                btn.classList.add('bg-brutal-green');
+                setTimeout(() => {
+                    btn.innerText = originalText;
+                    btn.classList.remove('bg-brutal-green');
+                }, 1000);
+
+                updateCart();
+                toggleCart(true);
+            });
+        });
+
+        // Filtering Logic
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const products = document.querySelectorAll('.product-card');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Update active button
+                filterBtns.forEach(b => {
+                    b.classList.remove('bg-black', 'text-white');
+                    b.classList.add('bg-white', 'text-black');
+                });
+                btn.classList.remove('bg-white', 'text-black');
+                btn.classList.add('bg-black', 'text-white');
+
+                const filter = btn.dataset.filter;
+                
+                products.forEach(product => {
+                    if (filter === 'all' || product.dataset.category === filter) {
+                        product.style.display = 'flex';
+                        gsap.fromTo(product, {opacity: 0, y: 20}, {opacity: 1, y: 0, duration: 0.4});
+                    } else {
+                        product.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // GSAP Animations
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Animate Hero Elements
+        gsap.from("nav", { y: -100, duration: 1, ease: "power4.out" });
+        gsap.from("h1", { x: -50, opacity: 0, duration: 1, delay: 0.2, ease: "power4.out" });
+        gsap.from(".product-card", {
+            scrollTrigger: {
+                trigger: "#collection",
+                start: "top 80%",
+            },
+            y: 100,
+            opacity: 0,
+            duration: 0.8,
+            stagger: 0.1,
+            ease: "back.out(1.7)"
+        });
+
+    </script>
+</body>
+</html>

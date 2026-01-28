@@ -1,0 +1,37 @@
+{
+  "id": "50d75496-2d2b-4c45-8eb0-2974d0802962",
+  "createdAt": "2026-01-27T22:19:32.157Z",
+  "provider": "openrouter",
+  "model": "moonshotai/kimi-k2.5",
+  "benchmark": {
+    "id": "night-ui-landing",
+    "title": "Night UI - Landing Page",
+    "category": "Design Terms"
+  },
+  "latencyMs": 129292,
+  "tokenUsage": {
+    "prompt_tokens": 71,
+    "completion_tokens": 9208,
+    "total_tokens": 9279,
+    "cost": 0.0276666,
+    "is_byok": false,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "audio_tokens": 0
+    },
+    "cost_details": {
+      "upstream_inference_cost": 0.0276666,
+      "upstream_inference_prompt_cost": 0.0000426,
+      "upstream_inference_completions_cost": 0.027624
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 832,
+      "audio_tokens": 0
+    }
+  },
+  "params": {
+    "temperature": 1,
+    "maxTokens": null
+  },
+  "path": "runs/2026/01/28/50d75496-2d2b-4c45-8eb0-2974d0802962"
+}

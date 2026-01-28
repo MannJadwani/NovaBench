@@ -1,0 +1,18 @@
+{
+  "id": "0bae5e15-b916-4913-a528-617d75a1613b",
+  "createdAt": "2026-01-27T21:20:01.328Z",
+  "provider": "zai",
+  "model": "glm-4.5",
+  "benchmark": {
+    "id": "glassmorphic-landing",
+    "title": "Glassmorphic UI - Landing Page",
+    "category": "Design Terms"
+  },
+  "latencyMs": 67349,
+  "tokenUsage": null,
+  "params": {
+    "temperature": 1,
+    "maxTokens": null
+  },
+  "path": "runs/2026/01/28/0bae5e15-b916-4913-a528-617d75a1613b"
+}

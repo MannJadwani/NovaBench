@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AURA | The Premium Experience</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Montserrat:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        lux: {
+                            black: '#050505',
+                            dark: '#0a0a0a',
+                            gold: '#D4AF37',
+                            goldLight: '#F4CF5D',
+                            goldDark: '#AA8C2C',
+                            void: '#0f172a',
+                            slate: '#1e293b'
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['"Cormorant Garamond"', 'serif'],
+                        sans: ['"Montserrat"', 'sans-serif'],
+                    },
+                    backgroundImage: {
+                        'gold-gradient': 'linear-gradient(135deg, #D4AF37 0%, #F4CF5D 50%, #AA8C2C 100%)',
+                        'dark-gradient': 'linear-gradient(to bottom, #0a0a0a, #000000)',
+                        'card-shine': 'linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #050505;
+            color: #ffffff;
+            overflow-x: hidden;
+            cursor: none; /* Custom cursor */
+        }
+
+        /* Custom Cursor */
+        #cursor {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 20px;
+            height: 20px;
+            border: 1px solid #D4AF37;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s, height 0.3s, background-color 0.3s;
+            mix-blend-mode: difference;
+        }
+        #cursor.hovered {
+            width: 50px;
+            height: 50px;
+            background-color: rgba(212, 175, 55, 0.2);
+            border-color: transparent;
+        }
+
+        /* Sharp Edges & Glitch Effects */
+        .sharp-box {
+            clip-path: polygon(0 0, 100% 0, 100% 85%, 90% 100%, 0 100%);
+        }
+        .sharp-box-reverse {
+            clip-path: polygon(10% 0, 100% 0, 100% 100%, 0 100%, 0 15%);
+        }
+        
+        .glitch-text:hover {
+            animation: glitch 0.3s cubic-bezier(.25, .46, .45, .94) both infinite;
+            color: #D4AF37;
+        }
+
+        @keyframes glitch {
+            0% { transform: translate(0) }
+            20% { transform: translate(-2px, 2px) }
+            40% { transform: translate(-2px, -2px) }
+            60% { transform: translate(2px, 2px) }
+            80% { transform: translate(2px, -2px) }
+            100% { transform: translate(0) }
+        }
+
+        /* Gold Text Gradient */
+        .text-gold-gradient {
+            background: linear-gradient(to right, #D4AF37, #F4CF5D, #AA8C2C, #D4AF37);
+            background-size: 200% auto;
+            color: transparent;
+            -webkit-background-clip: text;
+            background-clip: text;
+            animation: shine 5s linear infinite;
+        }
+
+        @keyframes shine {
+            to { background-position: 200% center; }
+        }
+
+        /* Card Hover Effects */
+        .lux-card {
+            transition: all 0.4s ease;
+            border: 1px solid rgba(212, 175, 55, 0.1);
+        }
+        .lux-card:hover {
+            border-color: rgba(212, 175, 55, 0.6);
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.1);
+            transform: translateY(-5px);
+        }
+
+        /* Navigation Blur */
+        .nav-blur {
+            backdrop-filter: blur(10px);
+            background: rgba(5, 5, 5, 0.8);
+        }
+
+        /* Loader */
+        #loader {
+            position: fixed;
+            inset: 0;
+            background: #000;
+            z-index: 10000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.8s ease-out;
+        }
+        .loader-line {
+            width: 0%;
+            height: 2px;
+            background: #D4AF37;
+            transition: width 1.5s ease-in-out;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-lux-gold selection:text-black">
+
+    <!-- Custom Cursor -->
+    <div id="cursor"></div>
+
+    <!-- Loader -->
+    <div id="loader">
+        <div class="w-64">
+            <div class="loader-line" id="loader-bar"></div>
+            <div class="mt-4 text-center font-serif text-lux-gold tracking-widest text-sm">LOADING EXPERIENCE</div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 nav-blur border-b border-white/5 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="text-2xl font-serif font-bold tracking-widest text-white hover-trigger">AURA.</a>
+            <div class="hidden md:flex space-x-12 text-xs font-sans tracking-[0.2em] uppercase text-gray-400">
+                <a href="#vision" class="hover:text-lux-gold transition-colors hover-trigger">Vision</a>
+                <a href="#collection" class="hover:text-lux-gold transition-colors hover-trigger">Collection</a>
+                <a href="#access" class="hover:text-lux-gold transition-colors hover-trigger">Access</a>
+            </div>
+            <button class="border border-lux-gold text-lux-gold px-6 py-2 text-xs font-bold tracking-widest uppercase hover:bg-lux-gold hover:text-black transition-all duration-300 hover-trigger sharp-box">
+                Connect
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative h-screen flex items-center justify-center overflow-hidden">
+        <!-- WebGL Background Canvas -->
+        <canvas id="hero-canvas" class="absolute inset-0 w-full h-full z-0"></canvas>
+        
+        <!-- Overlay Gradient -->
+        <div class="absolute inset-0 bg-gradient-to-b from-transparent via-lux-black/50 to-lux-black z-10 pointer-events-none"></div>
+
+        <!-- Content -->
+        <div class="relative z-20 text-center px-4 max-w-5xl mx-auto">
+            <p class="text-lux-gold font-sans tracking-[0.5em] text-xs md:text-sm mb-6 opacity-0 translate-y-10" id="hero-subtitle">EST. 2024</p>
+            <h1 class="font-serif text-6xl md:text-8xl lg:text-9xl font-light text-white mb-8 leading-tight mix-blend-overlay opacity-0 translate-y-10" id="hero-title">
+                DIGITAL <br><span class="text-gold-gradient italic">LUXURY</span>
+            </h1>
+            <p class="font-sans text-gray-400 max-w-xl mx-auto mb-12 font-light tracking-wide leading-relaxed opacity-0 translate-y-10" id="hero-desc">
+                We craft immersive digital experiences for the elite. Where sharp design meets organic fluidity.
+            </p>
+            <div class="flex flex-col md:flex-row gap-6 justify-center opacity-0 translate-y-10" id="hero-cta">
+                <a href="#collection" class="bg-white text-black px-8 py-4 text-xs font-bold tracking-[0.2em] uppercase hover:bg-lux-gold transition-colors sharp-box hover-trigger">
+                    Explore Collection
+                </a>
+                <a href="#vision" class="border border-white/20 text-white px-8 py-4 text-xs font-bold tracking-[0.2em] uppercase hover:border-lux-gold hover:text-lux-gold transition-colors sharp-box-reverse hover-trigger">
+                    Our Vision
+                </a>
+            </div>
+        </div>
+
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2 opacity-50">
+            <span class="text-[10px] tracking-widest text-lux-gold">SCROLL</span>
+            <div class="w-[1px] h-12 bg-gradient-to-b from-lux-gold to-transparent"></div>
+        </div>
+    </section>
+
+    <!-- Marquee Strip -->
+    <div class="bg-lux-gold text-black py-4 overflow-hidden rotate-1 scale-105 z-30 relative border-y-4 border-black">
+        <div class="whitespace-nowrap animate-[marquee_20s_linear_infinite] font-serif text-2xl font-bold tracking-widest flex gap-8 items-center">
+            <span>• EXCELLENCE</span> <span>• PRECISION</span> <span>• AESTHETICS</span> <span>• VELOCITY</span>
+            <span>• EXCELLENCE</span> <span>• PRECISION</span> <span>• AESTHETICS</span> <span>• VELOCITY</span>
+            <span>• EXCELLENCE</span> <span>• PRECISION</span> <span>• AESTHETICS</span> <span>• VELOCITY</span>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <section id="vision" class="py-32 relative bg-lux-black">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-20 items-center">
+                <div class="space-y-8 reveal-text">
+                    <h2 class="font-serif text-5xl md:text-6xl text-white leading-tight">
+                        Redefining <br><span class="text-lux-gold italic">Boundaries</span>
+                    </h2>
+                    <div class="w-24 h-1 bg-gradient-to-r from-lux-gold to-transparent"></div>
+                    <p class="text-gray-400 font-light leading-relaxed text-lg">
+                        In a world of noise, we create silence. Our designs are not just visual; they are tactical. We strip away the unnecessary to reveal the pure essence of luxury.
+                    </p>
+                    <ul class="space-y-4 font-sans text-sm tracking-widest text-gray-300">
+                        <li class="flex items-center gap-4">
+                            <span class="text-lux-gold text-xl">◈</span> BESPOKE INTERFACE DESIGN
+                        </li>
+                        <li class="flex items-center gap-4">
+                            <span class="text-lux-gold text-xl">◈</span> IMMERSIVE 3D ENVIRONMENTS
+                        </li>
+                        <li class="flex items-center gap-4">
+                            <span class="text-lux-gold text-xl">◈</span> KINETIC TYPOGRAPHY
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Interactive Card Stack -->
+                <div class="relative h-[500px] w-full perspective-1000 group">
+                    <div class="absolute top-0 right-0 w-4/5 h-4/5 bg-gray-800 sharp-box border border-white/10 transform translate-x-4 translate-y-4 transition-transform duration-500 group-hover:translate-x-8 group-hover:translate-y-8"></div>
+                    <div class="absolute top-0 right-0 w-4/5 h-4/5 bg-gray-900 sharp-box border border-white/20 transform translate-x-2 translate-y-2 transition-transform duration-500 group-hover:translate-x-4 group-hover:translate-y-4"></div>
+                    <div class="absolute top-0 right-0 w-4/5 h-4/5 bg-[url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop')] bg-cover sharp-box border border-lux-gold/50 flex items-center justify-center overflow-hidden group-hover:scale-[1.02] transition-transform duration-500">
+                        <div class="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-colors duration-500"></div>
+                        <div class="relative z-10 p-8 text-center opacity-0 group-hover:opacity-100 transition-opacity duration-500 translate-y-4 group-hover:translate-y-0">
+                            <h3 class="font-serif text-3xl text-white mb-2">NOIR</h3>
+                            <p class="text-xs tracking-widest text-lux-gold">LIMITED EDITION</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- The Collection (Grid) -->
+    <section id="collection" class="py-32 bg-lux-void relative">
+        <!-- Background Texture -->
+        <div class="absolute inset-0 opacity-10" style="background-image: url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'0.4\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
+
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <div class="flex justify-between items-end mb-20">
+                <div>
+                    <h2 class="font-serif text-5xl md:text-6xl text-white mb-4">The <span class="text-gold-gradient">Collection</span></h2>
+                    <p class="text-gray-400 font-sans text-sm tracking-widest uppercase">Curated Masterpieces</p>
+                </div>
+                <div class="hidden md:block text-right">
+                    <p class="text-6xl font-serif text-white/10 font-bold">001</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Item 1 -->
+                <div class="lux-card bg-black p-1 group cursor-none">
+                    <div class="relative overflow-hidden aspect-[3/4]">
+                        <img src="https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2070&auto=format&fit=crop" alt="Abstract Gold" class="object-cover w-full h-full transition-transform duration-700 group-hover:scale-110 grayscale group-hover:grayscale-0">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-90"></div>
+                        <div class="absolute bottom-0 left-0 p-8 w-full">
+                            <div class="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                                <p class="text-lux-gold text-xs tracking-widest mb-2">SCULPTURE</p>
+                                <h3 class="font-serif text-2xl text-white mb-4">Golden Ratio</h3>
+                                <button class="text-white text-xs border-b border-lux-gold pb-1 hover:text-lux-gold transition-colors">View Details</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item 2 -->
+                <div class="lux-card bg-black p-1 group cursor-none mt-0 md:mt-12">
+                    <div class="relative overflow-hidden aspect-[3/4]">
+                        <img src="https://images.unsplash.com/photo-1614850523459-c2f4c699c52e?q=80&w=2070&auto=format&fit=crop" alt="Fluid Art" class="object-cover w-full h-full transition-transform duration-700 group-hover:scale-110 grayscale group-hover:grayscale-0">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-90"></div>
+                        <div class="absolute bottom-0 left-0 p-8 w-full">
+                            <div class="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                                <p class="text-lux-gold text-xs tracking-widest mb-2">FLUIDITY</p>
+                                <h3 class="font-serif text-2xl text-white mb-4">Liquid Void</h3>
+                                <button class="text-white text-xs border-b border-lux-gold pb-1 hover:text-lux-gold transition-colors">View Details</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item 3 -->
+                <div class="lux-card bg-black p-1 group cursor-none">
+                    <div class="relative overflow-hidden aspect-[3/4]">
+                        <img src="https://images.unsplash.com/photo-1605218427368-35b0f996d7e6?q=80&w=2070&auto=format&fit=crop" alt="Sharp Geometry" class="object-cover w-full h-full transition-transform duration-700 group-hover:scale-110 grayscale group-hover:grayscale-0">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-90"></div>
+                        <div class="absolute bottom-0 left-0 p-8 w-full">
+                            <div class="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                                <p class="text-lux-gold text-xs tracking-widest mb-2">ARCHITECTURE</p>
+                                <h3 class="font-serif text-2xl text-white mb-4">Brutalist Soul</h3>
+                                <button class="text-white text-xs border-b border-lux-gold pb-1 hover:text-lux-gold transition-colors">View Details</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Data Visualization / Bento Grid -->
+    <section class="py-32 bg-lux-black border-t border-white/5">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 grid-rows-2 gap-4 h-[800px] md:h-[600px]">
+                
+                <!-- Large Feature -->
+                <div class="md:col-span-2 md:row-span-2 relative group overflow-hidden sharp-box border border-white/10 bg-lux-void">
+                    <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1492571350019-22de08371fd3?q=80&w=2553&auto=format&fit=crop')] bg-cover bg-center opacity-40 group-hover:opacity-60 transition-opacity duration-700 grayscale group-hover:grayscale-0"></div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
+                    <div class="absolute bottom-0 p-10">
+                        <h3 class="font-serif text-4xl text-white mb-2">Kyoto Nights</h3>
+                        <p class="text-gray-300 font-light max-w-md">An immersive journey through the neon-lit streets of ancient futures.</p>
+                    </div>
+                </div>
+
+                <!-- Stats Box -->
+                <div class="md:col-span-1 md:row-span-1 bg-lux-gold text-black p-8 flex flex-col justify-between sharp-box-reverse">
+                    <div class="text-5xl font-serif font-bold counter" data-target="98">0</div>
+                    <div class="text-xs font-bold tracking-widest uppercase">Global Awards</div>
+                </div>
+
+                <!-- Text Box -->
+                <div class="md:col-span-1 md:row-span-1 border border-white/10 p-8 flex flex-col justify-center items-center text-center hover:bg-white/5 transition-colors">
+                    <div class="w-12 h-12 border border-lux-gold rounded-full flex items-center justify-center mb-4 text-lux-gold">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
+                        </svg>
+                    </div>
+                    <h4 class="font-serif text-xl">Growth</h4>
+                    <p class="text-xs text-gray-400 mt-2">YEAR OVER YEAR</p>
+                </div>
+
+                <!-- Wide Image -->
+                <div class="md:col-span-2 md:row-span-1 relative overflow-hidden sharp-box border border-white/10">
+                    <img src="https://images.unsplash.com/photo-1506784983877-45594efa4cbe?q=80&w=2068&auto=format&fit=crop" class="absolute inset-0 w-full h-full object-cover opacity-60 hover:scale-105 transition-transform duration-1000" alt="Clock">
+                    <div class="absolute inset-0 flex items-center justify-center bg-black/30">
+                        <span class="font-serif text-3xl italic text-white">Timeless</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA / Footer -->
+    <footer id="access" class="relative bg-black pt-32 pb-10 overflow-hidden">
+        <!-- Giant Watermark -->
+        <div class="absolute top-0 left-0 w-full text-center pointer-events-none select-none opacity-[0.03]">
+            <span class="font-serif text-[20vw] leading-none font-bold text-white">AURA</span>
+        </div>
+
+        <div class="max-w-4xl mx-auto px-6 text-center relative z-10">
+            <h2 class="font-serif text-5xl md:text-7xl text-white mb-8">Begin the <span class="glitch-text text-lux-gold cursor-pointer">Experience</span></h2>
+            <p class="text-gray-400 mb-12 font-light">Join the exclusive list. Access is limited.</p>
+            
+            <form class="flex flex-col md:flex-row gap-4 max-w-lg mx-auto mb-20" onsubmit="event.preventDefault(); alert('Welcome to the elite.');">
+                <input type="email" placeholder="Enter your email" class="flex-1 bg-white/5 border border-white/10 px-6 py-4 text-white focus:outline-none focus:border-lux-gold transition-colors sharp-box font-sans text-sm">
+                <button type="submit" class="bg-lux-gold text-black px-8 py-4 font-bold tracking-widest uppercase hover:bg-white transition-colors sharp-box hover-trigger">
+                    Request Access
+                </button>
+            </form>
+
+            <div class="border-t border-white/10 pt-10 flex flex-col md:flex-row justify-between items-center text-xs text-gray-500 font-sans tracking-widest">
+                <p>&copy; 2024 AURA INC.</p>
+                <div class="flex space-x-8 mt-4 md:mt-0">
+                    <a href="#" class="hover:text-lux-gold transition-colors hover-trigger">INSTAGRAM</a>
+                    <a href="#" class="hover:text-lux-gold transition-colors hover-trigger">TWITTER</a>
+                    <a href="#" class="hover:text-lux-gold transition-colors hover-trigger">DISCORD</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <style>
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+    </style>
+
+    <script>
+        // Loader Logic
+        window.addEventListener('load', () => {
+            const loaderBar = document.getElementById('loader-bar');
+            const loader = document.getElementById('loader');
+            
+            loaderBar.style.width = '100%';
+            
+            setTimeout(() => {
+                loader.style.opacity = '0';
+                setTimeout(() => {
+                    loader.style.display = 'none';
+                    initAnimations();
+                }, 800);
+            }, 1500);
+        });
+
+        // Custom Cursor Logic
+        const cursor = document.getElementById('cursor');
+        const hoverTriggers = document.querySelectorAll('.hover-trigger, a, button');
+
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
+        hoverTriggers.forEach(trigger => {
+            trigger.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
+            trigger.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
+        });
+
+        // WebGL Fluid Background (Simplified for performance and single file)
+        const canvas = document.getElementById('hero-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        let particles = [];
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.5;
+                this.vy = (Math.random() - 0.5) * 0.5;
+                this.size = Math.random() * 150 + 50;
+                this.color = `rgba(212, 175, 55, ${Math.random() * 0.05})`; // Gold tint
+            }
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                if (this.x < -this.size) this.x = width + this.size;
+                if (this.x > width + this.size) this.x = -this.size;
+                if (this.y < -this.size) this.y = height + this.size;
+                if (this.y > height + this.size) this.y = -this.size;
+            }
+            draw() {
+                ctx.beginPath();
+                let gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.size);
+                gradient.addColorStop(0, this.color);
+                gradient.addColorStop(1, 'rgba(0,0,0,0)');
+                ctx.fillStyle = gradient;
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < 20; i++) particles.push(new Particle());
+
+        function animateCanvas() {
+            ctx.clearRect(0, 0, width, height);
+            // Dark background
+            ctx.fillStyle = '#050505';
+            ctx.fillRect(0, 0, width, height);
+            
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animateCanvas);
+        }
+        animateCanvas();
+
+        // GSAP Animations
+        gsap.registerPlugin(ScrollTrigger);
+
+        function initAnimations() {
+            // Hero Animations
+            const tl = gsap.timeline();
+            tl.to("#hero-subtitle", { opacity: 1, y: 0, duration: 1, ease: "power3.out" })
+              .to("#hero-title", { opacity: 1, y: 0, duration: 1, ease: "power3.out" }, "-=0.6")
+              .to("#hero-desc", { opacity: 1, y: 0, duration: 1, ease: "power3.out" }, "-=0.6")
+              .to("#hero-cta", { opacity: 1, y: 0, duration: 1, ease: "power3.out" }, "-=0.6");
+
+            // Scroll Triggers
+            gsap.utils.toArray('.reveal-text').forEach(element => {
+                gsap.from(element, {
+                    scrollTrigger: {
+                        trigger: element,
+                        start: "top 80%",
+                        toggleActions: "play none none reverse"
+                    },
+                    y: 50,
+                    opacity: 0,
+                    duration: 1,
+                    ease: "power3.out"
+                });
+            });
+
+            // Counter Animation
+            const counters = document.querySelectorAll('.counter');
+            counters.forEach(counter => {
+                const target = +counter.getAttribute('data-target');
+                gsap.to(counter, {
+                    scrollTrigger: {
+                        trigger: counter,
+                        start: "top 85%"
+                    },
+                    innerHTML: target,
+                    duration: 2,
+                    snap: { innerHTML: 1 },
+                    ease: "power2.out"
+                });
+            });
+        }
+
+        // Navbar Scroll Effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('py-2');
+                navbar.classList.remove('py-4');
+            } else {
+                navbar.classList.add('py-4');
+                navbar.classList.remove('py-2');
+            }
+        });
+
+    </script>
+</body>
+</html>

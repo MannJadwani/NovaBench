@@ -1,0 +1,37 @@
+{
+  "id": "f5428278-8c65-4b7e-85fb-b08a16a3f588",
+  "createdAt": "2026-01-27T22:10:43.905Z",
+  "provider": "openrouter",
+  "model": "moonshotai/kimi-k2.5",
+  "benchmark": {
+    "id": "swiss-ui-landing",
+    "title": "Swiss UI - Landing Page",
+    "category": "Design Terms"
+  },
+  "latencyMs": 35054,
+  "tokenUsage": {
+    "prompt_tokens": 81,
+    "completion_tokens": 3799,
+    "total_tokens": 3880,
+    "cost": 0.004656,
+    "is_byok": false,
+    "prompt_tokens_details": {
+      "cached_tokens": 3,
+      "audio_tokens": 0
+    },
+    "cost_details": {
+      "upstream_inference_cost": 0.004656,
+      "upstream_inference_prompt_cost": 0.0000972,
+      "upstream_inference_completions_cost": 0.0045588
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 564,
+      "audio_tokens": 0
+    }
+  },
+  "params": {
+    "temperature": 1,
+    "maxTokens": null
+  },
+  "path": "runs/2026/01/28/f5428278-8c65-4b7e-85fb-b08a16a3f588"
+}

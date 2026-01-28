@@ -1,0 +1,375 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voxel World</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            font-family: 'Courier New', monospace;
+        }
+        #canvas {
+            display: block;
+        }
+        #crosshair {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 20px;
+            height: 20px;
+            border: 2px solid white;
+            pointer-events: none;
+        }
+        #inventory {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            padding: 10px;
+            border-radius: 5px;
+            display: flex;
+            gap: 10px;
+            pointer-events: none;
+        }
+        .block-type {
+            width: 40px;
+            height: 40px;
+            border: 3px solid transparent;
+        }
+        .block-type.selected {
+            border-color: white;
+        }
+    </style>
+</head>
+<body>
+    <div id="crosshair"></div>
+    <div id="inventory"></div>
+    <script>
+        const scene = new THREE.Scene();
+        scene.fog = new THREE.Fog(0x87ceeb, 10, 100);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true, canvas: document.createElement('canvas') });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.shadowMap.enabled = true;
+        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        document.body.appendChild(renderer.domElement);
+
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.set(0, 10, 0);
+
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+        scene.add(ambientLight);
+
+        const sunLight = new THREE.DirectionalLight(0xffdd99, 1);
+        sunLight.position.set(50, 100, 50);
+        sunLight.castShadow = true;
+        sunLight.shadow.mapSize.width = 2048;
+        sunLight.shadow.mapSize.height = 2048;
+        scene.add(sunLight);
+
+        const blockTypes = {
+            'grass': { color: 0x4a7023, top: 0x74b246 },
+            'dirt': { color: 0x8b4513 },
+            'stone': { color: 0x808080 },
+            'sand': { color: 0xf4e8b4 },
+            'leaves': { color: 0x2d4c1e },
+            'wood': { color: 0x8b4513, top: 0x694629 },
+            'glass': { color: 0x87ceeb, transparent: true, opacity: 0.5 }
+        };
+
+        const world = {};
+        const worldSize = 50;
+
+        function getChunkKey(x, z) {
+            return `${Math.floor(x / 16)},${Math.floor(z / 16)}`;
+        }
+
+        function getVoxel(x, y, z) {
+            const chunkKey = getChunkKey(x, z);
+            if (!world[chunkKey]) return 0;
+            return world[chunkKey][getVoxelIndex(x, y, z)] ?? 0;
+        }
+
+        function setVoxel(x, y, z, type) {
+            const chunkKey = getChunkKey(x, z);
+            if (!world[chunkKey]) world[chunkKey] = new Array(16 * 256 * 16).fill(0);
+            world[chunkKey][getVoxelIndex(x, y, z)] = type;
+        }
+
+        function getVoxelIndex(x, y, z) {
+            const chunkX = Math.floor(x) % 16;
+            const chunkZ = Math.floor(z) % 16;
+            return chunkX + (chunkZ * 16) + (y * 256);
+        }
+
+        function generateChunk(chunkX, chunkZ) {
+            const key = `${chunkX},${chunkZ}`;
+            if (world[key]) return;
+
+            const chunk = new Array(16 * 256 * 16).fill(0);
+
+            const offsetX = chunkX * 16;
+            const offsetZ = chunkZ * 16;
+
+            for (let x = 0; x < 16; x++) {
+                for (let z = 0; z < 16; z++) {
+                    const worldX = offsetX + x;
+                    const worldZ = offsetZ + z;
+                    const height = Math.floor(noise(worldX * 0.1, worldZ * 0.1) * 10) + 10;
+
+                    for (let y = 0; y < height; y++) {
+                        if (y === height - 1) {
+                            chunk[x + (z * 16) + (y * 256)] = 1; // grass
+                        } else if (y >= height - 3) {
+                            chunk[x + (z * 16) + (y * 256)] = 2; // dirt
+                        } else if (y < 5) {
+                            chunk[x + (z * 16) + (y * 256)] = 3; // stone
+                        }
+                    }
+                }
+            }
+
+            world[key] = chunk;
+        }
+
+        function noise(x, y) {
+            const floorX = Math.floor(x);
+            const floorY = Math.floor(y);
+            const fractX = x - floorX;
+            const fractY = y - floorY;
+            const v1 = perlin(floorX, floorY, 0);
+            const v2 = perlin(floorX + 1, floorY, 0);
+            const v3 = perlin(floorX, floorY + 1, 0);
+            const v4 = perlin(floorX + 1, floorY + 1, 0);
+            const i1 = lerp(v1, v2, fractX);
+            const i2 = lerp(v3, v4, fractX);
+            return lerp(i1, i2, fractY);
+        }
+
+        function perlin(x, y, z) {
+            const F = 0.5;
+            const G = 2;
+            x = x * G + 100;
+            y = y * G + 100;
+            z = z * G + 100;
+            const X = Math.floor(x) & 255;
+            const Y = Math.floor(y) & 255;
+            const Z = Math.floor(z) & 255;
+            x -= Math.floor(x);
+            y -= Math.floor(y);
+            z -= Math.floor(z);
+            const u = fade(x);
+            const v = fade(y);
+            const w = fade(z);
+            const A = p[X] + Y;
+            const AA = p[A] + Z;
+            const AB = p[A + 1] + Z;
+            const B = p[X + 1] + Y;
+            const BA = p[B] + Z;
+            const BB = p[B + 1] + Z;
+            return lerp(w, lerp(v, lerp(u, grad(p[AA], x, y, z), grad(p[BA], x - 1, y, z)), lerp(u, grad(p[AB], x, y - 1, z), grad(p[BB], x - 1, y - 1, z))), lerp(v, lerp(u, grad(p[AA + 1], x, y, z - 1), grad(p[BA + 1], x - 1, y, z - 1)), lerp(u, grad(p[AB + 1], x, y - 1, z - 1), grad(p[BB + 1], x - 1, y - 1, z - 1))));
+        }
+
+        function fade(t) {
+            return t * t * t * (t * (t * 6 - 15) + 10);
+        }
+
+        function lerp(t, a, b) {
+            return a + t * (b - a);
+        }
+
+        function grad(hash, x, y, z) {
+            const h = hash & 15;
+            const u = h < 8 ? x : y;
+            const v = h < 4 ? y : h === 12 || h === 14 ? x : z;
+            return ((h & 1) === 0 ? u : -u) + ((h & 2) === 0 ? v : -v);
+        }
+
+        const p = new Array(512);
+        const permutation = [151,160,137,91,90,15,131,13,201,95,96,53,194,233,7,225,140,36,103,30,69,142,8,99,37,240,21,10,23,190,6,148,247,120,234,75,0,26,197,62,94,252,219,203,117,35,11,32,57,177,33,88,237,149,56,87,174,20,125,136,171,168,68,175,74,165,71,134,139,48,27,166,77,146,158,231,83,111,229,122,60,211,133,230,220,105,92,41,55,46,245,40,244,102,143,54,65,25,63,161,1,216,80,73,209,76,132,187,208,89,18,169,200,196,135,130,116,188,159,86,164,100,109,198,173,186,3,64,52,217,226,250,124,123,5,202,38,147,118,126,255,82,85,212,207,206,59,227,47,16,58,17,182,189,28,42,223,183,170,213,119,248,152,2,44,154,163,70,221,153,101,155,167,43,172,9,129,22,39,253,19,98,108,110,79,113,224,232,178,185,112,104,218,246,97,228,251,34,242,193,238,210,144,12,191,179,162,241,81,51,145,235,249,14,239,107,49,192,214,31,181,199,106,157,184,84,204,176,115,121,50,45,127,4,150,254,138,236,205,93,222,114,67,29,24,72,243,141,128,195,78,66,215,61,156,180];
+        for (let i = 0; i < 256; i++) p[256 + i] = p[i] = permutation[i];
+
+        const voxelMeshes = {};
+        const chunkMeshes = {};
+
+        function updateChunksInView() {
+            const range = 4;
+            const playerChunkX = Math.floor(camera.position.x / 16);
+            const playerChunkZ = Math.floor(camera.position.z / 16);
+
+            for (let x = playerChunkX - range; x <= playerChunkX + range; x++) {
+                for (let z = playerChunkZ - range; z <= playerChunkZ + range; z++) {
+                    generateChunk(x, z);
+                    if (!chunkMeshes[`${x},${z}`]) createMeshForChunk(x, z);
+                }
+            }
+        }
+
+        function createMeshForChunk(chunkX, chunkZ) {
+            const key = `${chunkX},${chunkZ}`;
+            if (!world[key]) return;
+
+            const group = new THREE.Group();
+            const offsetX = chunkX * 16;
+            const offsetZ = chunkZ * 16;
+
+            for (let x = 0; x < 16; x++) {
+                for (let y = 0; y < 256; y++) {
+                    for (let z = 0; z < 16; z++) {
+                        const blockType = world[key][x + (z * 16) + (y * 256)];
+                        if (blockType > 0) {
+                            const worldX = offsetX + x;
+                            const worldY = y;
+                            const worldZ = offsetZ + z;
+
+                            if (shouldRenderBlock(worldX, worldY, worldZ, blockType)) {
+                                const mesh = createBlock(worldX, worldY, worldZ, blockType);
+                                group.add(mesh);
+                            }
+                        }
+                    }
+                }
+            }
+
+            scene.add(group);
+            chunkMeshes[key] = group;
+        }
+
+        function shouldRenderBlock(x, y, z, type) {
+            if (getVoxel(x + 1, y, z) === 0) return true;
+            if (getVoxel(x - 1, y, z) === 0) return true;
+            if (getVoxel(x, y + 1, z) === 0) return true;
+            if (getVoxel(x, y - 1, z) === 0) return true;
+            if (getVoxel(x, y, z + 1) === 0) return true;
+            if (getVoxel(x, y, z - 1) === 0) return true;
+            return false;
+        }
+
+        function createBlock(x, y, z, type) {
+            const geometry = new THREE.BoxGeometry(1, 1, 1);
+            const block = blockTypes[Object.keys(blockTypes)[type - 1]];
+            const material = new THREE.MeshLambertMaterial({
+                color: block.color,
+                transparent: block.transparent ?? false,
+                opacity: block.opacity ?? 1
+            });
+
+            const mesh = new THREE.Mesh(geometry, material);
+            mesh.position.set(x + 0.5, y + 0.5, z + 0.5);
+            mesh.castShadow = true;
+            mesh.receiveShadow = true;
+
+            return mesh;
+        }
+
+        let currentBlockType = 1;
+
+        function createCrosshair() {
+            const crosshair = document.createElement('div');
+            crosshair.id = 'crosshair';
+            document.body.appendChild(crosshair);
+        }
+
+        function createInventory() {
+            const inventory = document.createElement('div');
+            inventory.id = 'inventory';
+
+            Object.entries(blockTypes).forEach(([name, props], index) => {
+                const blockEl = document.createElement('div');
+                blockEl.className = 'block-type';
+                if (index === 0) blockEl.classList.add('selected');
+                blockEl.style.backgroundColor = `rgb(${Object.values(props.color).join(',')})`;
+                blockEl.onclick = () => selectBlockType(index + 1);
+                inventory.appendChild(blockEl);
+            });
+
+            document.body.appendChild(inventory);
+        }
+
+        function selectBlockType(type) {
+            currentBlockType = type;
+            const blocks = document.querySelectorAll('.block-type');
+            blocks.forEach(block => block.classList.remove('selected'));
+            blocks[type - 1].classList.add('selected');
+        }
+
+        const raycaster = new THREE.Raycaster();
+        const mouse = new THREE.Vector2();
+
+        function handleMouseDown(event) {
+            if (event.button === 0) destroyBlock();
+            if (event.button === 2) placeBlock();
+        }
+
+        function destroyBlock() {
+            raycaster.ray.origin.copy(camera.position);
+            raycaster.ray.direction.copy(camera.getWorldDirection(new THREE.Vector3()));
+            const intersections = raycaster.intersectObjects(scene.children.flatMap(child => child.children));
+            
+            if (intersections.length > 0) {
+                const voxel = intersections[0].object;
+                const position = voxel.position.toArray().map(Math.floor);
+                setVoxel(...position, 0);
+                voxel.parent.remove(voxel);
+            }
+        }
+
+        function placeBlock() {
+            raycaster.ray.origin.copy(camera.position);
+            raycaster.ray.direction.copy(camera.getWorldDirection(new THREE.Vector3()));
+            const intersections = raycaster.intersectObjects(scene.children.flatMap(child => child.children));
+
+            if (intersections.length > 0) {
+                const face = intersections[0].face.normal;
+                const position = intersections[0].point.toArray().map(Math.floor);
+                position[0] += face.x;
+                position[1] += face.y;
+                position[2] += face.z;
+
+                if (getVoxel(...position) === 0) {
+                    setVoxel(...position, currentBlockType);
+                    createMeshForChunk(Math.floor(position[0] / 16), Math.floor(position[2] / 16));
+                }
+            }
+        }
+
+        document.addEventListener('mousedown', handleMouseDown);
+        document.addEventListener('contextmenu', event => event.preventDefault());
+
+        let time = 0;
+
+        function animate() {
+            time += 0.01;
+
+            sunLight.position.set(
+                50 * Math.cos(time),
+                50 + 30 * Math.sin(time),
+                50 * Math.sin(time)
+            );
+
+            sunLight.color.setHSL((Math.sin(time) + 1) / 2, 0.5, 0.5);
+            ambientLight.intensity = 0.6 + 0.2 * Math.sin(time);
+
+            updateChunksInView();
+            renderer.render(scene, camera);
+            requestAnimationFrame(animate);
+        }
+
+        createCrosshair();
+        createInventory();
+        updateChunksInView();
+        animate();
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+</html>

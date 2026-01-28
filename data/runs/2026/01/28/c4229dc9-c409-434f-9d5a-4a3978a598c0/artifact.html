@@ -1,0 +1,244 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>International Style — Grid & Typography</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-primary: #ff3333;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        .swiss-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 1.5rem;
+        }
+        .hover-underline-animation {
+            display: inline-block;
+            position: relative;
+        }
+        .hover-underline-animation::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            transform: scaleX(0);
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: currentColor;
+            transform-origin: bottom right;
+            transition: transform 0.25s ease-out;
+        }
+        .hover-underline-animation:hover::after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+    </style>
+</head>
+<body class="bg-white text-neutral-900 selection:bg-red-600 selection:text-white">
+
+    <!-- Navigation -->
+    <nav class="w-full border-b border-neutral-900 py-6 px-6 lg:px-12 flex justify-between items-end sticky top-0 bg-white z-50">
+        <a href="#" class="text-2xl font-black tracking-tighter">GRID.SYS</a>
+        <div class="hidden md:flex gap-12 text-sm font-bold uppercase tracking-widest">
+            <a href="#philosophy" class="hover-underline-animation">Philosophy</a>
+            <a href="#work" class="hover-underline-animation">Selected Work</a>
+            <a href="#contact" class="hover-underline-animation">Contact</a>
+        </div>
+        <div class="md:hidden">
+            <button class="text-2xl focus:outline-none">≡</button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="w-full max-w-[1600px] mx-auto px-6 lg:px-12 pt-24 pb-32 lg:pt-48 lg:pb-64">
+        <div class="swiss-grid items-end">
+            <div class="col-span-12 lg:col-span-8">
+                <h1 class="text-6xl lg:text-[9rem] font-black leading-[0.85] tracking-tighter uppercase">
+                    Order <br> & <br> Clarity
+                </h1>
+            </div>
+            <div class="col-span-12 lg:col-span-4 flex flex-col justify-end mt-8 lg:mt-0 border-t lg:border-t-0 lg:border-l border-neutral-900 pt-6 lg:pl-12">
+                <p class="text-lg lg:text-xl font-light leading-relaxed max-w-md text-neutral-600">
+                    We embrace the objective, the factual, and the mathematical. Design is not about self-expression, but about clear communication.
+                </p>
+                <div class="mt-8">
+                    <a href="#work" class="group flex items-center gap-4 text-sm font-bold uppercase tracking-widest">
+                        <span>View Projects</span>
+                        <span class="block w-12 h-[2px] bg-neutral-900 group-hover:w-24 transition-all duration-300"></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- The Grid Visualization -->
+    <div class="w-full bg-neutral-900 text-white py-20 border-y border-neutral-900">
+        <div class="max-w-[1600px] mx-auto px-6 lg:px-12 swiss-grid">
+            <div class="col-span-12 lg:col-span-1 flex items-center justify-center">
+                <span class="text-4xl font-black italic text-red-600">01</span>
+            </div>
+            <div class="col-span-12 lg:col-span-5 pl-0 lg:pl-12 border-l border-neutral-700">
+                <h3 class="text-2xl font-bold mb-4 uppercase tracking-wide">Structure</h3>
+                <p class="font-light text-neutral-400 leading-relaxed">
+                    The grid system is an aid, not a guarantee. It permits a number of possible uses and each designer can look for a solution appropriate to his personal style.
+                </p>
+            </div>
+            <div class="col-span-12 lg:col-span-6 mt-12 lg:mt-0 flex items-center justify-end">
+                <div class="w-full aspect-square lg:aspect-[4/3] border border-neutral-700 p-4 relative">
+                    <!-- Abstract geometric composition -->
+                    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[60%] border border-white opacity-20"></div>
+                    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[40%] h-[40%] bg-red-600 mix-blend-difference"></div>
+                    <div class="absolute bottom-4 left-4 font-mono text-xs text-neutral-500">
+                        COORD: 45.23, -12.04
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Philosophy Section -->
+    <section id="philosophy" class="max-w-[1600px] mx-auto px-6 lg:px-12 py-32 swiss-grid">
+        <div class="col-span-12 lg:col-span-4 sticky top-32 self-start">
+            <h2 class="text-5xl lg:text-6xl font-black tracking-tighter leading-none">
+                The New <br> Typography
+            </h2>
+        </div>
+        <div class="col-span-12 lg:col-span-1 flex flex-col items-center pt-8 lg:pt-0">
+            <div class="w-px h-full bg-neutral-200"></div>
+        </div>
+        <div class="col-span-12 lg:col-span-7 pl-0 lg:pl-12 pt-12 lg:pt-0 flex flex-col gap-12">
+            <p class="text-2xl lg:text-4xl font-light leading-tight text-neutral-800">
+                First priority is given to the message. <span class="font-bold text-neutral-900">Clarity</span> must not be compromised by aesthetic considerations.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 border-t border-neutral-900 pt-8">
+                <div>
+                    <h4 class="text-sm font-bold uppercase tracking-widest text-red-600 mb-2">Asymmetry</h4>
+                    <p class="font-light text-neutral-600">
+                        Abandoning traditional symmetry allows for a more dynamic and expressive layout that better fits modern visual consumption.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="text-sm font-bold uppercase tracking-widest text-red-600 mb-2">Objective Photography</h4>
+                    <p class="font-light text-neutral-600">
+                        Images are used as factual elements, integrated into the grid rather than merely illustrating text.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Selected Work -->
+    <section id="work" class="bg-neutral-50 border-y border-neutral-200">
+        <div class="max-w-[1600px] mx-auto px-6 lg:px-12 py-24">
+            <div class="flex justify-between items-end mb-16">
+                <h3 class="text-sm font-bold uppercase tracking-widest">Selected Projects (2023–2024)</h3>
+                <div class="hidden md:block text-xs font-mono text-neutral-400">INDEX: 01–04</div>
+            </div>
+
+            <div class="swiss-grid">
+                <!-- Project 1 -->
+                <article class="col-span-12 lg:col-span-6 group cursor-pointer">
+                    <div class="aspect-[4/3] bg-neutral-200 mb-6 overflow-hidden relative">
+                        <div class="absolute inset-0 bg-neutral-800 flex items-center justify-center group-hover:scale-105 transition-transform duration-500">
+                            <span class="text-white text-[8rem] font-black opacity-20 group-hover:opacity-40 transition-opacity">Aa</span>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-baseline border-b border-neutral-300 pb-4 group-hover:border-black transition-colors">
+                        <h4 class="text-3xl font-bold tracking-tight">Museum für Gestaltung</h4>
+                        <span class="text-sm font-medium">Identity</span>
+                    </div>
+                </article>
+
+                <!-- Project 2 -->
+                <article class="col-span-12 lg:col-span-6 mt-12 lg:mt-0 group cursor-pointer">
+                    <div class="aspect-[4/3] bg-neutral-200 mb-6 overflow-hidden relative">
+                        <div class="absolute inset-0 bg-red-600 flex items-center justify-center group-hover:scale-105 transition-transform duration-500">
+                            <div class="w-32 h-32 border-4 border-white rotate-45"></div>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-baseline border-b border-neutral-300 pb-4 group-hover:border-black transition-colors">
+                        <h4 class="text-3xl font-bold tracking-tight"> Typo Journal 04</h4>
+                        <span class="text-sm font-medium">Editorial</span>
+                    </div>
+                </article>
+
+                <!-- Project 3 -->
+                <article class="col-span-12 lg:col-span-4 mt-12 lg:mt-24 group cursor-pointer">
+                    <div class="aspect-square bg-neutral-800 mb-6 relative overflow-hidden">
+                        <div class="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-black/50 to-transparent"></div>
+                        <div class="absolute bottom-6 left-6 text-white font-bold text-xl">Bauhaus Archive</div>
+                    </div>
+                    <div class="flex justify-between items-baseline border-b border-neutral-300 pb-4 group-hover:border-black transition-colors">
+                        <h4 class="text-2xl font-bold tracking-tight">Wayfinding</h4>
+                        <span class="text-sm font-medium">System</span>
+                    </div>
+                </article>
+
+                <!-- Project 4 -->
+                <article class="col-span-12 lg:col-span-8 mt-12 lg:mt-24 group cursor-pointer">
+                    <div class="aspect-[16/9] bg-neutral-200 mb-6 relative overflow-hidden flex items-center justify-center">
+                        <div class="grid grid-cols-4 gap-4 w-2/3 opacity-30">
+                            <div class="aspect-square bg-black"></div>
+                            <div class="aspect-square bg-black"></div>
+                            <div class="aspect-square bg-black"></div>
+                            <div class="aspect-square bg-black"></div>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-baseline border-b border-neutral-300 pb-4 group-hover:border-black transition-colors">
+                        <h4 class="text-2xl font-bold tracking-tight">Vitra Campus</h4>
+                        <span class="text-sm font-medium">Digital / Web</span>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer / Contact -->
+    <footer id="contact" class="bg-neutral-900 text-white pt-32 pb-12">
+        <div class="max-w-[1600px] mx-auto px-6 lg:px-12 swiss-grid border-b border-neutral-800 pb-32">
+            <div class="col-span-12 lg:col-span-8">
+                <h2 class="text-5xl lg:text-[10rem] font-black leading-[0.85] tracking-tighter mb-8">
+                    START A <br> PROJECT.
+                </h2>
+                <a href="mailto:hello@grid.sys" class="text-2xl lg:text-4xl font-light hover:text-red-500 transition-colors underline decoration-1 underline-offset-8">
+                    hello@grid.sys
+                </a>
+            </div>
+            <div class="col-span-12 lg:col-span-4 flex flex-col justify-between mt-16 lg:mt-0 pt-8 lg:pt-0 border-l lg:border-l border-t lg:border-t border-neutral-800 lg:pl-12">
+                
+                <div class="mb-12">
+                    <h4 class="text-sm font-bold uppercase tracking-widest text-neutral-500 mb-6">Socials</h4>
+                    <ul class="space-y-4 font-medium text-lg">
+                        <li><a href="#" class="hover:text-red-500 transition-colors">Instagram</a></li>
+                        <li><a href="#" class="hover:text-red-500 transition-colors">Are.na</a></li>
+                        <li><a href="#" class="hover:text-red-500 transition-colors">LinkedIn</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-sm font-bold uppercase tracking-widest text-neutral-500 mb-6">Location</h4>
+                    <p class="font-light text-xl">
+                        Bahnhofstrasse 42<br>
+                        8001 Zürich<br>
+                        Switzerland
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="max-w-[1600px] mx-auto px-6 lg:px-12 pt-12 flex flex-col md:flex-row justify-between items-center text-neutral-500 text-xs font-mono uppercase tracking-widest">
+            <p>&copy; 2024 Grid Systems Inc.</p>
+            <p>Designed with Objective Logic</p>
+        </div>
+    </footer>
+
+</body>
+</html>

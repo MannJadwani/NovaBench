@@ -1,0 +1,37 @@
+{
+  "id": "81c5c880-7678-49ab-b07a-a84d53d0a9fb",
+  "createdAt": "2026-01-27T23:35:30.569Z",
+  "provider": "openrouter",
+  "model": "arcee-ai/trinity-large-preview:free",
+  "benchmark": {
+    "id": "glassmorphic-landing",
+    "title": "Glassmorphic UI - Landing Page",
+    "category": "Design Terms"
+  },
+  "latencyMs": 9542,
+  "tokenUsage": {
+    "prompt_tokens": 80,
+    "completion_tokens": 1042,
+    "total_tokens": 1122,
+    "cost": 0,
+    "is_byok": false,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "audio_tokens": 0
+    },
+    "cost_details": {
+      "upstream_inference_cost": 0,
+      "upstream_inference_prompt_cost": 0,
+      "upstream_inference_completions_cost": 0
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 0,
+      "audio_tokens": 0
+    }
+  },
+  "params": {
+    "temperature": 1,
+    "maxTokens": null
+  },
+  "path": "runs/2026/01/28/81c5c880-7678-49ab-b07a-a84d53d0a9fb"
+}

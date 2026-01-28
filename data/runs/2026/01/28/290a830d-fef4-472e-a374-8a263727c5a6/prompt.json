@@ -1,0 +1,12 @@
+{
+  "prompt": "Create a Swiss/International style landing page. Use a clean 12-column grid, strong typography, minimal palette, and purposeful white space. Output a single HTML file with Tailwind CSS classes.\n\nReturn only HTML. Do not wrap in markdown. Use Tailwind CSS classes.",
+  "params": {
+    "temperature": 1,
+    "maxTokens": null
+  },
+  "benchmark": {
+    "id": "swiss-ui-landing",
+    "title": "Swiss UI - Landing Page",
+    "category": "Design Terms"
+  }
+}

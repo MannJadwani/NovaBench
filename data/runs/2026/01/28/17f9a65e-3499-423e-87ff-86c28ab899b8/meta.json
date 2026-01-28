@@ -1,0 +1,26 @@
+{
+  "id": "17f9a65e-3499-423e-87ff-86c28ab899b8",
+  "createdAt": "2026-01-27T21:03:22.257Z",
+  "provider": "minimax",
+  "model": "MiniMax-M2.1",
+  "benchmark": {
+    "id": "swiss-ui-landing",
+    "title": "Swiss UI - Landing Page",
+    "category": "Design Terms"
+  },
+  "latencyMs": 70604,
+  "tokenUsage": {
+    "total_tokens": 5931,
+    "total_characters": 0,
+    "prompt_tokens": 83,
+    "completion_tokens": 5848,
+    "completion_tokens_details": {
+      "reasoning_tokens": 3099
+    }
+  },
+  "params": {
+    "temperature": 1,
+    "maxTokens": null
+  },
+  "path": "runs/2026/01/28/17f9a65e-3499-423e-87ff-86c28ab899b8"
+}

@@ -1,0 +1,37 @@
+{
+  "id": "f410b35c-7f82-45a8-80f6-429651e42ab8",
+  "createdAt": "2026-01-27T23:37:32.960Z",
+  "provider": "openrouter",
+  "model": "arcee-ai/trinity-large-preview:free",
+  "benchmark": {
+    "id": "premium-gradients",
+    "title": "Sharp Premium & Rich Gradients",
+    "category": "Design Terms"
+  },
+  "latencyMs": 39181,
+  "tokenUsage": {
+    "prompt_tokens": 76,
+    "completion_tokens": 3674,
+    "total_tokens": 3750,
+    "cost": 0,
+    "is_byok": false,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "audio_tokens": 0
+    },
+    "cost_details": {
+      "upstream_inference_cost": 0,
+      "upstream_inference_prompt_cost": 0,
+      "upstream_inference_completions_cost": 0
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 0,
+      "audio_tokens": 0
+    }
+  },
+  "params": {
+    "temperature": 1,
+    "maxTokens": null
+  },
+  "path": "runs/2026/01/28/f410b35c-7f82-45a8-80f6-429651e42ab8"
+}

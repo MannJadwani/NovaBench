@@ -1,0 +1,18 @@
+{
+  "id": "a3b4d465-d985-4d53-a8cb-c06d7f34e7aa",
+  "createdAt": "2026-01-27T21:39:32.345Z",
+  "provider": "zai",
+  "model": "glm-4.5",
+  "benchmark": {
+    "id": "gta-web-game",
+    "title": "GTA Web Game",
+    "category": "3D"
+  },
+  "latencyMs": 100408,
+  "tokenUsage": null,
+  "params": {
+    "temperature": 1,
+    "maxTokens": null
+  },
+  "path": "runs/2026/01/28/a3b4d465-d985-4d53-a8cb-c06d7f34e7aa"
+}

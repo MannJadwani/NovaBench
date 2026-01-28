@@ -1,0 +1,18 @@
+{
+  "id": "829cc813-515c-4ece-ae71-dd91a2c788fd",
+  "createdAt": "2026-01-27T21:30:14.563Z",
+  "provider": "zai",
+  "model": "glm-4.5",
+  "benchmark": {
+    "id": "amazing-design",
+    "title": "Amazing Design",
+    "category": "Design Terms"
+  },
+  "latencyMs": 120119,
+  "tokenUsage": null,
+  "params": {
+    "temperature": 1,
+    "maxTokens": null
+  },
+  "path": "runs/2026/01/28/829cc813-515c-4ece-ae71-dd91a2c788fd"
+}

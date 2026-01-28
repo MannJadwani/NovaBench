@@ -1,0 +1,18 @@
+{
+  "id": "8f18a008-3a17-456f-a38a-af147a0faaca",
+  "createdAt": "2026-01-27T21:34:38.865Z",
+  "provider": "zai",
+  "model": "glm-4.5",
+  "benchmark": {
+    "id": "minecraft-clone",
+    "title": "Minecraft Clone",
+    "category": "3D"
+  },
+  "latencyMs": 90620,
+  "tokenUsage": null,
+  "params": {
+    "temperature": 1,
+    "maxTokens": null
+  },
+  "path": "runs/2026/01/28/8f18a008-3a17-456f-a38a-af147a0faaca"
+}

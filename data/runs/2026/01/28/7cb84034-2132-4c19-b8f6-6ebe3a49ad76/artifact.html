@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lumina Glass | Next Gen Interface</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Outfit', sans-serif;
+            overflow-x: hidden;
+        }
+        
+        /* Dynamic Background */
+        .blob {
+            position: absolute;
+            filter: blur(80px);
+            z-index: -1;
+            opacity: 0.6;
+            animation: float 10s infinite ease-in-out alternate;
+        }
+        .blob-1 { top: -10%; left: -10%; width: 500px; height: 500px; background: #8b5cf6; animation-delay: 0s; }
+        .blob-2 { bottom: -10%; right: -10%; width: 600px; height: 600px; background: #ec4899; animation-delay: -5s; }
+        .blob-3 { top: 40%; left: 40%; width: 400px; height: 400px; background: #3b82f6; animation-delay: -2s; }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(30px, 50px) scale(1.1); }
+        }
+
+        /* Glass Utilities */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .glass-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .glass-input {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        .glass-input:focus {
+            background: rgba(0, 0, 0, 0.4);
+            border-color: rgba(255, 255, 255, 0.4);
+            outline: none;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.4); }
+
+        /* Text Gradients */
+        .text-gradient {
+            background: linear-gradient(to right, #c084fc, #f472b6, #60a5fa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-white min-h-screen relative selection:bg-pink-500 selection:text-white">
+
+    <!-- Background Elements -->
+    <div class="fixed inset-0 z-[-2] bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900"></div>
+    <div class="blob blob-1 rounded-full"></div>
+    <div class="blob blob-2 rounded-full"></div>
+    <div class="blob blob-3 rounded-full"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 top-0 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-6 py-4">
+            <div class="glass-panel rounded-2xl px-6 py-3 flex justify-between items-center">
+                <div class="flex items-center gap-2 cursor-pointer group">
+                    <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-pink-500 to-violet-500 flex items-center justify-center group-hover:rotate-12 transition-transform">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                    </div>
+                    <span class="text-xl font-bold tracking-wide">Lumina</span>
+                </div>
+                
+                <div class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-300">
+                    <a href="#features" class="hover:text-white transition-colors relative group">
+                        Features
+                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-pink-500 transition-all group-hover:w-full"></span>
+                    </a>
+                    <a href="#analytics" class="hover:text-white transition-colors relative group">
+                        Analytics
+                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-pink-500 transition-all group-hover:w-full"></span>
+                    </a>
+                    <a href="#pricing" class="hover:text-white transition-colors relative group">
+                        Pricing
+                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-pink-500 transition-all group-hover:w-full"></span>
+                    </a>
+                </div>
+
+                <div class="flex items-center gap-4">
+                    <button class="hidden md:block text-sm font-medium hover:text-white text-slate-300 transition-colors">Log in</button>
+                    <button class="px-5 py-2 rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white text-sm font-bold shadow-lg shadow-indigo-500/30 transition-all hover:scale-105 active:scale-95">
+                        Get Started
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="pt-40 pb-20 px-6 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
+            
+            <!-- Hero Content -->
+            <div class="space-y-8 z-10" data-animate>
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full glass-panel border-white/10 text-xs font-semibold text-pink-300">
+                    <span class="w-2 h-2 rounded-full bg-pink-400 animate-pulse"></span>
+                    v2.0 is now live
+                </div>
+                
+                <h1 class="text-5xl md:text-7xl font-bold leading-tight">
+                    See the world through <br/>
+                    <span class="text-gradient">frosted glass.</span>
+                </h1>
+                
+                <p class="text-lg text-slate-300 max-w-lg leading-relaxed">
+                    Experience the next generation of UI design. Crystal clear interfaces, transparent layers, and a depth that brings your data to life.
+                </p>
+
+                <div class="flex flex-wrap gap-4">
+                    <button class="px-8 py-4 rounded-2xl bg-white text-slate-900 font-bold hover:bg-slate-100 transition-all hover:shadow-[0_0_40px_-10px_rgba(255,255,255,0.5)] active:scale-95">
+                        Start Building
+                    </button>
+                    <button class="px-8 py-4 rounded-2xl glass-panel font-bold hover:bg-white/10 transition-all active:scale-95 flex items-center gap-2 group">
+                        <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        View Demo
+                    </button>
+                </div>
+
+                <div class="flex items-center gap-4 pt-4">
+                    <div class="flex -space-x-3">
+                        <img src="https://i.pravatar.cc/100?img=33" class="w-10 h-10 rounded-full border-2 border-slate-900" alt="User">
+                        <img src="https://i.pravatar.cc/100?img=47" class="w-10 h-10 rounded-full border-2 border-slate-900" alt="User">
+                        <img src="https://i.pravatar.cc/100?img=12" class="w-10 h-10 rounded-full border-2 border-slate-900" alt="User">
+                        <div class="w-10 h-10 rounded-full border-2 border-slate-900 bg-slate-800 flex items-center justify-center text-xs font-bold">+2k</div>
+                    </div>
+                    <div class="text-sm text-slate-400">
+                        <span class="text-white font-semibold">2,000+</span> designers joined this week
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hero Visual (3D Card) -->
+            <div class="relative perspective-1000" id="hero-card-container">
+                <div class="glass-panel rounded-3xl p-6 transform transition-transform duration-100 ease-out" id="hero-card">
+                    <!-- Fake Browser Header -->
+                    <div class="flex items-center gap-2 mb-6 border-b border-white/10 pb-4">
+                        <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                        <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                        <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                        <div class="ml-4 px-3 py-1 rounded-md bg-white/5 text-xs text-slate-400 flex-1 text-center font-mono">lumina.app/dashboard</div>
+                    </div>
+
+                    <!-- Dashboard Content -->
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-end">
+                            <div>
+                                <div class="text-slate-400 text-sm mb-1">Total Revenue</div>
+                                <div class="text-3xl font-bold text-white">$48,290.00</div>
+                            </div>
+                            <div class="px-2 py-1 rounded bg-green-500/20 text-green-400 text-xs font-bold">+12.5%</div>
+                        </div>
+
+                        <!-- CSS Chart -->
+                        <div class="flex items-end gap-2 h-32 mt-4 pb-2 border-b border-white/10">
+                            <div class="w-1/7 bg-indigo-500/30 rounded-t-sm h-[40%] hover:h-[45%] transition-all cursor-pointer relative group">
+                                <div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">$12k</div>
+                            </div>
+                            <div class="w-1/7 bg-indigo-500/40 rounded-t-sm h-[60%] hover:h-[65%] transition-all cursor-pointer"></div>
+                            <div class="w-1/7 bg-indigo-500/50 rounded-t-sm h-[45%] hover:h-[50%] transition-all cursor-pointer"></div>
+                            <div class="w-1/7 bg-indigo-500/60 rounded-t-sm h-[80%] hover:h-[85%] transition-all cursor-pointer"></div>
+                            <div class="w-1/7 bg-indigo-500/70 rounded-t-sm h-[55%] hover:h-[60%] transition-all cursor-pointer"></div>
+                            <div class="w-1/7 bg-indigo-500/80 rounded-t-sm h-[90%] hover:h-[95%] transition-all cursor-pointer relative group">
+                                <div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">$45k</div>
+                            </div>
+                            <div class="w-1/7 bg-gradient-to-t from-pink-500 to-violet-500 rounded-t-sm h-[75%] hover:h-[80%] transition-all cursor-pointer shadow-[0_0_20px_rgba(168,85,247,0.4)]"></div>
+                        </div>
+                        
+                        <!-- Fake List -->
+                        <div class="space-y-3 pt-2">
+                            <div class="flex justify-between items-center text-sm">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-8 h-8 rounded bg-white/5 flex items-center justify-center">🎨</div>
+                                    <span class="text-slate-200">Design Assets</span>
+                                </div>
+                                <span class="text-slate-400">-$2,400</span>
+                            </div>
+                            <div class="flex justify-between items-center text-sm">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-8 h-8 rounded bg-white/5 flex items-center justify-center">⚡</div>
+                                    <span class="text-slate-200">Electricity</span>
+                                </div>
+                                <span class="text-slate-400">-$120</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Decorative Elements -->
+                <div class="absolute -top-10 -right-10 w-24 h-24 bg-pink-500 rounded-full blur-[60px] opacity-40"></div>
+                <div class="absolute -bottom-10 -left-10 w-32 h-32 bg-blue-500 rounded-full blur-[60px] opacity-40"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Grid -->
+    <section id="features" class="py-20 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Why go <span class="italic text-violet-400">Glass</span>?</h2>
+                <p class="text-slate-400 max-w-2xl mx-auto">Glassmorphism creates a sense of depth and hierarchy, allowing users to maintain context while interacting with overlaying elements.</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Feature 1 -->
+                <div class="glass-card rounded-2xl p-8 relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-blue-500/20 rounded-full blur-3xl -mr-16 -mt-16 transition-all group-hover:bg-blue-500/30"></div>
+                    <div class="w-12 h-12 rounded-xl bg-blue-500/20 text-blue-300 flex items-center justify-center mb-6">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.384-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-white">Blending Modes</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">Seamlessly integrate with any background. Our adaptive components react to the colors behind them.</p>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="glass-card rounded-2xl p-8 relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-pink-500/20 rounded-full blur-3xl -mr-16 -mt-16 transition-all group-hover:bg-pink-500/30"></div>
+                    <div class="w-12 h-12 rounded-xl bg-pink-500/20 text-pink-300 flex items-center justify-center mb-6">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-white">Frosted Security</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">Data privacy never looked so good. Sensitive information is obscured by the aesthetic blur, not just CSS.</p>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="glass-card rounded-2xl p-8 relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-green-500/20 rounded-full blur-3xl -mr-16 -mt-16 transition-all group-hover:bg-green-500/30"></div>
+                    <div class="w-12 h-12 rounded-xl bg-green-500/20 text-green-300 flex items-center justify-center mb-6">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-white">Lightning Fast</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">Optimized rendering layers ensure that even with heavy blur effects, your app runs at 60fps.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Stats Section -->
+    <section id="analytics" class="py-20 px-6">
+        <div class="max-w-5xl mx-auto glass-panel rounded-3xl p-8 md:p-12 border border-white/10 relative overflow-hidden">
+            <!-- Background Glow -->
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-gradient-to-r from-violet-500/10 to-fuchsia-500/10 blur-3xl pointer-events-none"></div>
+
+            <div class="grid md:grid-cols-2 gap-12 items-center relative z-10">
+                <div>
+                    <h2 class="text-3xl font-bold mb-6">Real-time Insights</h2>
+                    <p class="text-slate-300 mb-8">Interact with the slider to see how our glassmorphic interface adapts to data density and user interaction in real-time.</p>
+                    
+                    <div class="space-y-6">
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-sm font-medium text-slate-300">System Load</span>
+                                <span class="text-sm font-bold text-violet-300" id="load-val">45%</span>
+                            </div>
+                            <input type="range" min="0" max="100" value="45" class="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer accent-violet-500 hover:accent-violet-400" id="load-slider">
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-sm font-medium text-slate-300">Active Users</span>
+                                <span class="text-sm font-bold text-pink-300" id="user-val">1,240</span>
+                            </div>
+                            <div class="h-2 bg-white/10 rounded-full overflow-hidden">
+                                <div class="h-full bg-gradient-to-r from-pink-500 to-violet-500 w-[60%] transition-all duration-500" id="user-bar"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dynamic Visualizer -->
+                <div class="glass-card rounded-2xl p-6 flex flex-col items-center justify-center h-64 relative">
+                    <div class="relative w-32 h-32">
+                        <svg class="w-full h-full transform -rotate-90">
+                            <circle cx="64" cy="64" r="60" stroke="rgba(255,255,255,0.1)" stroke-width="8" fill="none"></circle>
+                            <circle id="progress-ring" cx="64" cy="64" r="60" stroke="#a78bfa" stroke-width="8" fill="none" stroke-dasharray="377" stroke-dashoffset="207" stroke-linecap="round" class="transition-all duration-500"></circle>
+                        </svg>
+                        <div class="absolute inset-0 flex items-center justify-center flex-col">
+                            <span class="text-3xl font-bold" id="center-val">45%</span>
+                            <span class="text-xs text-slate-400">Efficiency</span>
+                        </div>
+                    </div>
+                    <div class="mt-4 text-center">
+                        <div class="text-sm text-slate-400">Status</div>
+                        <div class="text-green-400 font-semibold flex items-center gap-1 justify-center">
+                            <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span> Optimal
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing -->
+    <section id="pricing" class="py-20 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Transparent Pricing</h2>
+                <p class="text-slate-400">No hidden fees. Just pure glass.</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8 items-center">
+                <!-- Basic -->
+                <div class="glass-card rounded-3xl p-8 hover:border-white/20">
+                    <h3 class="text-xl font-semibold text-slate-300">Starter</h3>
+                    <div class="my-4">
+                        <span class="text-4xl font-bold">$0</span><span class="text-slate-400">/mo</span>
+                    </div>
+                    <p class="text-slate-400 text-sm mb-6">Perfect for hobby projects and learning the glass style.</p>
+                    <ul class="space-y-3 mb-8">
+                        <li class="flex items-center gap-3 text-sm text-slate-300"><svg class="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> 3 Projects</li>
+                        <li class="flex items-center gap-3 text-sm text-slate-300"><svg class="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Community Support</li>
+                        <li class="flex items-center gap-3 text-sm text-slate-300"><svg class="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Basic Analytics</li>
+                    </ul>
+                    <button class="w-full py-3 rounded-xl border border-white/20 hover:bg-white/5 transition-all font-medium">Choose Starter</button>
+                </div>
+
+                <!-- Pro (Highlighted) -->
+                <div class="glass-card rounded-3xl p-8 border-pink-500/50 bg-gradient-to-b from-white/10 to-transparent transform scale-105 shadow-2xl shadow-purple-900/50 relative z-10">
+                    <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-pink-500 to-violet-500 px-4 py-1 rounded-full text-xs font-bold uppercase tracking-wider shadow-lg">Most Popular</div>
+                    <h3 class="text-xl font-semibold text-white">Pro Glass</h3>
+                    <div class="my-4">
+                        <span class="text-4xl font-bold">$19</span><span class="text-slate-400">/mo</span>
+                    </div>
+                    <p class="text-slate-300 text-sm mb-6">For serious developers who need that premium frosted look.</p>
+                    <ul class="space-y-3 mb-8">
+                        <li class="flex items-center gap-3 text-sm text-white"><svg class="w-4 h-4 text-pink-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Unlimited Projects</li>
+                        <li class="flex items-center gap-3 text-sm text-white"><svg class="w-4 h-4 text-pink-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Priority Support</li>
+                        <li class="flex items-center gap-3 text-sm text-white"><svg class="w-4 h-4 text-pink-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Advanced Blur Effects</li>
+                        <li class="flex items-center gap-3 text-sm text-white"><svg class="w-4 h-4 text-pink-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Team Collaboration</li>
+                    </ul>
+                    <button class="w-full py-3 rounded-xl bg-white text-slate-900 font-bold hover:bg-slate-100 transition-all shadow-lg shadow-white/10">Get Pro</button>
+                </div>
+
+                <!-- Enterprise -->
+                <div class="glass-card rounded-3xl p-8 hover:border-white/20">
+                    <h3 class="text-xl font-semibold text-slate-300">Enterprise</h3>
+                    <div class="my-4">
+                        <span class="text-4xl font-bold">$99</span><span class="text-slate-400">/mo</span>
+                    </div>
+                    <p class="text-slate-400 text-sm mb-6">Dedicated infrastructure for massive scale glassmorphism.</p>
+                    <ul class="space-y-3 mb-8">
+                        <li class="flex items-center gap-3 text-sm text-slate-300"><svg class="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Custom Domain</li>
+                        <li class="flex items-center gap-3 text-sm text-slate-300"><svg class="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> SLA Guarantee</li>
+                        <li class="flex items-center gap-3 text-sm text-slate-300"><svg class="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Dedicated Manager</li>
+                    </ul>
+                    <button class="w-full py-3 rounded-xl border border-white/20 hover:bg-white/5 transition-all font-medium">Contact Sales</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 px-6 border-t border-white/5 bg-slate-900/50 backdrop-blur-xl mt-12">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex items-center gap-2">
+                <div class="w-6 h-6 rounded bg-gradient-to-tr from-pink-500 to-violet-500"></div>
+                <span class="font-bold text-lg">Lumina</span>
+            </div>
+            <div class="text-slate-500 text-sm">
+                &copy; 2023 Lumina Glass. All rights reserved.
+            </div>
+            <div class="flex gap-6">
+                <a href="#" class="text-slate-400 hover:text-white transition-colors"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/></svg></a>
+                <a href="#" class="text-slate-400 hover:text-white transition-colors"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.072 3.252.158 5.838 2.726 6.026 6.026.06 1.265.072 1.645.072 4.85 0 3.204-.012 3.584-.072 4.85-.158 3.252-2.726 5.838-6.026 6.026-1.265.06-1.645.072-4.85.072-3.204 0-3.584-.012-4.85-.072-3.252-.158-5.838-2.726-6.026-6.026-.06-1.265-.072-1.645-.072-4.85 0-3.204.012-3.584.072-4.85.158-3.252 2.726-5.838 6.026-6.026 1.265-.06 1.645-.072 4.85-.072zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 3D Tilt Effect for Hero Card
+        const heroCard = document.getElementById('hero-card');
+        const container = document.getElementById('hero-card-container');
+
+        container.addEventListener('mousemove', (e) => {
+            const rect = container.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            
+            const rotateX = ((y - centerY) / centerY) * -10; // Max rotation deg
+            const rotateY = ((x - centerX) / centerX) * 10;
+
+            heroCard.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+        });
+
+        container.addEventListener('mouseleave', () => {
+            heroCard.style.transform = `rotateX(0deg) rotateY(0deg)`;
+        });
+
+        // Interactive Stats Logic
+        const loadSlider = document.getElementById('load-slider');
+        const loadVal = document.getElementById('load-val');
+        const centerVal = document.getElementById('center-val');
+        const progressRing = document.getElementById('progress-ring');
+        const userBar = document.getElementById('user-bar');
+        const userVal = document.getElementById('user-val');
+
+        // Circumference = 2 * PI * 60 ≈ 377
+        const circumference = 377;
+
+        loadSlider.addEventListener('input', (e) => {
+            const val = e.target.value;
+            loadVal.innerText = `${val}%`;
+            centerVal.innerText = `${val}%`;
+            
+            // Update Ring
+            const offset = circumference - (val / 100) * circumference;
+            progressRing.style.strokeDashoffset = offset;
+            
+            // Color change based on value
+            if(val < 50) {
+                progressRing.style.stroke = '#a78bfa'; // violet
+            } else if (val < 80) {
+                progressRing.style.stroke = '#f472b6'; // pink
+            } else {
+                progressRing.style.stroke = '#ef4444'; // red
+            }
+
+            // Randomize user bar slightly for effect
+            const randomWidth = Math.min(100, Math.max(10, val * 0.8 + Math.random() * 20));
+            userBar.style.width = `${randomWidth}%`;
+            userVal.innerText = `${Math.floor(val * 27.5)}`;
+        });
+
+        // Navbar Scroll Effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 20) {
+                navbar.classList.add('py-2');
+                navbar.classList.remove('py-4');
+            } else {
+                navbar.classList.add('py-4');
+                navbar.classList.remove('py-2');
+            }
+        });
+    </script>
+</body>
+</html>

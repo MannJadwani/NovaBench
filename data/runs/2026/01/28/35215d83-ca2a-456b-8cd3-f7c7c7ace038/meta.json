@@ -1,0 +1,37 @@
+{
+  "id": "35215d83-ca2a-456b-8cd3-f7c7c7ace038",
+  "createdAt": "2026-01-27T22:21:17.996Z",
+  "provider": "openrouter",
+  "model": "moonshotai/kimi-k2.5",
+  "benchmark": {
+    "id": "soft-ui-landing",
+    "title": "Soft UI - Landing Page",
+    "category": "Design Terms"
+  },
+  "latencyMs": 105829,
+  "tokenUsage": {
+    "prompt_tokens": 70,
+    "completion_tokens": 7562,
+    "total_tokens": 7632,
+    "cost": 0.022728,
+    "is_byok": false,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "audio_tokens": 0
+    },
+    "cost_details": {
+      "upstream_inference_cost": 0.022728,
+      "upstream_inference_prompt_cost": 0.000042,
+      "upstream_inference_completions_cost": 0.022686
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 591,
+      "audio_tokens": 0
+    }
+  },
+  "params": {
+    "temperature": 1,
+    "maxTokens": null
+  },
+  "path": "runs/2026/01/28/35215d83-ca2a-456b-8cd3-f7c7c7ace038"
+}

@@ -1,0 +1,12 @@
+{
+  "prompt": "Build a professional video editing UI with multi-track timeline, drag-and-drop clips, preview panel, media library, effects/transitions, keyframe controls, audio waveform visualization, and export settings. Output HTML + JS.\n\nReturn only HTML. Do not wrap in markdown. Use Tailwind CSS classes.",
+  "params": {
+    "temperature": 1,
+    "maxTokens": null
+  },
+  "benchmark": {
+    "id": "video-editor",
+    "title": "Video Editor Interface",
+    "category": "Complexity of UI"
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "id": "b0ac5bc3-1986-4771-a875-c0fe2e951123",
+  "createdAt": "2026-01-27T23:42:06.887Z",
+  "provider": "openrouter",
+  "model": "arcee-ai/trinity-large-preview:free",
+  "benchmark": {
+    "id": "earth-globe",
+    "title": "3D Earth Model",
+    "category": "3D"
+  },
+  "latencyMs": 26275,
+  "tokenUsage": {
+    "prompt_tokens": 90,
+    "completion_tokens": 3426,
+    "total_tokens": 3516,
+    "cost": 0,
+    "is_byok": false,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "audio_tokens": 0
+    },
+    "cost_details": {
+      "upstream_inference_cost": 0,
+      "upstream_inference_prompt_cost": 0,
+      "upstream_inference_completions_cost": 0
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 0,
+      "audio_tokens": 0
+    }
+  },
+  "params": {
+    "temperature": 1,
+    "maxTokens": null
+  },
+  "path": "runs/2026/01/28/b0ac5bc3-1986-4771-a875-c0fe2e951123"
+}

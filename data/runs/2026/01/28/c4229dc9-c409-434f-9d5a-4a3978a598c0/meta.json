@@ -1,0 +1,18 @@
+{
+  "id": "c4229dc9-c409-434f-9d5a-4a3978a598c0",
+  "createdAt": "2026-01-27T21:09:30.932Z",
+  "provider": "zai",
+  "model": "glm-4.7",
+  "benchmark": {
+    "id": "swiss-ui-landing",
+    "title": "Swiss UI - Landing Page",
+    "category": "Design Terms"
+  },
+  "latencyMs": 115505,
+  "tokenUsage": null,
+  "params": {
+    "temperature": 1,
+    "maxTokens": null
+  },
+  "path": "runs/2026/01/28/c4229dc9-c409-434f-9d5a-4a3978a598c0"
+}

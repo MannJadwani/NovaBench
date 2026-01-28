@@ -1,0 +1,12 @@
+{
+  "prompt": "Build an interactive 3D learning platform landing page with depth, 3D elements, and engaging educational UI. Use Tailwind CSS classes and output a single HTML file.\n\nReturn only HTML. Do not wrap in markdown. Use Tailwind CSS classes.",
+  "params": {
+    "temperature": 1,
+    "maxTokens": null
+  },
+  "benchmark": {
+    "id": "3d-learning",
+    "title": "3D Website for Learning",
+    "category": "Design Terms"
+  }
+}

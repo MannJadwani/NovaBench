@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lumina - Professional Photo Editor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            overflow: hidden; /* App-like feel */
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1f2937; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #4b5563; 
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #6b7280; 
+        }
+
+        /* Range Slider Styling */
+        input[type=range] {
+            -webkit-appearance: none; 
+            background: transparent; 
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 16px;
+            width: 16px;
+            border-radius: 50%;
+            background: #3b82f6;
+            cursor: pointer;
+            margin-top: -6px; 
+            box-shadow: 0 0 2px rgba(0,0,0,0.5);
+        }
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 4px;
+            cursor: pointer;
+            background: #4b5563;
+            border-radius: 2px;
+        }
+
+        .canvas-bg {
+            background-image: 
+                linear-gradient(45deg, #2a2a2a 25%, transparent 25%), 
+                linear-gradient(-45deg, #2a2a2a 25%, transparent 25%), 
+                linear-gradient(45deg, transparent 75%, #2a2a2a 75%), 
+                linear-gradient(-45deg, transparent 75%, #2a2a2a 75%);
+            background-size: 20px 20px;
+            background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+            background-color: #111827;
+        }
+
+        .tool-btn.active {
+            background-color: #3b82f6;
+            color: white;
+        }
+
+        /* Loading Spinner */
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3b82f6;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-200 h-screen flex flex-col select-none">
+
+    <!-- Top Bar -->
+    <header class="h-14 bg-gray-800 border-b border-gray-700 flex items-center justify-between px-4 z-20 shadow-md">
+        <div class="flex items-center space-x-3">
+            <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold shadow-lg">
+                <i class="fa-solid fa-layer-group"></i>
+            </div>
+            <h1 class="font-semibold text-lg tracking-tight text-white">Lumina</h1>
+        </div>
+        
+        <div class="flex space-x-4">
+            <button onclick="app.uploadImage()" class="flex items-center space-x-2 px-3 py-1.5 bg-gray-700 hover:bg-gray-600 rounded text-sm transition">
+                <i class="fa-solid fa-upload"></i> <span>Open Image</span>
+            </button>
+            <button onclick="app.downloadImage()" class="flex items-center space-x-2 px-3 py-1.5 bg-blue-600 hover:bg-blue-500 rounded text-sm transition text-white">
+                <i class="fa-solid fa-download"></i> <span>Export</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <div class="flex-1 flex overflow-hidden">
+        
+        <!-- Left Toolbar -->
+        <aside class="w-16 bg-gray-800 border-r border-gray-700 flex flex-col items-center py-4 space-y-2 z-10">
+            <button class="tool-btn active w-10 h-10 rounded flex items-center justify-center hover:bg-gray-700 transition" title="Move (V)" onclick="app.setTool('move')">
+                <i class="fa-solid fa-arrows-up-down-left-right"></i>
+            </button>
+            <button class="tool-btn w-10 h-10 rounded flex items-center justify-center hover:bg-gray-700 transition" title="Brush (B)" onclick="app.setTool('brush')">
+                <i class="fa-solid fa-paintbrush"></i>
+            </button>
+            <button class="tool-btn w-10 h-10 rounded flex items-center justify-center hover:bg-gray-700 transition" title="Text (T)" onclick="app.setTool('text')">
+                <i class="fa-solid fa-font"></i>
+            </button>
+            <button class="tool-btn w-10 h-10 rounded flex items-center justify-center hover:bg-gray-700 transition" title="Shapes (S)" onclick="app.setTool('shape')">
+                <i class="fa-solid fa-shapes"></i>
+            </button>
+            
+            <div class="h-px w-8 bg-gray-600 my-2"></div>
+            
+            <div class="relative group">
+                <button class="tool-btn w-10 h-10 rounded-full border-2 border-gray-500 flex items-center justify-center hover:scale-110 transition" title="Color Picker">
+                    <div id="colorPreview" class="w-6 h-6 rounded-full bg-white"></div>
+                </button>
+                <input type="color" id="colorPicker" class="absolute inset-0 opacity-0 cursor-pointer" onchange="app.setColor(this.value)">
+            </div>
+
+            <div class="mt-auto pb-4 flex flex-col space-y-2">
+                 <button class="w-10 h-10 rounded flex items-center justify-center hover:bg-gray-700 transition text-gray-400 hover:text-white" title="History" onclick="app.togglePanel('history')">
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+                </button>
+                <button class="w-10 h-10 rounded flex items-center justify-center hover:bg-gray-700 transition text-gray-400 hover:text-white" title="Zoom Out" onclick="app.zoom(-0.1)">
+                    <i class="fa-solid fa-magnifying-glass-minus"></i>
+                </button>
+                <button class="w-10 h-10 rounded flex items-center justify-center hover:bg-gray-700 transition text-gray-400 hover:text-white" title="Zoom In" onclick="app.zoom(0.1)">
+                    <i class="fa-solid fa-magnifying-glass-plus"></i>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Center Canvas Area -->
+        <main class="flex-1 bg-gray-900 relative overflow-hidden flex items-center justify-center canvas-bg" id="workspace">
+            <div id="canvas-container" class="relative shadow-2xl transition-transform duration-75 ease-out origin-center" style="width: 800px; height: 600px;">
+                <canvas id="mainCanvas" width="800" height="600" class="absolute top-0 left-0 z-10 cursor-crosshair"></canvas>
+                <!-- UI Overlay for Tools (e.g. Text Input) -->
+                <div id="overlay" class="absolute top-0 left-0 w-full h-full z-20 pointer-events-none"></div>
+            </div>
+            
+            <!-- Floating Info -->
+            <div class="absolute bottom-4 left-4 bg-gray-800/80 backdrop-blur px-3 py-1 rounded text-xs text-gray-400 pointer-events-none">
+                <span id="zoomLevel">100%</span> | <span id="canvasSize">800 x 600</span>
+            </div>
+        </main>
+
+        <!-- Right Sidebar (Properties & Layers) -->
+        <aside class="w-72 bg-gray-800 border-l border-gray-700 flex flex-col z-10">
+            
+            <!-- Tabs -->
+            <div class="flex border-b border-gray-700">
+                <button class="flex-1 py-2 text-sm font-medium text-blue-400 border-b-2 border-blue-500 bg-gray-700/50">Adjustments</button>
+                <button class="flex-1 py-2 text-sm font-medium text-gray-400 hover:text-gray-200 hover:bg-gray-700/30 transition">Filters</button>
+            </div>
+
+            <!-- Adjustments Panel -->
+            <div class="flex-1 overflow-y-auto p-4 space-y-6" id="adjustmentsPanel">
+                
+                <!-- Opacity / Fill -->
+                <div class="space-y-2">
+                    <div class="flex justify-between text-xs text-gray-400">
+                        <span>Opacity</span>
+                        <span id="val-opacity">100%</span>
+                    </div>
+                    <input type="range" min="0" max="100" value="100" class="w-full" oninput="app.updateLayerOpacity(this.value)">
+                </div>
+
+                <div class="h-px bg-gray-700"></div>
+
+                <!-- Blend Mode -->
+                <div class="space-y-2">
+                    <label class="text-xs text-gray-400">Blending Mode</label>
+                    <select id="blendMode" class="w-full bg-gray-700 border border-gray-600 text-xs rounded p-2 focus:outline-none focus:border-blue-500" onchange="app.setBlendMode(this.value)">
+                        <option value="normal">Normal</option>
+                        <option value="multiply">Multiply</option>
+                        <option value="screen">Screen</option>
+                        <option value="overlay">Overlay</option>
+                        <option value="soft-light">Soft Light</option>
+                        <option value="hard-light">Hard Light</option>
+                        <option value="color-dodge">Color Dodge</option>
+                        <option value="color-burn">Color Burn</option>
+                        <option value="difference">Difference</option>
+                        <option value="exclusion">Exclusion</option>
+                        <option value="hue">Hue</option>
+                        <option value="saturation">Saturation</option>
+                        <option value="color">Color</option>
+                        <option value="luminosity">Luminosity</option>
+                    </select>
+                </div>
+
+                <div class="h-px bg-gray-700"></div>
+
+                <!-- Image Adjustments -->
+                <div class="space-y-4">
+                    <label class="text-xs font-semibold text-gray-300 uppercase tracking-wider">Image Adjustments</label>
+                    
+                    <!-- Brightness -->
+                    <div class="space-y-1">
+                        <div class="flex justify-between text-xs text-gray-400">
+                            <span>Brightness</span>
+                            <span id="val-brightness">0</span>
+                        </div>
+                        <input type="range" min="-100" max="100" value="0" class="w-full" oninput="app.updateAdjustment('brightness', this.value)">
+                    </div>
+
+                    <!-- Contrast -->
+                    <div class="space-y-1">
+                        <div class="flex justify-between text-xs text-gray-400">
+                            <span>Contrast</span>
+                            <span id="val-contrast">0</span>
+                        </div>
+                        <input type="range" min="-100" max="100" value="0" class="w-full" oninput="app.updateAdjustment('contrast', this.value)">
+                    </div>
+
+                    <!-- Saturation -->
+                    <div class="space-y-1">
+                        <div class="flex justify-between text-xs text-gray-400">
+                            <span>Saturation</span>
+                            <span id="val-saturation">0</span>
+                        </div>
+                        <input type="range" min="-100" max="100" value="0" class="w-full" oninput="app.updateAdjustment('saturation', this.value)">
+                    </div>
+                    
+                    <!-- Blur -->
+                    <div class="space-y-1">
+                        <div class="flex justify-between text-xs text-gray-400">
+                            <span>Blur</span>
+                            <span id="val-blur">0px</span>
+                        </div>
+                        <input type="range" min="0" max="20" value="0" class="w-full" oninput="app.updateAdjustment('blur', this.value)">
+                    </div>
+                </div>
+
+                <div class="h-px bg-gray-700"></div>
+
+                <!-- Filters Presets -->
+                <div class="space-y-2">
+                    <label class="text-xs font-semibold text-gray-300 uppercase tracking-wider">Filters</label>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button onclick="app.applyFilter('grayscale')" class="px-3 py-2 bg-gray-700 hover:bg-gray-600 rounded text-xs transition">B&W</button>
+                        <button onclick="app.applyFilter('sepia')" class="px-3 py-2 bg-gray-700 hover:bg-gray-600 rounded text-xs transition">Sepia</button>
+                        <button onclick="app.applyFilter('invert')" class="px-3 py-2 bg-gray-700 hover:bg-gray-600 rounded text-xs transition">Invert</button>
+                        <button onclick="app.applyFilter('vintage')" class="px-3 py-2 bg-gray-700 hover:bg-gray-600 rounded text-xs transition">Vintage</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Layers Panel (Bottom half of sidebar) -->
+            <div class="h-1/2 border-t border-gray-700 flex flex-col">
+                <div class="p-3 bg-gray-800 border-b border-gray-700 flex justify-between items-center">
+                    <span class="text-xs font-semibold text-gray-300 uppercase tracking-wider">Layers</span>
+                    <div class="flex space-x-2">
+                        <button onclick="app.addLayer()" class="text-gray-400 hover:text-white" title="New Layer"><i class="fa-solid fa-plus"></i></button>
+                        <button onclick="app.deleteLayer()" class="text-gray-400 hover:text-red-400" title="Delete Layer"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                </div>
+                <div id="layersList" class="flex-1 overflow-y-auto p-2 space-y-1">
+                    <!-- Layers injected via JS -->
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Hidden File Input -->
+    <input type="file" id="fileInput" accept="image/*" class="hidden">
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-4 right-4 bg-blue-600 text-white px-4 py-2 rounded shadow-lg transform translate-y-20 opacity-0 transition-all duration-300 z-50">
+        Action Completed
+    </div>
+
+    <script>
+        /**
+         * Lumina Photo Editor Core Logic
+         * Handles Canvas rendering, Layers, History, and Tools.
+         */
+        class PhotoEditor {
+            constructor() {
+                this.canvas = document.getElementById('mainCanvas');
+                this.ctx = this.canvas.getContext('2d');
+                this.layers = [];
+                this.activeLayerIndex = 0;
+                this.zoomLevel = 1.0;
+                this.isDragging = false;
+                this.lastX = 0;
+                this.lastY = 0;
+                
+                // Tool State
+                this.tool = 'move'; // move, brush, text, shape
+                this.color = '#ffffff';
+                this.brushSize = 5;
+                this.isDrawing = false;
+
+                // History
+                this.history = [];
+                this.historyStep = -1;
+                this.maxHistory = 20;
+
+                // Init
+                this.init();
+            }
+
+            init() {
+                // Create initial blank layer
+                this.addLayer();
+                
+                // Event Listeners
+                this.setupEventListeners();
+                
+                // Initial Render
+                this.render();
+                this.updateLayersUI();
+                
+                // Keyboard shortcuts
+                document.addEventListener('keydown', (e) => this.handleKeydown(e));
+            }
+
+            setupEventListeners() {
+                const container = document.getElementById('canvas-container');
+
+                // Workspace Panning (Middle Mouse or Space+Drag logic simplified to click+drag on background)
+                // For this demo, we handle tool interactions on the canvas
+                
+                this.canvas.addEventListener('mousedown', (e) => this.onMouseDown(e));
+                this.canvas.addEventListener('mousemove', (e) => this.onMouseMove(e));
+                this.canvas.addEventListener('mouseup', (e) => this.onMouseUp(e));
+                this.canvas.addEventListener('mouseout', (e) => this.onMouseUp(e));
+                
+                // File Input
+                document.getElementById('fileInput').addEventListener('change', (e) => this.handleFileSelect(e));
+            }
+
+            // --- Layer Management ---
+
+            addLayer(imageSrc = null) {
+                const layerCanvas = document.createElement('canvas');
+                layerCanvas.width = this.canvas.width;
+                layerCanvas.height = this.canvas.height;
+                const layerCtx = layerCanvas.getContext('2d');
+
+                // If image provided, draw it
+                if (imageSrc) {
+                    const img = new Image();
+                    img.onload = () => {
+                        // Center and fit image
+                        const scale = Math.min(this.canvas.width / img.width, this.canvas.height / img.height);
+                        const x = (this.canvas.width / 2) - (img.width / 2) * scale;
+                        const y = (this.canvas.height / 2) - (img.height / 2) * scale;
+                        layerCtx.drawImage(img, x, y, img.width * scale, img.height * scale);
+                        this.saveState();
+                        this.render();
+                    };
+                    img.src = imageSrc;
+                }
+
+                const newLayer = {
+                    id: Date.now(),
+                    name: imageSrc ? 'Image' : `Layer ${this.layers.length + 1}`,
+                    canvas: layerCanvas,
+                    ctx: layerCtx,
+                    visible: true,
+                    opacity: 100,
+                    blendMode: 'normal',
+                    adjustments: {
+                        brightness: 0,
+                        contrast: 0,
+                        saturation: 0,
+                        blur: 0
+                    }
+                };
+
+                this.layers.push(newLayer);
+                this.activeLayerIndex = this.layers.length - 1;
+                this.updateLayersUI();
+                this.saveState(); // Save history
+                this.render();
+            }
+
+            deleteLayer() {
+                if (this.layers.length <= 1) {
+                    this.showToast("Cannot delete the last layer");
+                    return;
+                }
+                this.layers.splice(this.activeLayerIndex, 1);
+                this.activeLayerIndex = Math.max(0, this.activeLayerIndex - 1);
+                this.updateLayersUI();
+                this.saveState();
+                this.render();
+            }
+
+            setActiveLayer(index) {
+                this.activeLayerIndex = index;
+                this.updateLayersUI();
+                // Update UI controls to reflect this layer's props
+                const layer = this.layers[index];
+                document.getElementById('blendMode').value = layer.blendMode;
+                // Update sliders if needed (simplified for demo)
+            }
+
+            updateLayerOpacity(val) {
+                const layer = this.layers[this.activeLayerIndex];
+                if(layer) {
+                    layer.opacity = parseInt(val);
+                    document.getElementById('val-opacity').innerText = val + '%';
+                    this.render();
+                }
+            }
+
+            setBlendMode(mode) {
+                const layer = this.layers[this.activeLayerIndex];
+                if(layer) {
+                    layer.blendMode = mode;
+                    this.render();
+                }
+            }
+
+            // --- Rendering ---
+
+            render() {
+                // Clear main canvas
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                
+                // Composite layers
+                this.layers.forEach(layer => {
+                    if (!layer.visible) return;
+
+                    this.ctx.save();
+                    
+                    // Apply Global Composite Operation
+                    // Mapping standard blend modes to canvas equivalents
+                    const blendMap = {
+                        'normal': 'source-over',
+                        'multiply': 'multiply',
+                        'screen': 'screen',
+                        'overlay': 'overlay',
+                        'soft-light': 'soft-light',
+                        'hard-light': 'hard-light',
+                        'color-dodge': 'color-dodge',
+                        'color-burn': 'color-burn',
+                        'difference': 'difference',
+                        'exclusion': 'exclusion',
+                        'hue': 'hue',
+                        'saturation': 'saturation',
+                        'color': 'color',
+                        'luminosity': 'luminosity'
+                    };
+                    
+                    this.ctx.globalCompositeOperation = blendMap[layer.blendMode] || 'source-over';
+                    this.ctx.globalAlpha = layer.opacity / 100;
+
+                    // Apply Adjustments via Filter
+                    // Note: Canvas filter string syntax is "brightness(1.5) contrast(1.2)..."
+                    // Our sliders are -100 to 100 or 0-20.
+                    let filterString = '';
+                    if (layer.adjustments.brightness !== 0) {
+                        filterString += `brightness(${1 + (layer.adjustments.brightness / 100)}) `;
+                    }
+                    if (layer.adjustments.contrast !== 0) {
+                        filterString += `contrast(${1 + (layer.adjustments.contrast / 100)}) `;
+                    }
+                    if (layer.adjustments.saturation !== 0) {
+                        filterString += `saturate(${1 + (layer.adjustments.saturation / 100)}) `;
+                    }
+                    if (layer.adjustments.blur > 0) {
+                        filterString += `blur(${layer.adjustments.blur}px) `;
+                    }
+
+                    if (filterString) {
+                        this.ctx.filter = filterString;
+                    }
+
+                    // Draw the layer
+                    this.ctx.drawImage(layer.canvas, 0, 0);
+                    
+                    this.ctx.restore();
+                });
+            }
+
+            updateLayersUI() {
+                const list = document.getElementById('layersList');
+                list.innerHTML = '';
+                
+                // Iterate backwards to show top layers at top of list (Photoshop style)
+                for (let i = this.layers.length - 1; i >= 0; i--) {
+                    const layer = this.layers[i];
+                    const isActive = i === this.activeLayerIndex;
+                    
+                    const div = document.createElement('div');
+                    div.className = `flex items-center p-2 rounded cursor-pointer transition ${isActive ? 'bg-blue-600/30 border border-blue-500/50' : 'hover:bg-gray-700 border border-transparent'}`;
+                    div.onclick = () => this.setActiveLayer(i);
+
+                    div.innerHTML = `
+                        <div class="w-8 h-8 bg-gray-600 rounded mr-3 overflow-hidden border border-gray-500">
+                            <img src="${layer.canvas.toDataURL()}" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="text-xs font-medium text-gray-200 truncate">${layer.name}</div>
+                            <div class="text-[10px] text-gray-500 uppercase">${layer.blendMode}</div>
+                        </div>
+                        <button class="text-gray-400 hover:text-white p-1" onclick="event.stopPropagation(); app.toggleLayerVisibility(${i})">
+                            <i class="fa-solid ${layer.visible ? 'fa-eye' : 'fa-eye-slash'}"></i>
+                        </button>
+                    `;
+                    list.appendChild(div);
+                }
+            }
+
+            toggleLayerVisibility(index) {
+                this.layers[index].visible = !this.layers[index].visible;
+                this.updateLayersUI();
+                this.render();
+            }
+
+            // --- Tools & Interactions ---
+
+            setTool(toolName) {
+                this.tool = toolName;
+                // Update UI
+                document.querySelectorAll('.tool-btn').forEach(btn => btn.classList.remove('active'));
+                event.currentTarget.classList.add('active'); // Note: event might not be reliable here if called programmatically, usually pass 'this' or ID
+                // Simple fix for the passed HTML structure:
+                const btns = document.querySelectorAll('.tool-btn');
+                if(toolName === 'move') btns[0].classList.add('active');
+                if(toolName === 'brush') btns[1].classList.add('active');
+                if(toolName === 'text') btns[2].classList.add('active');
+                if(toolName === 'shape') btns[3].classList.add('active');
+            }
+
+            setColor(hex) {
+                this.color = hex;
+                document.getElementById('colorPreview').style.backgroundColor = hex;
+            }
+
+            getMousePos(evt) {
+                const rect = this.canvas.getBoundingClientRect();
+                const scaleX = this.canvas.width / rect.width;
+                const scaleY = this.canvas.height / rect.height;
+                return {
+                    x: (evt.clientX - rect.left) * scaleX,
+                    y: (evt.clientY - rect.top) * scaleY
+                };
+            }
+
+            onMouseDown(e) {
+                if (this.layers.length === 0) return;
+                this.isDrawing = true;
+                const pos = this.getMousePos(e);
+                this.lastX = pos.x;
+                this.lastY = pos.y;
+
+                const ctx = this.layers[this.activeLayerIndex].ctx;
+
+                if (this.tool === 'brush') {
+                    ctx.beginPath();
+                    ctx.moveTo(this.lastX, this.lastY);
+                    ctx.lineCap = 'round';
+                    ctx.lineJoin = 'round';
+                    ctx.lineWidth = this.brushSize;
+                    ctx.strokeStyle = this.color;
+                } else if (this.tool === 'text') {
+                    this.addTextLayer(pos.x, pos.y);
+                    this.isDrawing = false; // Text is single click
+                } else if (this.tool === 'shape') {
+                    ctx.beginPath();
+                    ctx.fillStyle = this.color;
+                }
+            }
+
+            onMouseMove(e) {
+                if (!this.isDrawing) return;
+                const pos = this.getMousePos(e);
+                const ctx = this.layers[this.activeLayerIndex].ctx;
+
+                if (this.tool === 'brush') {
+                    ctx.lineTo(pos.x, pos.y);
+                    ctx.stroke();
+                    this.render(); // Re-composite
+                } else if (this.tool === 'shape') {
+                    // Simple rect preview logic (requires clearing rect, complex on single canvas without temp layer)
+                    // For simplicity, we just draw the rect on drag end or simple drag box
+                    // Let's do simple drag box
+                    // Note: Real implementation needs a temp canvas for preview.
+                    // Here we just update last pos for a rect on mouse up
+                }
+                
+                this.lastX = pos.x;
+                this.lastY = pos.y;
+            }
+
+            onMouseUp(e) {
+                if (!this.isDrawing) return;
+                this.isDrawing = false;
+                
+                const pos = this.getMousePos(e);
+                const layer = this.layers[this.activeLayerIndex];
+                
+                if (this.tool === 'shape') {
+                    const width = pos.x - this.lastX;
+                    const height = pos.y - this.lastY;
+                    layer.ctx.fillRect(this.lastX, this.lastY, width, height);
+                    this.render();
+                    this.saveState();
+                } else if (this.tool === 'brush') {
+                    this.saveState();
+                }
+            }
+
+            addTextLayer(x, y) {
+                const text = prompt("Enter text:", "Hello World");
+                if (text) {
+                    const ctx = this.layers[this.activeLayerIndex].ctx;
+                    ctx.font = "30px Inter";
+                    ctx.fillStyle = this.color;
+                    ctx.fillText(text, x, y);
+                    this.render();
+                    this.saveState();
+                }
+            }
+
+            // --- Adjustments & Filters ---
+
+            updateAdjustment(type, value) {
+                const layer = this.layers[this.activeLayerIndex];
+                if (layer) {
+                    layer.adjustments[type] = parseInt(value);
+                    document.getElementById(`val-${type}`).innerText = value + (type === 'blur' ? 'px' : '');
+                    this.render();
+                }
+            }
+
+            applyFilter(type) {
+                const layer = this.layers[this.activeLayerIndex];
+                if (!layer) return;
+                const ctx = layer.ctx;
+
+                // Get current image data to process
+                // Note: Direct pixel manipulation is heavy. Using context filters for simple ones.
+                
+                if (type === 'grayscale') {
+                    ctx.filter = 'grayscale(100%)';
+                    ctx.drawImage(layer.canvas, 0, 0); // Re-draw self with filter
+                    ctx.filter = 'none';
+                } else if (type === 'sepia') {
+                    ctx.filter = 'sepia(100%)';
+                    ctx.drawImage(layer.canvas, 0, 0);
+                    ctx.filter = 'none';
+                } else if (type === 'invert') {
+                    ctx.filter = 'invert(100%)';
+                    ctx.drawImage(layer.canvas, 0, 0);
+                    ctx.filter = 'none';
+                } else if (type === 'vintage') {
+                    // Composite effect: Sepia + Contrast
+                    ctx.filter = 'sepia(50%) contrast(120%) brightness(90%)';
+                    ctx.drawImage(layer.canvas, 0, 0);
+                    ctx.filter = 'none';
+                }
+
+                this.render();
+                this.saveState();
+            }
+
+            // --- History (Undo/Redo) ---
+
+            saveState() {
+                // Remove redo steps
+                if (this.historyStep < this.history.length - 1) {
+                    this.history = this.history.slice(0, this.historyStep + 1);
+                }
+
+                // Deep copy layers (expensive but necessary for undo)
+                // Optimization: Only save changed layer? For this demo, we save full state for simplicity or just layer data.
+                // Let's save the image data of the active layer to keep it performant enough for a demo.
+                
+                const layerCopies = this.layers.map(l => {
+                    const c = document.createElement('canvas');
+                    c.width = l.canvas.width;
+                    c.height = l.canvas.height;
+                    c.getContext('2d').drawImage(l.canvas, 0, 0);
+                    return {
+                        ...l,
+                        canvas: c,
+                        ctx: c.getContext('2d')
+                    };
+                });
+
+                this.history.push({
+                    layers: layerCopies,
+                    activeIndex: this.activeLayerIndex
+                });
+
+                if (this.history.length > this.maxHistory) {
+                    this.history.shift();
+                } else {
+                    this.historyStep++;
+                }
+            }
+
+            undo() {
+                if (this.historyStep > 0) {
+                    this.historyStep--;
+                    this.restoreState(this.history[this.historyStep]);
+                }
+            }
+
+            redo() {
+                if (this.historyStep < this.history.length - 1) {
+                    this.historyStep++;
+                    this.restoreState(this.history[this.historyStep]);
+                }
+            }
+
+            restoreState(state) {
+                this.layers = state.layers.map(l => ({...l})); // Shallow copy + canvas ref
+                this.activeLayerIndex = state.activeIndex;
+                this.updateLayersUI();
+                this.render();
+            }
+
+            // --- IO ---
+
+            uploadImage() {
+                document.getElementById('fileInput').click();
+            }
+
+            handleFileSelect(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        this.addLayer(event.target.result);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            }
+
+            downloadImage() {
+                // Create a temp canvas to flatten
+                const tempCanvas = document.createElement('canvas');
+                tempCanvas.width = this.canvas.width;
+                tempCanvas.height = this.canvas.height;
+                const tempCtx = tempCanvas.getContext('2d');
+
+                // Draw white background (optional)
+                tempCtx.fillStyle = '#ffffff';
+                tempCtx.fillRect(0,0, tempCanvas.width, tempCanvas.height);
+
+                // Draw all layers
+                this.layers.forEach(layer => {
+                    if(layer.visible) {
+                        tempCtx.globalAlpha = layer.opacity / 100;
+                        // Note: Filters and blend modes need to be re-applied here for export if we want exact WYSIWYG
+                        // For simplicity, we draw raw canvas. 
+                        // A full export requires re-running the render logic onto the temp canvas.
+                        
+                        // Re-apply filter string
+                        let filterString = '';
+                        if (layer.adjustments.brightness !== 0) filterString += `brightness(${1 + (layer.adjustments.brightness / 100)}) `;
+                        if (layer.adjustments.contrast !== 0) filterString += `contrast(${1 + (layer.adjustments.contrast / 100)}) `;
+                        if (layer.adjustments.saturation !== 0) filterString += `saturate(${1 + (layer.adjustments.saturation / 100)}) `;
+                        if (layer.adjustments.blur > 0) filterString += `blur(${layer.adjustments.blur}px) `;
+                        
+                        tempCtx.filter = filterString;
+                        
+                        const blendMap = {
+                            'normal': 'source-over', 'multiply': 'multiply', 'screen': 'screen', 'overlay': 'overlay'
+                        };
+                        tempCtx.globalCompositeOperation = blendMap[layer.blendMode] || 'source-over';
+                        
+                        tempCtx.drawImage(layer.canvas, 0, 0);
+                    }
+                });
+
+                const link = document.createElement('a');
+                link.download = 'lumina-edit.png';
+                link.href = tempCanvas.toDataURL();
+                link.click();
+                this.showToast("Image Downloaded");
+            }
+
+            zoom(delta) {
+                this.zoomLevel += delta;
+                this.zoomLevel = Math.max(0.1, Math.min(3.0, this.zoomLevel));
+                document.getElementById('canvas-container').style.transform = `scale(${this.zoomLevel})`;
+                document.getElementById('zoomLevel').innerText = Math.round(this.zoomLevel * 100) + '%';
+            }
+
+            togglePanel(panelName) {
+                // Simple toggle logic could go here, for now history is integrated
+                this.showToast("History: " + this.historyStep + " steps");
+            }
+
+            handleKeydown(e) {
+                if ((e.ctrlKey || e.metaKey) && e.key === 'z') {
+                    e.preventDefault();
+                    this.undo();
+                }
+                if ((e.ctrlKey || e.metaKey) && e.key === 'y') {
+                    e.preventDefault();
+                    this.redo();
+                }
+                if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+                    e.preventDefault();
+                    this.downloadImage();
+                }
+            }
+
+            showToast(msg) {
+                const toast = document.getElementById('toast');
+                toast.innerText = msg;
+                toast.classList.remove('translate-y-20', 'opacity-0');
+                setTimeout(() => {
+                    toast.classList.add('translate-y-20', 'opacity-0');
+                }, 2000);
+            }
+        }
+
+        // Initialize App
+        const app = new PhotoEditor();
+
+    </script>
+</body>
+</html>

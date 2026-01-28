@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Night Theme Landing Page</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-900 text-gray-100 min-h-screen flex flex-col">
+    <header class="bg-black bg-opacity-50 backdrop-blur-sm border-b border-gray-800 sticky top-0 z-50">
+        <nav class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-4">
+                <div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center text-xl font-bold">NL</div>
+                <h1 class="text-2xl font-semibold">Night Landing</h1>
+            </div>
+            <ul class="flex space-x-6">
+                <li><a href="#home" class="hover:text-purple-400 transition-colors">Home</a></li>
+                <li><a href="#features" class="hover:text-purple-400 transition-colors">Features</a></li>
+                <li><a href="#about" class="hover:text-purple-400 transition-colors">About</a></li>
+                <li><a href="#contact" class="hover:text-purple-400 transition-colors">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="flex-1 container mx-auto px-4 py-8">
+        <section id="home" class="text-center mb-16">
+            <h2 class="text-5xl font-black mb-4 text-gradient from-purple-400 to-blue-500 bg-clip-text">
+                Welcome to the Night
+            </h2>
+            <p class="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
+                Experience the elegance of darkness with subtle glows and refined design.
+            </p>
+            <button class="bg-gradient-to-r from-purple-500 to-blue-600 text-white px-8 py-3 rounded-full text-lg font-semibold hover:shadow-lg shadow-xl transform hover:scale-105 transition-all">
+                Get Started
+            </button>
+        </section>
+
+        <section id="features" class="mb-16">
+            <h3 class="text-3xl font-black mb-8 text-center text-gradient from-green-400 to-blue-400 bg-clip-text">
+                Features
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-gray-800 p-6 rounded-2xl border border-gray-700 shadow-lg hover:shadow-2xl transition-all">
+                    <div class="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center mb-4 text-3xl text-white">
+                        <i class="fas fa-moon"></i>
+                    </div>
+                    <h4 class="text-xl font-semibold mb-2">Dark Elegance</h4>
+                    <p class="text-gray-400 leading-relaxed">
+                        Refined dark backgrounds with subtle glow accents create a
+                        sophisticated atmosphere that's easy on the eyes.
+                    </p>
+                </div>
+
+                <div class="bg-gray-800 p-6 rounded-2xl border border-gray-700 shadow-lg hover:shadow-2xl transition-all">
+                    <div class="w-16 h-16 bg-gradient-to-r from-pink-500 to-purple-600 rounded-full flex items-center justify-center mb-4 text-3xl text-white">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <h4 class="text-xl font-semibold mb-2">Subtle Glows</h4>
+                    <p class="text-gray-400 leading-relaxed">
+                        Carefully crafted glow effects highlight important elements
+                        without overwhelming the elegant dark theme.
+                    </p>
+                </div>
+
+                <div class="bg-gray-800 p-6 rounded-2xl border border-gray-700 shadow-lg hover:shadow-2xl transition-all">
+                    <div class="w-16 h-16 bg-gradient-to-r from-green-500 to-blue-600 rounded-full flex items-center justify-center mb-4 text-3xl text-white">
+                        <i class="fas fa-eye"></i>
+                    </div>
+                    <h4 class="text-xl font-semibold mb-2">Eye Comfort</h4>
+                    <p class="text-gray-400 leading-relaxed">
+                        Muted colors and proper contrast ratios ensure comfortable
+                        viewing during extended periods in low-light environments.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="mb-16">
+            <h3 class="text-3xl font-black mb-8 text-center text-gradient from-purple-400 to-blue-500 bg-clip-text">
+                About Night Theme
+            </h3>
+            <div class=" bg-gray-800 p-8 rounded-2xl border border-gray-700 shadow-lg">
+                <p class="text-gray-300 mb-4">
+                    The <span class="font-semibold text-gradient from-blue-500 to-purple-400 bg-clip-text">Night Theme</span> was designed with
+                    sophistication and comfort in mind. Every element is carefully
+                    crafted to create an immersive experience that balances beauty with
+                    functionality.
+                </p>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="bg-gray-700 p-6 rounded-lg">
+                        <h4 class="text-xl font-semibold mb-2 text-gradient from-purple-400 to-blue-500 bg-clip-text">
+                            Mood Lighting
+                        </h4>
+                        <p class="text-gray-400 text-sm">
+                            Soft ambient colors create the perfect mood for night-time
+                            browsing.
+                        </p>
+                    </div>
+                    <div class="bg-gray-700 p-6 rounded-lg">
+                        <h4 class="text-xl font-semibold mb-2 text-gradient from-blue-400 to-green-500 bg-clip-text">
+                            Responsive Design
+                        </h4>
+                        <p class="text-gray-400 text-sm">
+                            Beautiful experience across all devices, from phones to large
+                            desktop displays.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-900 border-t border-gray-800">
+        <div class="container mx-auto px-4 py-6 flex justify-between items-center">
+            <p class="text-gray-400">&copy; 2024 Night Landing. All rights reserved.</p>
+            <div class="flex space-x-4">
+                <a href="#" class="text-gray-400 hover:text-purple-400 transition-colors">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="#" class="text-gray-400 hover:text-purple-400 transition-colors">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="#" class="text-gray-400 hover:text-purple-400 transition-colors">
+                    <i class="fab fa-discord"></i>
+                </a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

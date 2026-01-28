@@ -1,0 +1,12 @@
+{
+  "prompt": "Create a visually stunning landing page with innovative layout and eye-catching effects. Use Tailwind CSS classes and output a single HTML file.\n\nReturn only HTML. Do not wrap in markdown. Use Tailwind CSS classes.",
+  "params": {
+    "temperature": 1,
+    "maxTokens": null
+  },
+  "benchmark": {
+    "id": "amazing-design",
+    "title": "Amazing Design",
+    "category": "Design Terms"
+  }
+}

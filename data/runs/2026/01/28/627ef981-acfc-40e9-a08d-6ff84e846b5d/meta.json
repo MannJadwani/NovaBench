@@ -1,0 +1,37 @@
+{
+  "id": "627ef981-acfc-40e9-a08d-6ff84e846b5d",
+  "createdAt": "2026-01-27T23:54:08.169Z",
+  "provider": "openrouter",
+  "model": "deepseek/deepseek-v3.2",
+  "benchmark": {
+    "id": "swiss-ui-landing",
+    "title": "Swiss UI - Landing Page",
+    "category": "Design Terms"
+  },
+  "latencyMs": 143549,
+  "tokenUsage": {
+    "prompt_tokens": 76,
+    "completion_tokens": 2526,
+    "total_tokens": 2602,
+    "cost": 0.00115798,
+    "is_byok": false,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "audio_tokens": 0
+    },
+    "cost_details": {
+      "upstream_inference_cost": 0.00115798,
+      "upstream_inference_prompt_cost": 0.00002128,
+      "upstream_inference_completions_cost": 0.0011367
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 0,
+      "audio_tokens": 0
+    }
+  },
+  "params": {
+    "temperature": 1,
+    "maxTokens": null
+  },
+  "path": "runs/2026/01/28/627ef981-acfc-40e9-a08d-6ff84e846b5d"
+}

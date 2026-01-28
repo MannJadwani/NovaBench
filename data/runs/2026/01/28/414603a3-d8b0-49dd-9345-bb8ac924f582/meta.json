@@ -1,0 +1,37 @@
+{
+  "id": "414603a3-d8b0-49dd-9345-bb8ac924f582",
+  "createdAt": "2026-01-27T23:46:34.847Z",
+  "provider": "openrouter",
+  "model": "arcee-ai/trinity-large-preview:free",
+  "benchmark": {
+    "id": "flight-control-ui",
+    "title": "Flight Control Module UI",
+    "category": "Complexity of UI"
+  },
+  "latencyMs": 65396,
+  "tokenUsage": {
+    "prompt_tokens": 101,
+    "completion_tokens": 6610,
+    "total_tokens": 6711,
+    "cost": 0,
+    "is_byok": false,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "audio_tokens": 0
+    },
+    "cost_details": {
+      "upstream_inference_cost": 0,
+      "upstream_inference_prompt_cost": 0,
+      "upstream_inference_completions_cost": 0
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 0,
+      "audio_tokens": 0
+    }
+  },
+  "params": {
+    "temperature": 1,
+    "maxTokens": null
+  },
+  "path": "runs/2026/01/28/414603a3-d8b0-49dd-9345-bb8ac924f582"
+}

@@ -1,0 +1,379 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swiss Design Studio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 24px;
+        }
+        
+        .col-span-1 { grid-column: span 1; }
+        .col-span-2 { grid-column: span 2; }
+        .col-span-3 { grid-column: span 3; }
+        .col-span-4 { grid-column: span 4; }
+        .col-span-5 { grid-column: span 5; }
+        .col-span-6 { grid-column: span 6; }
+        .col-span-7 { grid-column: span 7; }
+        .col-span-8 { grid-column: span 8; }
+        .col-span-9 { grid-column: span 9; }
+        .col-span-10 { grid-column: span 10; }
+        .col-span-11 { grid-column: span 11; }
+        .col-span-12 { grid-column: span 12; }
+        
+        @media (max-width: 768px) {
+            .grid-container {
+                grid-template-columns: repeat(6, 1fr);
+            }
+            
+            .col-span-1 { grid-column: span 1; }
+            .col-span-2 { grid-column: span 2; }
+            .col-span-3 { grid-column: span 3; }
+            .col-span-4 { grid-column: span 4; }
+            .col-span-5 { grid-column: span 5; }
+            .col-span-6 { grid-column: span 6; }
+        }
+    </style>
+</head>
+<body class="bg-white text-black">
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full bg-white z-50 border-b border-black">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="text-2xl font-bold">SWISS</div>
+            <div class="hidden md:flex space-x-8">
+                <a href="#work" class="uppercase tracking-wider text-sm hover:underline">Work</a>
+                <a href="#services" class="uppercase tracking-wider text-sm hover:underline">Services</a>
+                <a href="#about" class="uppercase tracking-wider text-sm hover:underline">About</a>
+                <a href="#contact" class="uppercase tracking-wider text-sm hover:underline">Contact</a>
+            </div>
+            <div class="md:hidden">
+                <button class="text-2xl">&equiv;</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="relative pt-32 pb-20 overflow-hidden">
+        <div class="absolute inset-0 bg-black opacity-5"></div>
+        <div class="container mx-auto px-6 relative">
+            <div class="grid-container">
+                <div class="col-span-7 lg:col-span-6">
+                    <h1 class="text-5xl md:text-7xl font-bold leading-tight mb-6">
+                        Design with<br>
+                        <span class="text-red-600">Purpose</span>
+                    </h1>
+                    <p class="text-xl md:text-2xl mb-8 opacity-80">
+                        Creating meaningful digital experiences through minimal design and clear communication.
+                    </p>
+                    <button class="bg-black text-white px-8 py-3 text-sm uppercase tracking-wider hover:bg-gray-800 transition">
+                        Begin Project
+                    </button>
+                </div>
+                <div class="col-span-5 lg:col-span-6 flex items-center justify-center">
+                    <div class="w-full h-96 bg-gray-200 border border-black"></div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Stats Section -->
+    <section class="py-12 border-t border-b border-black">
+        <div class="container mx-auto px-6">
+            <div class="grid-container">
+                <div class="col-span-3 text-center border-r border-black">
+                    <h3 class="text-4xl font-bold mb-2">150+</h3>
+                    <p class="text-sm uppercase tracking-wider">Projects Completed</p>
+                </div>
+                <div class="col-span-3 text-center border-r border-black">
+                    <h3 class="text-4xl font-bold mb-2">50+</h3>
+                    <p class="text-sm uppercase tracking-wider">Happy Clients</p>
+                </div>
+                <div class="col-span-3 text-center border-r border-black">
+                    <h3 class="text-4xl font-bold mb-2">15</h3>
+                    <p class="text-sm uppercase tracking-wider">Years Experience</p>
+                </div>
+                <div class="col-span-3 text-center">
+                    <h3 class="text-4xl font-bold mb-2">24</h3>
+                    <p class="text-sm uppercase tracking-wider">Awards Won</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-20">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4">Our Services</h2>
+                <div class="w-24 h-1 bg-black mx-auto"></div>
+            </div>
+            
+            <div class="grid-container">
+                <div class="col-span-4">
+                    <div class="h-full p-8 border border-black">
+                        <h3 class="text-2xl font-bold mb-4">Brand Identity</h3>
+                        <p class="mb-6 opacity-80">
+                            Creating distinctive visual identities that communicate your values and connect with your audience.
+                        </p>
+                        <ul class="space-y-2">
+                            <li class="flex items-start">
+                                <div class="w-1 h-1 bg-black rounded-full mt-2 mr-2"></div>
+                                <span>Logo Design</span>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="w-1 h-1 bg-black rounded-full mt-2 mr-2"></div>
+                                <span>Brand Guidelines</span>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="w-1 h-1 bg-black rounded-full mt-2 mr-2"></div>
+                                <span>Visual Systems</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="col-span-4">
+                    <div class="h-full p-8 border border-black">
+                        <h3 class="text-2xl font-bold mb-4">Digital Design</h3>
+                        <p class="mb-6 opacity-80">
+                            Clean, functional interfaces that deliver exceptional user experiences across all devices.
+                        </p>
+                        <ul class="space-y-2">
+                            <li class="flex items-start">
+                                <div class="w-1 h-1 bg-black rounded-full mt-2 mr-2"></div>
+                                <span>Web Design</span>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="w-1 h-1 bg-black rounded-full mt-2 mr-2"></div>
+                                <span>UI/UX Design</span>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="w-1 h-1 bg-black rounded-full mt-2 mr-2"></div>
+                                <span>Prototyping</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="col-span-4">
+                    <div class="h-full p-8 border border-black">
+                        <h3 class="text-2xl font-bold mb-4">Print Design</h3>
+                        <p class="mb-6 opacity-80">
+                            Thoughtful print materials that extend your digital presence into the physical world.
+                        </p>
+                        <ul class="space-y-2">
+                            <li class="flex items-start">
+                                <div class="w-1 h-1 bg-black rounded-full mt-2 mr-2"></div>
+                                <span>Editorial Design</span>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="w-1 h-1 bg-black rounded-full mt-2 mr-2"></div>
+                                <span>Packaging</span>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="w-1 h-1 bg-black rounded-full mt-2 mr-2"></div>
+                                <span>Marketing Materials</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Work Section -->
+    <section id="work" class="py-20 bg-black text-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4">Selected Work</h2>
+                <div class="w-24 h-1 bg-white mx-auto"></div>
+            </div>
+            
+            <div class="grid-container">
+                <div class="col-span-6 mb-8">
+                    <div class="group relative overflow-hidden">
+                        <div class="bg-gray-300 h-80"></div>
+                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-70 transition-all duration-300 flex items-center justify-center">
+                            <div class="text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                <h3 class="text-2xl font-bold mb-2">Tech Innovation</h3>
+                                <p class="uppercase tracking-wider">Brand Identity</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-span-6 grid grid-rows-2 gap-8">
+                    <div class="group relative overflow-hidden">
+                        <div class="bg-gray-300 h-80"></div>
+                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-70 transition-all duration-300 flex items-center justify-center">
+                            <div class="text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                <h3 class="text-2xl font-bold mb-2">Fashion Forward</h3>
+                                <p class="uppercase tracking-wider">E-commerce</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="group relative overflow-hidden">
+                        <div class="bg-gray-300 h-80"></div>
+                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-70 transition-all duration-300 flex items-center justify-center">
+                            <div class="text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                <h3 class="text-2xl font-bold mb-2">Cultural Center</h3>
+                                <p class="uppercase tracking-wider">Web Design</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-12 text-center">
+                <button class="border-2 border-white text-white px-8 py-3 uppercase tracking-wider hover:bg-white hover:text-black transition">
+                    View All Projects
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20">
+        <div class="container mx-auto px-6">
+            <div class="grid-container items-center">
+                <div class="col-span-5 lg:col-span-5">
+                    <img src="https://picsum.photos/seed/swissdesign/600/800.jpg" alt="Studio" class="w-full">
+                </div>
+                
+                <div class="col-span-7 lg:col-span-7 pl-12 border-l border-black">
+                    <h2 class="text-4xl md:text-5xl font-bold mb-6">Our Philosophy</h2>
+                    <p class="mb-6 text-lg opacity-80">
+                        We believe that design should be purposeful, not decorative. Every element serves a function, every color has a meaning, and every typeface choice is intentional.
+                    </p>
+                    <p class="mb-6 text-lg opacity-80">
+                        Founded in 2008, our studio has maintained a commitment to clean, functional design that prioritizes clarity and communication over trends and fleeting aesthetics.
+                    </p>
+                    <p class="mb-8 text-lg opacity-80">
+                        We work with forward-thinking companies who understand that great design is an investment, not an expense.
+                    </p>
+                    
+                    <div class="flex space-x-6">
+                        <div>
+                            <h3 class="text-3xl font-bold mb-2">10+</h3>
+                            <p class="text-sm uppercase tracking-wider">Designers</p>
+                        </div>
+                        <div>
+                            <h3 class="text-3xl font-bold mb-2">Zurich</h3>
+                            <p class="text-sm uppercase tracking-wider">Based</p>
+                        </div>
+                        <div>
+                            <h3 class="text-3xl font-bold mb-2">Global</h3>
+                            <p class="text-sm uppercase tracking-wider">Clients</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 bg-black text-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4">Get In Touch</h2>
+                <div class="w-24 h-1 bg-white mx-auto"></div>
+            </div>
+            
+            <div class="max-w-4xl mx-auto">
+                <form class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <label for="name" class="block mb-2 uppercase tracking-wider text-sm">Name</label>
+                        <input type="text" id="name" class="w-full px-4 py-3 bg-white text-black border border-black focus:outline-none">
+                    </div>
+                    
+                    <div>
+                        <label for="email" class="block mb-2 uppercase tracking-wider text-sm">Email</label>
+                        <input type="email" id="email" class="w-full px-4 py-3 bg-white text-black border border-black focus:outline-none">
+                    </div>
+                    
+                    <div>
+                        <label for="subject" class="block mb-2 uppercase tracking-wider text-sm">Subject</label>
+                        <input type="text" id="subject" class="w-full px-4 py-3 bg-white text-black border border-black focus:outline-none">
+                    </div>
+                    
+                    <div>
+                        <label for="budget" class="block mb-2 uppercase tracking-wider text-sm">Budget</label>
+                        <select id="budget" class="w-full px-4 py-3 bg-white text-black border border-black focus:outline-none">
+                            <option>Under $5,000</option>
+                            <option>$5,000 - $10,000</option>
+                            <option>$10,000 - $25,000</option>
+                            <option>$25,000+</option>
+                        </select>
+                    </div>
+                    
+                    <div class="md:col-span-2">
+                        <label for="message" class="block mb-2 uppercase tracking-wider text-sm">Message</label>
+                        <textarea id="message" rows="5" class="w-full px-4 py-3 bg-white text-black border border-black focus:outline-none"></textarea>
+                    </div>
+                    
+                    <div class="md:col-span-2 flex justify-center">
+                        <button type="submit" class="bg-white text-black px-8 py-3 uppercase tracking-wider hover:bg-gray-100 transition">
+                            Send Message
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 border-t border-black">
+        <div class="container mx-auto px-6">
+            <div class="grid-container">
+                <div class="col-span-4">
+                    <div class="text-2xl font-bold mb-4">SWISS</div>
+                    <p class="opacity-80 mb-4">
+                        Creating purposeful design solutions for brands that matter.
+                    </p>
+                    <p class="text-sm opacity-70">
+                        &copy; 2023 Swiss Design Studio. All rights reserved.
+                    </p>
+                </div>
+                
+                <div class="col-span-2">
+                    <h3 class="text-lg font-bold mb-4">Navigation</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#work" class="opacity-70 hover:opacity-100">Work</a></li>
+                        <li><a href="#services" class="opacity-70 hover:opacity-100">Services</a></li>
+                        <li><a href="#about" class="opacity-70 hover:opacity-100">About</a></li>
+                        <li><a href="#contact" class="opacity-70 hover:opacity-100">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-span-2">
+                    <h3 class="text-lg font-bold mb-4">Contact</h3>
+                    <ul class="space-y-2">
+                        <li class="opacity-70">hello@swiss.design</li>
+                        <li class="opacity-70">+41 44 123 45 67</li>
+                        <li class="opacity-70">Designstrasse 123<br>Zurich, Switzerland</li>
+                    </ul>
+                </div>
+                
+                <div class="col-span-4 flex justify-end">
+                    <div class="flex space-x-6">
+                        <a href="#" class="opacity-70 hover:opacity-100">Instagram</a>
+                        <a href="#" class="opacity-70 hover:opacity-100">Behance</a>
+                        <a href="#" class="opacity-70 hover:opacity-100">Dribbble</a>
+                        <a href="#" class="opacity-70 hover:opacity-100">LinkedIn</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

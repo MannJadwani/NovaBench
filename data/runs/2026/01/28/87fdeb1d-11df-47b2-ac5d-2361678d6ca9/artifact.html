@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lumina 3D | The Future of Interactive Learning</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <!-- GSAP for Animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <!-- Three.js for 3D Background -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Space Grotesk', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            400: '#38bdf8',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            900: '#0c4a6e',
+                            950: '#082f49',
+                        },
+                        accent: {
+                            purple: '#8b5cf6',
+                            pink: '#ec4899',
+                            teal: '#14b8a6'
+                        }
+                    },
+                    boxShadow: {
+                        'glow': '0 0 20px rgba(56, 189, 248, 0.5)',
+                        'card': '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #050505;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+
+        /* 3D Card Styles */
+        .perspective-1000 {
+            perspective: 1000px;
+        }
+        .transform-style-3d {
+            transform-style: preserve-3d;
+        }
+        .backface-hidden {
+            backface-visibility: hidden;
+        }
+        
+        /* Glassmorphism */
+        .glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Code Block Syntax Highlighting */
+        .code-keyword { color: #c678dd; }
+        .code-function { color: #61afef; }
+        .code-string { color: #98c379; }
+        .code-comment { color: #5c6370; font-style: italic; }
+
+        /* Floating Animation */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        /* Grid Background */
+        .bg-grid {
+            background-size: 40px 40px;
+            background-image: linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+        }
+
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-accent-purple selection:text-white">
+
+    <!-- 3D Background Canvas -->
+    <div id="canvas-container"></div>
+    
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 glass border-b border-white/5 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <div class="flex items-center gap-2 cursor-pointer group">
+                <div class="w-8 h-8 bg-gradient-to-tr from-brand-400 to-accent-purple rounded-lg flex items-center justify-center group-hover:rotate-12 transition-transform duration-300">
+                    <i data-lucide="box" class="text-white w-5 h-5"></i>
+                </div>
+                <span class="font-display font-bold text-xl tracking-tight">Lumina<span class="text-brand-400">3D</span></span>
+            </div>
+            
+            <div class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-300">
+                <a href="#features" class="hover:text-white transition-colors">Features</a>
+                <a href="#learn" class="hover:text-white transition-colors">Learn</a>
+                <a href="#community" class="hover:text-white transition-colors">Community</a>
+                <a href="#pricing" class="hover:text-white transition-colors">Pricing</a>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <button class="hidden md:block text-sm font-medium text-slate-300 hover:text-white transition-colors">Log in</button>
+                <button class="px-5 py-2.5 rounded-full bg-white text-black font-semibold text-sm hover:bg-slate-200 transition-all hover:scale-105 active:scale-95 shadow-glow">
+                    Start Free Trial
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
+        <div class="absolute inset-0 bg-grid z-0"></div>
+        
+        <div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center relative z-10">
+            <!-- Text Content -->
+            <div class="space-y-8 text-center lg:text-left">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full glass border border-brand-500/20 text-brand-400 text-xs font-medium tracking-wide uppercase animate-fade-in-up">
+                    <span class="w-2 h-2 rounded-full bg-brand-400 animate-pulse"></span>
+                    v2.0 Now Live
+                </div>
+                
+                <h1 class="font-display font-bold text-5xl lg:text-7xl leading-tight tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-200 to-slate-500">
+                    Master Skills in <br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-400 to-accent-purple type-writer">3 Dimensions.</span>
+                </h1>
+                
+                <p class="text-lg text-slate-400 max-w-xl mx-auto lg:mx-0 leading-relaxed">
+                    Experience education that leaps off the screen. Interactive 3D models, gamified coding challenges, and a community that builds together.
+                </p>
+                
+                <div class="flex flex-col sm:flex-row items-center gap-4 justify-center lg:justify-start">
+                    <button onclick="scrollToSection('learn')" class="group relative px-8 py-4 bg-gradient-to-r from-brand-600 to-brand-500 rounded-full font-semibold text-white shadow-glow overflow-hidden">
+                        <span class="relative z-10 flex items-center gap-2">
+                            Start Learning Now
+                            <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                        </span>
+                        <div class="absolute inset-0 bg-gradient-to-r from-brand-400 to-brand-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    </button>
+                    <button class="px-8 py-4 rounded-full glass border border-white/10 text-white font-medium hover:bg-white/5 transition-all flex items-center gap-2">
+                        <i data-lucide="play-circle" class="w-5 h-5 text-accent-purple"></i>
+                        Watch Demo
+                    </button>
+                </div>
+                
+                <div class="pt-8 flex items-center justify-center lg:justify-start gap-6 text-slate-500 text-sm font-medium">
+                    <div class="flex -space-x-2">
+                        <img src="https://i.pravatar.cc/100?img=33" alt="User" class="w-8 h-8 rounded-full border-2 border-black">
+                        <img src="https://i.pravatar.cc/100?img=47" alt="User" class="w-8 h-8 rounded-full border-2 border-black">
+                        <img src="https://i.pravatar.cc/100?img=12" alt="User" class="w-8 h-8 rounded-full border-2 border-black">
+                        <div class="w-8 h-8 rounded-full border-2 border-black bg-slate-800 flex items-center justify-center text-xs text-white">+2k</div>
+                    </div>
+                    <p>Trusted by 10,000+ students</p>
+                </div>
+            </div>
+
+            <!-- Interactive 3D Visual (CSS/SVG based for performance control, JS enhanced) -->
+            <div class="relative h-[500px] w-full perspective-1000 flex items-center justify-center">
+                <!-- Decorative Blobs -->
+                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-brand-500/20 rounded-full blur-[100px] animate-pulse"></div>
+                
+                <!-- Main 3D Card Composition -->
+                <div id="hero-tilt-card" class="relative w-full max-w-md aspect-[4/5] transform-style-3d transition-transform duration-100 ease-out cursor-pointer">
+                    <!-- Card Back (Abstract Code) -->
+                    <div class="absolute inset-0 glass rounded-3xl border border-white/10 p-6 transform translate-z-[-20px] rotate-y-[-2deg] scale-95 opacity-60">
+                        <div class="space-y-3">
+                            <div class="h-4 w-3/4 bg-white/10 rounded"></div>
+                            <div class="h-4 w-1/2 bg-white/10 rounded"></div>
+                            <div class="h-32 w-full bg-black/40 rounded-xl mt-4 border border-white/5 p-4 font-mono text-xs text-slate-400">
+                                <span class="text-accent-purple">const</span> future = <span class="text-accent-teal">await</span> learn()<br>
+                                <span class="text-accent-purple">return</span> <span class="text-brand-400">success</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card Front (Main Visual) -->
+                    <div class="absolute inset-0 bg-gradient-to-br from-slate-900 to-black rounded-3xl border border-white/10 shadow-2xl overflow-hidden transform translate-z-[40px]">
+                        <div class="absolute inset-0 bg-grid opacity-30"></div>
+                        <!-- Image Header -->
+                        <div class="h-2/3 relative overflow-hidden group">
+                            <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop" alt="3D Abstract" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+                            
+                            <!-- Floating Badge -->
+                            <div class="absolute top-4 right-4 glass px-3 py-1 rounded-full flex items-center gap-2 text-xs font-bold text-white">
+                                <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                                LIVE
+                            </div>
+                        </div>
+                        
+                        <!-- Content -->
+                        <div class="p-6 relative">
+                            <h3 class="font-display font-bold text-2xl text-white mb-1">Advanced React Patterns</h3>
+                            <p class="text-slate-400 text-sm mb-4">Module 4 • Hooks & Context</p>
+                            
+                            <!-- Progress Bar -->
+                            <div class="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                                <div class="h-full w-[75%] bg-gradient-to-r from-brand-400 to-accent-purple rounded-full relative">
+                                    <div class="absolute right-0 top-0 h-full w-2 bg-white/50 blur-[2px]"></div>
+                                </div>
+                            </div>
+                            <div class="flex justify-between mt-2 text-xs text-slate-500 font-mono">
+                                <span>Progress</span>
+                                <span>75%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Floating Elements (Parallax Layers) -->
+                    <div class="absolute -top-10 -right-10 w-20 h-20 bg-accent-purple rounded-2xl flex items-center justify-center shadow-lg transform translate-z-[80px] animate-float" style="animation-delay: 0s;">
+                        <i data-lucide="cpu" class="text-white w-10 h-10"></i>
+                    </div>
+                    <div class="absolute -bottom-5 -left-5 w-16 h-16 bg-brand-500 rounded-full flex items-center justify-center shadow-lg transform translate-z-[60px] animate-float" style="animation-delay: 1.5s;">
+                        <i data-lucide="code-2" class="text-white w-8 h-8"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Marquee Section -->
+    <div class="py-10 border-y border-white/5 bg-black/50 backdrop-blur-sm overflow-hidden">
+        <div class="flex whitespace-nowrap animate-marquee">
+            <span class="text-6xl font-display font-bold text-transparent bg-clip-text bg-gradient-to-r from-white/5 to-white/20 mx-8">LEARN.</span>
+            <span class="text-6xl font-display font-bold text-transparent bg-clip-text bg-gradient-to-r from-white/5 to-white/20 mx-8">BUILD.</span>
+            <span class="text-6xl font-display font-bold text-transparent bg-clip-text bg-gradient-to-r from-white/5 to-white/20 mx-8">DEPLOY.</span>
+            <span class="text-6xl font-display font-bold text-transparent bg-clip-text bg-gradient-to-r from-white/5 to-white/20 mx-8">LEARN.</span>
+            <span class="text-6xl font-display font-bold text-transparent bg-clip-text bg-gradient-to-r from-white/5 to-white/20 mx-8">BUILD.</span>
+            <span class="text-6xl font-display font-bold text-transparent bg-clip-text bg-gradient-to-r from-white/5 to-white/20 mx-8">DEPLOY.</span>
+        </div>
+    </div>
+
+    <!-- Interactive Learning Playground -->
+    <section id="learn" class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="font-display text-4xl font-bold text-white mb-4">Don't just watch. <span class="text-brand-400">Interact.</span></h2>
+                <p class="text-slate-400 max-w-2xl mx-auto">Our platform uses WebGL to render complex concepts directly in your browser. No installation required.</p>
+            </div>
+
+            <!-- The Interactive Widget -->
+            <div class="grid lg:grid-cols-3 gap-8">
+                <!-- Sidebar / Instructions -->
+                <div class="lg:col-span-1 space-y-6">
+                    <div class="glass p-6 rounded-2xl border border-white/10">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="p-2 bg-brand-500/20 rounded-lg text-brand-400">
+                                <i data-lucide="gamepad-2" class="w-5 h-5"></i>
+                            </div>
+                            <h3 class="font-bold text-white">Mission: Build a Component</h3>
+                        </div>
+                        <p class="text-sm text-slate-400 mb-6">Drag the correct code blocks into the editor to build a functional React component.</p>
+                        
+                        <div class="space-y-2" id="code-palette">
+                            <!-- Draggable Items -->
+                            <div class="draggable-item bg-slate-800 p-3 rounded-lg border border-white/5 cursor-grab active:cursor-grabbing hover:border-brand-500/50 transition-colors flex items-center gap-2" draggable="true" data-type="import">
+                                <span class="text-accent-purple font-mono text-sm">import</span> <span class="text-white font-mono text-sm">React</span>
+                            </div>
+                            <div class="draggable-item bg-slate-800 p-3 rounded-lg border border-white/5 cursor-grab active:cursor-grabbing hover:border-brand-500/50 transition-colors flex items-center gap-2" draggable="true" data-type="function">
+                                <span class="text-accent-purple font-mono text-sm">function</span> <span class="text-brand-400 font-mono text-sm">App()</span>
+                            </div>
+                            <div class="draggable-item bg-slate-800 p-3 rounded-lg border border-white/5 cursor-grab active:cursor-grabbing hover:border-brand-500/50 transition-colors flex items-center gap-2" draggable="true" data-type="return">
+                                <span class="text-accent-purple font-mono text-sm">return</span> <span class="text-white font-mono text-sm">(&lt;div&gt;)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="p-6 rounded-2xl bg-gradient-to-br from-accent-purple/20 to-brand-900/20 border border-accent-purple/20">
+                        <h4 class="font-bold text-white mb-2">Pro Tip</h4>
+                        <p class="text-xs text-slate-300">Hover over the 3D preview on the right to inspect the DOM structure in real-time.</p>
+                    </div>
+                </div>
+
+                <!-- Code Editor & Preview -->
+                <div class="lg:col-span-2 glass rounded-2xl border border-white/10 overflow-hidden flex flex-col">
+                    <!-- Editor Header -->
+                    <div class="bg-slate-900/50 px-4 py-3 border-b border-white/5 flex items-center justify-between">
+                        <div class="flex gap-2">
+                            <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                        </div>
+                        <span class="text-xs text-slate-500 font-mono">App.js</span>
+                        <div class="w-10"></div>
+                    </div>
+
+                    <!-- Editor Body -->
+                    <div class="flex-1 p-6 font-mono text-sm relative min-h-[300px]">
+                        <div class="text-slate-500 absolute left-6 top-6 select-none text-right w-6 leading-6">
+                            1<br>2<br>3<br>4<br>5<br>6
+                        </div>
+                        <div class="pl-10 space-y-2 leading-6" id="code-editor-area">
+                            <div class="text-slate-500">// Drag blocks here to build the component</div>
+                            <!-- Drop zones -->
+                            <div class="drop-zone h-8 border-2 border-dashed border-slate-700 rounded flex items-center px-2 text-slate-600 text-xs transition-all" data-accept="import">Drop 'import' here</div>
+                            <div class="drop-zone h-8 border-2 border-dashed border-slate-700 rounded flex items-center px-2 text-slate-600 text-xs transition-all" data-accept="function">Drop 'function' here</div>
+                            <div class="pl-4 border-l border-slate-800">
+                                <div class="drop-zone h-8 border-2 border-dashed border-slate-700 rounded flex items-center px-2 text-slate-600 text-xs transition-all" data-accept="return">Drop 'return' here</div>
+                                <div class="pl-4 text-slate-300">&lt;h1&gt;Hello Lumina&lt;/h1&gt;</div>
+                                <div class="text-slate-300">);</div>
+                            </div>
+                            <div class="text-slate-300">}</div>
+                        </div>
+                        
+                        <!-- Success Overlay -->
+                        <div id="success-overlay" class="absolute inset-0 bg-black/80 backdrop-blur-sm flex flex-col items-center justify-center opacity-0 pointer-events-none transition-opacity duration-500 z-20">
+                            <div class="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mb-4 shadow-[0_0_30px_rgba(34,197,94,0.5)] transform scale-0 transition-transform duration-500 delay-100" id="success-icon">
+                                <i data-lucide="check" class="w-8 h-8 text-white"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-white mb-2">Component Built!</h3>
+                            <p class="text-slate-400 text-sm mb-4">Great job. You unlocked the next lesson.</p>
+                            <button onclick="resetGame()" class="px-4 py-2 bg-white/10 hover:bg-white/20 rounded-lg text-sm text-white transition-colors">Reset</button>
+                        </div>
+                    </div>
+
+                    <!-- Preview Pane -->
+                    <div class="h-48 bg-white border-t border-white/10 relative group overflow-hidden">
+                        <div class="absolute top-2 right-2 bg-slate-100 text-slate-500 text-[10px] px-2 py-1 rounded uppercase font-bold tracking-wider">Live Preview</div>
+                        <div class="w-full h-full flex items-center justify-center bg-slate-50" id="preview-stage">
+                            <div class="text-slate-300 text-sm select-none" id="preview-placeholder">
+                                [ Component Preview Area ]
+                            </div>
+                            <div id="preview-content" class="hidden transform transition-all duration-500 scale-90 opacity-0">
+                                <div class="bg-white p-6 rounded-xl shadow-xl border border-slate-100 max-w-xs text-center">
+                                    <div class="w-12 h-12 bg-brand-100 text-brand-600 rounded-full flex items-center justify-center mx-auto mb-3">
+                                        <i data-lucide="zap" class="w-6 h-6"></i>
+                                    </div>
+                                    <h4 class="font-bold text-slate-900">Hello Lumina</h4>
+                                    <p class="text-xs text-slate-500 mt-1">Your component is rendering correctly.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Grid (3D Tilt Cards) -->
+    <section id="features" class="py-24 bg-slate-950">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Card 1 -->
+                <div class="feature-card group relative h-96 perspective-1000 cursor-pointer">
+                    <div class="absolute inset-0 bg-gradient-to-br from-slate-900 to-black rounded-2xl border border-white/5 transform-style-3d transition-transform duration-500 group-hover:rotate-y-12 group-hover:rotate-x-12 shadow-card overflow-hidden">
+                        <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2670&auto=format&fit=crop')] bg-cover bg-center opacity-20 mix-blend-overlay group-hover:scale-110 transition-transform duration-700"></div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
+                        
+                        <div class="absolute bottom-0 left-0 p-8 transform translate-z-[40px]">
+                            <div class="w-12 h-12 bg-brand-500/20 rounded-lg flex items-center justify-center mb-4 text-brand-400 backdrop-blur-md border border-brand-500/20">
+                                <i data-lucide="graduation-cap" class="w-6 h-6"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold text-white mb-2">Expert Mentorship</h3>
+                            <p class="text-slate-400 text-sm">Learn directly from industry veterans working at top tech companies. Live Q&A sessions weekly.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="feature-card group relative h-96 perspective-1000 cursor-pointer">
+                    <div class="absolute inset-0 bg-gradient-to-br from-slate-900 to-black rounded-2xl border border-white/5 transform-style-3d transition-transform duration-500 group-hover:rotate-y-[-12deg] group-hover:rotate-x-6 shadow-card overflow-hidden">
+                        <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=2670&auto=format&fit=crop')] bg-cover bg-center opacity-20 mix-blend-overlay group-hover:scale-110 transition-transform duration-700"></div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
+                        
+                        <div class="absolute bottom-0 left-0 p-8 transform translate-z-[40px]">
+                            <div class="w-12 h-12 bg-accent-purple/20 rounded-lg flex items-center justify-center mb-4 text-accent-purple backdrop-blur-md border border-accent-purple/20">
+                                <i data-lucide="layers" class="w-6 h-6"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold text-white mb-2">Real Projects</h3>
+                            <p class="text-slate-400 text-sm">Build a portfolio that stands out. Work on open-source projects and real-world simulations.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="feature-card group relative h-96 perspective-1000 cursor-pointer">
+                    <div class="absolute inset-0 bg-gradient-to-br from-slate-900 to-black rounded-2xl border border-white/5 transform-style-3d transition-transform duration-500 group-hover:rotate-y-12 group-hover:rotate-x-[-12deg] shadow-card overflow-hidden">
+                        <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1558494949-ef526b004297?q=80&w=2670&auto=format&fit=crop')] bg-cover bg-center opacity-20 mix-blend-overlay group-hover:scale-110 transition-transform duration-700"></div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
+                        
+                        <div class="absolute bottom-0 left-0 p-8 transform translate-z-[40px]">
+                            <div class="w-12 h-12 bg-accent-teal/20 rounded-lg flex items-center justify-center mb-4 text-accent-teal backdrop-blur-md border border-accent-teal/20">
+                                <i data-lucide="users" class="w-6 h-6"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold text-white mb-2">Global Community</h3>
+                            <p class="text-slate-400 text-sm">Connect with developers worldwide. Pair programming, hackathons, and 24/7 Discord support.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonial Section (Carousel) -->
+    <section id="community" class="py-24 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row items-end justify-between mb-12 gap-6">
+                <div>
+                    <h2 class="font-display text-4xl font-bold text-white mb-2">Student Success</h2>
+                    <p class="text-slate-400">Join the ranks of our top achievers.</p>
+                </div>
+                <div class="flex gap-4">
+                    <button id="prev-slide" class="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center text-white hover:bg-white/10 transition-colors">
+                        <i data-lucide="arrow-left" class="w-5 h-5"></i>
+                    </button>
+                    <button id="next-slide" class="w-12 h-12 rounded-full bg-white text-black flex items-center justify-center hover:bg-slate-200 transition-colors">
+                        <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 3D Carousel Container -->
+            <div class="relative h-[400px] perspective-[1000px]" id="carousel-container">
+                <!-- Cards will be injected here by JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-24 relative overflow-hidden">
+        <div class="absolute inset-0 bg-brand-600/10"></div>
+        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
+        
+        <div class="max-w-4xl mx-auto px-6 relative z-10 text-center">
+            <h2 class="font-display text-5xl md:text-6xl font-bold text-white mb-8 tracking-tight">Ready to start your <br/> <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-400 to-accent-purple">evolution?</span></h2>
+            <p class="text-xl text-slate-300 mb-10 max-w-2xl mx-auto">Get full access to all courses, mentorship, and the community for 7 days. No credit card required.</p>
+            
+            <form class="max-w-md mx-auto relative" onsubmit="event.preventDefault(); alert('Welcome to the future!');">
+                <input type="email" placeholder="Enter your email address" class="w-full px-6 py-5 rounded-full bg-white/5 border border-white/10 text-white placeholder-slate-500 focus:outline-none focus:border-brand-400 focus:ring-1 focus:ring-brand-400 transition-all">
+                <button type="submit" class="absolute right-2 top-2 bottom-2 px-6 bg-white text-black font-bold rounded-full hover:bg-slate-200 transition-colors">
+                    Get Started
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-black border-t border-white/5 pt-16 pb-8">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid md:grid-cols-4 gap-12 mb-12">
+                <div class="col-span-1 md:col-span-2">
+                    <div class="flex items-center gap-2 mb-6">
+                        <div class="w-8 h-8 bg-gradient-to-tr from-brand-400 to-accent-purple rounded-lg flex items-center justify-center">
+                            <i data-lucide="box" class="text-white w-5 h-5"></i>
+                        </div>
+                        <span class="font-display font-bold text-xl text-white">Lumina<span class="text-brand-400">3D</span></span>
+                    </div>
+                    <p class="text-slate-500 max-w-sm mb-6">Redefining the future of education through immersive 3D technology and interactive learning experiences.</p>
+                    <div class="flex gap-4">
+                        <a href="#" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-slate-400 hover:bg-white/10 hover:text-white transition-all">
+                            <i data-lucide="twitter" class="w-5 h-5"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-slate-400 hover:bg-white/10 hover:text-white transition-all">
+                            <i data-lucide="github" class="w-5 h-5"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-slate-400 hover:bg-white/10 hover:text-white transition-all">
+                            <i data-lucide="linkedin" class="w-5 h-5"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold text-white mb-6">Platform</h4>
+                    <ul class="space-y-4 text-slate-400">
+                        <li><a href="#" class="hover:text-brand-400 transition-colors">Browse Courses</a></li>
+                        <li><a href="#" class="hover:text-brand-400 transition-colors">Mentorship</a></li>
+                        <li><a href="#" class="hover:text-brand-400 transition-colors">Pricing</a></li>
+                        <li><a href="#" class="hover:text-brand-400 transition-colors">For Business</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="font-bold text-white mb-6">Company</h4>
+                    <ul class="space-y-4 text-slate-400">
+                        <li><a href="#" class="hover:text-brand-400 transition-colors">About Us</a></li>
+                        <li><a href="#" class="hover:text-brand-400 transition-colors">Careers</a></li>
+                        <li><a href="#" class="hover:text-brand-400 transition-colors">Blog</a></li>
+                        <li><a href="#" class="hover:text-brand-400 transition-colors">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-slate-600 text-sm">© 2023 Lumina 3D Learning. All rights reserved.</p>
+                <div class="flex gap-8 text-sm text-slate-600">
+                    <a href="#" class="hover:text-slate-400">Privacy Policy</a>
+                    <a href="#" class="hover:text-slate-400">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // --- 1. Three.js Background Animation ---
+        const initThreeJS = () => {
+            const container = document.getElementById('canvas-container');
+            const scene = new THREE.Scene();
+            
+            // Fog for depth
+            scene.fog = new THREE.FogExp2(0x050505, 0.002);
+
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+            
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            container.appendChild(renderer.domElement);
+
+            // Geometry: Floating Icosahedrons (Crystals)
+            const geometry = new THREE.IcosahedronGeometry(1, 0);
+            const material = new THREE.MeshBasicMaterial({ 
+                color: 0x38bdf8, 
+                wireframe: true,
+                transparent: true,
+                opacity: 0.15
+            });
+
+            const particles = [];
+            const particleCount = 40;
+
+            for (let i = 0; i < particleCount; i++) {
+                const mesh = new THREE.Mesh(geometry, material);
+                
+                // Random Position
+                mesh.position.x = (Math.random() - 0.5) * 20;
+                mesh.position.y = (Math.random() - 0.5) * 20;
+                mesh.position.z = (Math.random() - 0.5) * 10 - 5; // Push back slightly
+                
+                // Random Scale
+                const scale = Math.random() * 0.5 + 0.1;
+                mesh.scale.set(scale, scale, scale);
+
+                // Random Rotation Speed
+                mesh.userData = {
+                    rotX: (Math.random() - 0.5) * 0.01,
+                    rotY: (Math.random() - 0.5) * 0.01,
+                    floatSpeed: Math.random() * 0.002 + 0.001,
+                    yBase: mesh.position.y
+                };
+
+                scene.add(mesh);
+                particles.push(mesh);
+            }
+
+            camera.position.z = 5;
+
+            // Mouse Interaction
+            let mouseX = 0;
+            let mouseY = 0;
+            let targetX = 0;
+            let targetY = 0;
+
+            const windowHalfX = window.innerWidth / 2;
+            const windowHalfY = window.innerHeight / 2;
+
+            document.addEventListener('mousemove', (event) => {
+                mouseX = (event.clientX - windowHalfX);
+                mouseY = (event.clientY - windowHalfY);
+            });
+
+            // Animation Loop
+            const animate = () => {
+                requestAnimationFrame(animate);
+
+                targetX = mouseX * 0.001;
+                targetY = mouseY * 0.001;
+
+                particles.forEach((p, i) => {
+                    // Rotation
+                    p.rotation.x += p.userData.rotX;
+                    p.rotation.y += p.userData.rotY;
+
+                    // Floating motion
+                    p.position.y = p.userData.yBase + Math.sin(Date.now() * p.userData.floatSpeed + i) * 0.5;
+
+                    // Mouse parallax (slow)
+                    p.rotation.y += 0.05 * (targetX - p.rotation.y);
+                    p.rotation.x += 0.05 * (targetY - p.rotation.x);
+                });
+
+                // Camera subtle move
+                camera.position.x += (mouseX * 0.0005 - camera.position.x) * 0.05;
+                camera.position.y += (-mouseY * 0.0005 - camera.position.y) * 0.05;
+                camera.lookAt(scene.position);
+
+                renderer.render(scene, camera);
+            };
+
+            animate();
+
+            // Resize Handler
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+        };
+
+        // --- 2. Hero Card Tilt Effect ---
+        const initTilt = () => {
+            const card = document.getElementById('hero-tilt-card');
+            const container = card.parentElement;
+
+            container.addEventListener('mousemove', (e) => {
+                const rect = container.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const rotateX = ((y - centerY) / centerY) * -10; // Max 10deg
+                const rotateY = ((x - centerX) / centerX) * 10;
+
+                card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            });
+
+            container.addEventListener('mouseleave', () => {
+                card.style.transform = `rotateX(0deg) rotateY(0deg)`;
+            });
+        };
+
+        // --- 3. Interactive Code Game ---
+        const initGame = () => {
+            const draggables = document.querySelectorAll('.draggable-item');
+            const dropZones = document.querySelectorAll('.drop-zone');
+            const successOverlay = document.getElementById('success-overlay');
+            const successIcon = document.getElementById('success-icon');
+            const previewContent = document.getElementById('preview-content');
+            const previewPlaceholder = document.getElementById('preview-placeholder');
+            
+            let completedCount = 0;
+            const totalZones = 3;
+
+            draggables.forEach(draggable => {
+                draggable.addEventListener('dragstart', () => {
+                    draggable.classList.add('opacity-50');
+                    draggable.classList.add('dragging');
+                });
+
+                draggable.addEventListener('dragend', () => {
+                    draggable.classList.remove('opacity-50');
+                    draggable.classList.remove('dragging');
+                });
+            });
+
+            dropZones.forEach(zone => {
+                zone.addEventListener('dragover', e => {
+                    e.preventDefault();
+                    zone.classList.add('bg-slate-800', 'border-brand-500');
+                });
+
+                zone.addEventListener('dragleave', () => {
+                    zone.classList.remove('bg-slate-800', 'border-brand-500');
+                });
+
+                zone.addEventListener('drop', e => {
+                    e.preventDefault();
+                    const draggable = document.querySelector('.dragging');
+                    const acceptedType = zone.getAttribute('data-accept');
+                    const draggedType = draggable.getAttribute('data-type');
+
+                    if (acceptedType === draggedType && !zone.classList.contains('filled')) {
+                        // Valid Drop
+                        zone.textContent = '';
+                        zone.appendChild(draggable);
+                        draggable.setAttribute('draggable', 'false');
+                        draggable.classList.remove('cursor-grab');
+                        draggable.classList.add('w-full', 'h-full', 'bg-transparent', 'border-none', 'p-0');
+                        zone.classList.add('filled', 'border-transparent', 'bg-slate-900');
+                        zone.classList.remove('border-dashed', 'border-slate-700');
+                        
+                        completedCount++;
+
+                        if (completedCount === totalZones) {
+                            triggerWin();
+                        }
+                    } else {
+                        zone.classList.remove('bg-slate-800', 'border-brand-500');
+                    }
+                });
+            });
+
+            function triggerWin() {
+                // Confetti
+                confetti({
+                    particleCount: 100,
+                    spread: 70,
+                    origin: { y: 0.6 },
+                    colors: ['#38bdf8', '#8b5cf6', '#ffffff']
+                });
+
+                // Show Overlay
+                setTimeout(() => {
+                    successOverlay.classList.remove('opacity-0', 'pointer-events-none');
+                    successIcon.classList.remove('scale-0');
+                    
+                    // Show Preview
+                    previewPlaceholder.classList.add('hidden');
+                    previewContent.classList.remove('hidden');
+                    setTimeout(() => {
+                        previewContent.classList.remove('scale-90', 'opacity-0');
+                        previewContent.classList.add('scale-100', 'opacity-100');
+                    }, 100);
+                }, 500);
+            }
+
+            window.resetGame = () => {
+                location.reload(); // Simple reset for demo
+            };
+        };
+
+        // --- 4. 3D Carousel Logic ---
+        const initCarousel = () => {
+            const container = document.getElementById('carousel-container');
+            const data = [
+                { name: "Sarah Jenkins", role: "Frontend Dev", text: "The 3D visualizations helped me understand data structures finally!", img: "https://i.pravatar.cc/150?img=32" },
+                { name: "Mike Ross", role: "Student", text: "Best investment I've made in my career. The community is gold.", img: "https://i.pravatar.cc/150?img=11" },
+                { name: "Jessica Lee", role: "CTO", text: "We use Lumina to onboard our junior developers. It's incredibly effective.", img: "https://i.pravatar.cc/150?img=5" },
+                { name: "David Kim", role: "Game Dev", text: "The Three.js course is exactly what I needed to get started.", img: "https://i.pravatar.cc/150?img=60" },
+            ];
+
+            let currentIndex = 0;
+            const radius = 400; // Distance from center
+
+            // Create Cards
+            data.forEach((item, index) => {
+                const card = document.createElement('div');
+                card.className = 'absolute w-80 h-96 bg-slate-900 rounded-2xl border border-white/10 p-6 flex flex-col justify-between shadow-2xl transition-all duration-500 ease-out';
+                card.style.transformStyle = 'preserve-3d';
+                card.style.backfaceVisibility = 'hidden';
+                
+                card.innerHTML = `
+                    <div>
+                        <div class="flex items-center gap-4 mb-6">
+                            <img src="${item.img}" class="w-12 h-12 rounded-full border-2 border-brand-500">
+                            <div>
+                                <h4 class="font-bold text-white">${item.name}</h4>
+                                <p class="text-xs text-brand-400">${item.role}</p>
+                            </div>
+                        </div>
+                        <p class="text-slate-300 text-lg font-display leading-relaxed">"${item.text}"</p>
+                    </div>
+                    <div class="flex text-yellow-500">
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+            lucide.createIcons();
+
+            const cards = container.children;
+            const total = cards.length;
+            const angleStep = 360 / total;
+
+            const updateCarousel = () => {
+                for (let i = 0; i < total; i++) {
+                    // Calculate angle relative to current index
+                    let angle = (i - currentIndex) * angleStep;
+                    
+                    // Convert polar to cartesian
+                    // We rotate the container, but actually we want to position elements in a circle
+                    // Let's use rotateY for the cards
+                    
+                    // Adjust angle to be within -180 to 180 for logic
+                    // But for the transform, we just rotate the specific card
+                    
+                    const theta = (i - currentIndex) * (2 * Math.PI / total);
+                    
+                    const x = Math.sin(theta) * radius;
+                    const z = Math.cos(theta) * radius - radius; // Shift back so center is at front
+                    
+                    // Actually, simpler approach for CSS 3D carousel:
+                    // Rotate the container? No, position each card.
+                    
+                    // Let's stick to the standard "Rotating Cylinder" approach
+                    // Each card has a rotateY and a translateZ
+                    
+                    const rotY = (i - currentIndex) * angleStep;
+                    
+                    cards[i].style.transform = `rotateY(${rotY}deg) translateZ(${radius}px)`;
+                    
+                    // Opacity handling: fade out back cards
+                    const normalizedAngle = Math.abs(rotY % 360);
+                    if (normalizedAngle > 90 && normalizedAngle < 270) {
+                        cards[i].style.opacity = '0.2';
+                        cards[i].style.filter = 'blur(4px)';
+                    } else {
+                        cards[i].style.opacity = '1';
+                        cards[i].style.filter = 'blur(0)';
+                    }
+                }
+            };
+
+            updateCarousel();
+
+            document.getElementById('next-slide').addEventListener('click', () => {
+                currentIndex = (currentIndex + 1) % total;
+                updateCarousel();
+            });
+
+            document.getElementById('prev-slide').addEventListener('click', () => {
+                currentIndex = (currentIndex - 1 + total) % total;
+                updateCarousel();
+            });
+        };
+
+        // --- 5. GSAP Scroll Animations ---
+        const initScrollAnimations = () => {
+            gsap.registerPlugin(ScrollTrigger);
+
+            // Navbar Glass Effect
+            window.addEventListener('scroll', () => {
+                const nav = document.getElementById('navbar');
+                if (window.scrollY > 50) {
+                    nav.classList.add('bg-black/80', 'shadow-lg');
+                } else {
+                    nav.classList.remove('bg-black/80', 'shadow-lg');
+                }
+            });
+
+            // Fade in elements on scroll
+            gsap.utils.toArray('.glass, .feature-card').forEach(element => {
+                gsap.from(element, {
+                    scrollTrigger: {
+                        trigger: element,
+                        start: "top 85%",
+                    },
+                    y: 50,
+                    opacity: 0,
+                    duration: 1,
+                    ease: "power3.out"
+                });
+            });
+        };
+
+        // --- Initialization ---
+        document.addEventListener('DOMContentLoaded', () => {
+            initThreeJS();
+            initTilt();
+            initGame();
+            initCarousel();
+            initScrollAnimations();
+        });
+
+        // Smooth Scroll Helper
+        function scrollToSection(id) {
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+        }
+
+    </script>
+</body>
+</html>

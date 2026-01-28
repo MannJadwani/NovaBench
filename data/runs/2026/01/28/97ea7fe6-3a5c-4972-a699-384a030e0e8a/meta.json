@@ -1,0 +1,18 @@
+{
+  "id": "97ea7fe6-3a5c-4972-a699-384a030e0e8a",
+  "createdAt": "2026-01-27T21:22:12.514Z",
+  "provider": "zai",
+  "model": "glm-4.5",
+  "benchmark": {
+    "id": "cyberpunk-landing",
+    "title": "Cyberpunk Aesthetic - Landing Page",
+    "category": "Design Terms"
+  },
+  "latencyMs": 92248,
+  "tokenUsage": null,
+  "params": {
+    "temperature": 1,
+    "maxTokens": null
+  },
+  "path": "runs/2026/01/28/97ea7fe6-3a5c-4972-a699-384a030e0e8a"
+}

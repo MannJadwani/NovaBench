@@ -1,0 +1,37 @@
+{
+  "id": "3e47800a-0f31-4e8d-8501-facb302bf4c5",
+  "createdAt": "2026-01-27T22:23:03.390Z",
+  "provider": "openrouter",
+  "model": "moonshotai/kimi-k2.5",
+  "benchmark": {
+    "id": "premium-gradients",
+    "title": "Sharp Premium & Rich Gradients",
+    "category": "Design Terms"
+  },
+  "latencyMs": 105372,
+  "tokenUsage": {
+    "prompt_tokens": 69,
+    "completion_tokens": 7572,
+    "total_tokens": 7641,
+    "cost": 0.0227574,
+    "is_byok": false,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "audio_tokens": 0
+    },
+    "cost_details": {
+      "upstream_inference_cost": 0.0227574,
+      "upstream_inference_prompt_cost": 0.0000414,
+      "upstream_inference_completions_cost": 0.022716
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 704,
+      "audio_tokens": 0
+    }
+  },
+  "params": {
+    "temperature": 1,
+    "maxTokens": null
+  },
+  "path": "runs/2026/01/28/3e47800a-0f31-4e8d-8501-facb302bf4c5"
+}

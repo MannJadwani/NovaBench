@@ -1,0 +1,77 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glassmorphic Landing Page</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-blue-50 via-cyan-100 to-purple-50">
+    <div class="container mx-auto px-4 h-full flex flex-col justify-center items-center">
+        <div class="glass-card flex flex-col items-center justify-center p-12 rounded-2xl shadow-2xl backdrop-blur-md text-white mb-8">
+            <div class="glass-header text-5xl font-bold mb-4">Welcome to Our Platform</div>
+            <p class="glass-content text-center mb-8 opacity-90 text-lg">Experience the elegance of glassmorphic design with transparent layers, frosted effects, and subtle gradients. Explore our features and join us today.</p>
+            <div class="glass-button group relative overflow-hidden inline-flex items-center justify-center rounded-full bg-white/20 backdrop-blur-sm px-8 py-3 transition-all duration-300 hover:scale-105 hover:shadow-2xl">
+                <span class="text-xl font-semibold text-white z-10">Get Started</span>
+                <div class="absolute inset-0 bg-white/10 group-hover:bg-white/20 transition-all duration-300"></div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-6xl">
+            <div class="glass-card flex flex-col items-center p-8 rounded-2xl backdrop-blur-md text-white">
+                <div class="glass-icon text-4xl mb-4">🎨</div>
+                <div class="glass-title font-semibold text-xl mb-2">Modern Design</div>
+                <p class="glass-description text-center opacity-90">Crafted with modern glassmorphic principles for a sleek and elegant interface.</p>
+            </div>
+
+            <div class="glass-card flex flex-col items-center p-8 rounded-2xl backdrop-blur-md text-white">
+                <div class="glass-icon text-4xl mb-4">⚡</div>
+                <div class="glass-title font-semibold text-xl mb-2">Fast Performance</div>
+                <p class="glass-description text-center opacity-90">Optimized for speed and responsiveness across all devices.</p>
+            </div>
+
+            <div class="glass-card flex flex-col items-center p-8 rounded-2xl backdrop-blur-md text-white">
+                <div class="glass-icon text-4xl mb-4">🛡️</div>
+                <div class="glass-title font-semibold text-xl mb-2">Secure Platform</div>
+                <p class="glass-description text-center opacity-90">Built with security in mind to protect your data and privacy.</p>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+
+        .glass-header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .glass-content {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .glass-button {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .glass-icon, .glass-title, .glass-description {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+        }
+    </style>
+</body>
+</html>

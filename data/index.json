@@ -1,0 +1,2255 @@
+[
+  {
+    "id": "627ef981-acfc-40e9-a08d-6ff84e846b5d",
+    "createdAt": "2026-01-27T23:54:08.169Z",
+    "provider": "openrouter",
+    "model": "deepseek/deepseek-v3.2",
+    "benchmark": {
+      "id": "swiss-ui-landing",
+      "title": "Swiss UI - Landing Page",
+      "category": "Design Terms"
+    },
+    "latencyMs": 143549,
+    "tokenUsage": {
+      "prompt_tokens": 76,
+      "completion_tokens": 2526,
+      "total_tokens": 2602,
+      "cost": 0.00115798,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "audio_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.00115798,
+        "upstream_inference_prompt_cost": 0.00002128,
+        "upstream_inference_completions_cost": 0.0011367
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 0,
+        "audio_tokens": 0
+      }
+    },
+    "params": {
+      "temperature": 1,
+      "maxTokens": null
+    },
+    "path": "runs/2026/01/28/627ef981-acfc-40e9-a08d-6ff84e846b5d",
+    "scoreSummary": null
+  },
+  {
+    "id": "414603a3-d8b0-49dd-9345-bb8ac924f582",
+    "createdAt": "2026-01-27T23:46:34.847Z",
+    "provider": "openrouter",
+    "model": "arcee-ai/trinity-large-preview:free",
+    "benchmark": {
+      "id": "flight-control-ui",
+      "title": "Flight Control Module UI",
+      "category": "Complexity of UI"
+    },
+    "latencyMs": 65396,
+    "tokenUsage": {
+      "prompt_tokens": 101,
+      "completion_tokens": 6610,
+      "total_tokens": 6711,
+      "cost": 0,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "audio_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0,
+        "upstream_inference_prompt_cost": 0,
+        "upstream_inference_completions_cost": 0
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 0,
+        "audio_tokens": 0
+      }
+    },
+    "params": {
+      "temperature": 1,
+      "maxTokens": null
+    },
+    "path": "runs/2026/01/28/414603a3-d8b0-49dd-9345-bb8ac924f582",
+    "scoreSummary": null
+  },
+  {
+    "id": "5f888a4d-7dbc-470b-b043-5c6857aa059b",
+    "createdAt": "2026-01-27T23:45:29.426Z",
+    "provider": "openrouter",
+    "model": "arcee-ai/trinity-large-preview:free",
+    "benchmark": {
+      "id": "photoshop-clone",
+      "title": "Photoshop Web Clone",
+      "category": "Complexity of UI"
+    },
+    "latencyMs": 30133,
+    "tokenUsage": {
+      "prompt_tokens": 94,
+      "completion_tokens": 2206,
+      "total_tokens": 2300,
+      "cost": 0,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "audio_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0,
+        "upstream_inference_prompt_cost": 0,
+        "upstream_inference_completions_cost": 0
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 0,
+        "audio_tokens": 0
+      }
+    },
+    "params": {
+      "temperature": 1,
+      "maxTokens": null
+    },
+    "path": "runs/2026/01/28/5f888a4d-7dbc-470b-b043-5c6857aa059b",
+    "scoreSummary": null
+  },
+  {
+    "id": "e771c01d-2e08-438b-8981-2eb46ee5598b",
+    "createdAt": "2026-01-27T23:44:59.272Z",
+    "provider": "openrouter",
+    "model": "arcee-ai/trinity-large-preview:free",
+    "benchmark": {
+      "id": "video-editor",
+      "title": "Video Editor Interface",
+      "category": "Complexity of UI"
+    },
+    "latencyMs": 60854,
+    "tokenUsage": null,
+    "params": {
+      "temperature": 1,
+      "maxTokens": null
+    },
+    "path": "runs/2026/01/28/e771c01d-2e08-438b-8981-2eb46ee5598b",
+    "scoreSummary": null
+  },
+  {
+    "id": "e4ef28fb-f37e-4b85-90f6-14584ac9d2e2",
+    "createdAt": "2026-01-27T23:43:58.411Z",
+    "provider": "openrouter",
+    "model": "arcee-ai/trinity-large-preview:free",
+    "benchmark": {
+      "id": "macos-clone",
+      "title": "macOS Clone",
+      "category": "Complexity of UI"
+    },
+    "latencyMs": 61040,
+    "tokenUsage": {
+      "prompt_tokens": 114,
+      "completion_tokens": 7443,
+      "total_tokens": 7557,
+      "cost": 0,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "audio_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0,
+        "upstream_inference_prompt_cost": 0,
+        "upstream_inference_completions_cost": 0
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 0,
+        "audio_tokens": 0
+      }
+    },
+    "params": {
+      "temperature": 1,
+      "maxTokens": null
+    },
+    "path": "runs/2026/01/28/e4ef28fb-f37e-4b85-90f6-14584ac9d2e2",
+    "scoreSummary": null
+  },
+  {
+    "id": "7339464e-ee8f-47b4-a595-ee9858418610",
+    "createdAt": "2026-01-27T23:42:57.361Z",
+    "provider": "openrouter",
+    "model": "arcee-ai/trinity-large-preview:free",
+    "benchmark": {
+      "id": "gta-web-game",
+      "title": "GTA Web Game",
+      "category": "3D"
+    },
+    "latencyMs": 28127,
+    "tokenUsage": {
+      "prompt_tokens": 93,
+      "completion_tokens": 4345,
+      "total_tokens": 4438,
+      "cost": 0,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "audio_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0,
+        "upstream_inference_prompt_cost": 0,
+        "upstream_inference_completions_cost": 0
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 0,
+        "audio_tokens": 0
+      }
+    },
+    "params": {
+      "temperature": 1,
+      "maxTokens": null
+    },
+    "path": "runs/2026/01/28/7339464e-ee8f-47b4-a595-ee9858418610",
+    "scoreSummary": null
+  },
+  {
+    "id": "d1c6c19c-1ddc-4896-be08-3b3d4ef58ab7",
+    "createdAt": "2026-01-27T23:42:29.227Z",
+    "provider": "openrouter",
+    "model": "arcee-ai/trinity-large-preview:free",
+    "benchmark": {
+      "id": "floating-ui-3d",
+      "title": "3D Floating UI Components",
+      "category": "3D"
+    },
+    "latencyMs": 22288,
+    "tokenUsage": {
+      "prompt_tokens": 86,
+      "completion_tokens": 1997,
+      "total_tokens": 2083,
+      "cost": 0,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "audio_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0,
+        "upstream_inference_prompt_cost": 0,
+        "upstream_inference_completions_cost": 0
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 0,
+        "audio_tokens": 0
+      }
+    },
+    "params": {
+      "temperature": 1,
+      "maxTokens": null
+    },
+    "path": "runs/2026/01/28/d1c6c19c-1ddc-4896-be08-3b3d4ef58ab7",
+    "scoreSummary": null
+  },
+  {
+    "id": "b0ac5bc3-1986-4771-a875-c0fe2e951123",
+    "createdAt": "2026-01-27T23:42:06.887Z",
+    "provider": "openrouter",
+    "model": "arcee-ai/trinity-large-preview:free",
+    "benchmark": {
+      "id": "earth-globe",
+      "title": "3D Earth Model",
+      "category": "3D"
+    },
+    "latencyMs": 26275,
+    "tokenUsage": {
+      "prompt_tokens": 90,
+      "completion_tokens": 3426,
+      "total_tokens": 3516,
+      "cost": 0,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "audio_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0,
+        "upstream_inference_prompt_cost": 0,
+        "upstream_inference_completions_cost": 0
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 0,
+        "audio_tokens": 0
+      }
+    },
+    "params": {
+      "temperature": 1,
+      "maxTokens": null
+    },
+    "path": "runs/2026/01/28/b0ac5bc3-1986-4771-a875-c0fe2e951123",
+    "scoreSummary": null
+  },
+  {
+    "id": "24a7705a-285a-4265-898a-3033ec64771b",
+    "createdAt": "2026-01-27T23:41:40.605Z",
+    "provider": "openrouter",
+    "model": "arcee-ai/trinity-large-preview:free",
+    "benchmark": {
+      "id": "minecraft-clone",
+      "title": "Minecraft Clone",
+      "category": "3D"
+    },
+    "latencyMs": 46072,
+    "tokenUsage": {
+      "prompt_tokens": 88,
+      "completion_tokens": 3902,
+      "total_tokens": 3990,
+      "cost": 0,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "audio_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0,
+        "upstream_inference_prompt_cost": 0,
+        "upstream_inference_completions_cost": 0
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 0,
+        "audio_tokens": 0
+      }
+    },
+    "params": {
+      "temperature": 1,
+      "maxTokens": null
+    },
+    "path": "runs/2026/01/28/24a7705a-285a-4265-898a-3033ec64771b",
+    "scoreSummary": null
+  },
+  {
+    "id": "bac9e929-66d8-467e-a502-4635b2fccbd0",
+    "createdAt": "2026-01-27T23:40:54.525Z",
+    "provider": "openrouter",
+    "model": "arcee-ai/trinity-large-preview:free",
+    "benchmark": {
+      "id": "img-to-code-4",
+      "title": "Image to Code #4",
+      "category": "Image to Code"
+    },
+    "latencyMs": 5230,
+    "tokenUsage": {
+      "prompt_tokens": 71,
+      "completion_tokens": 520,
+      "total_tokens": 591,
+      "cost": 0,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "audio_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0,
+        "upstream_inference_prompt_cost": 0,
+        "upstream_inference_completions_cost": 0
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 0,
+        "audio_tokens": 0
+      }
+    },
+    "params": {
+      "temperature": 1,
+      "maxTokens": null
+    },
+    "path": "runs/2026/01/28/bac9e929-66d8-467e-a502-4635b2fccbd0",
+    "scoreSummary": null
+  },
+  {
+    "id": "dcd067d8-f177-46af-91ff-8d78d16f70c5",
+    "createdAt": "2026-01-27T23:40:49.279Z",
+    "provider": "openrouter",
+    "model": "arcee-ai/trinity-large-preview:free",
+    "benchmark": {
+      "id": "img-to-code-3",
+      "title": "Image to Code #3",
+      "category": "Image to Code"
+    },
+    "latencyMs": 60669,
+    "tokenUsage": null,
+    "params": {
+      "temperature": 1,
+      "maxTokens": null
+    },
+    "path": "runs/2026/01/28/dcd067d8-f177-46af-91ff-8d78d16f70c5",
+    "scoreSummary": null
+  },
+  {
+    "id": "6169abd7-3923-4a39-928d-8cc165d8496d",
+    "createdAt": "2026-01-27T23:39:48.591Z",
+    "provider": "openrouter",
+    "model": "arcee-ai/trinity-large-preview:free",
+    "benchmark": {
+      "id": "img-to-code-2",
+      "title": "Image to Code #2",
+      "category": "Image to Code"
+    },
+    "latencyMs": 60577,
+    "tokenUsage": null,
+    "params": {
+      "temperature": 1,
+      "maxTokens": null
+    },
+    "path": "runs/2026/01/28/6169abd7-3923-4a39-928d-8cc165d8496d",
+    "scoreSummary": null
+  },
+  {
+    "id": "407e3602-4a41-4aeb-95f7-4e1ca2a30c41",
+    "createdAt": "2026-01-27T23:38:48.006Z",
+    "provider": "openrouter",
+    "model": "arcee-ai/trinity-large-preview:free",
+    "benchmark": {
+      "id": "img-to-code-1",
+      "title": "Image to Code #1",
+      "category": "Image to Code"
+    },
+    "latencyMs": 9140,
+    "tokenUsage": {
+      "prompt_tokens": 65,
+      "completion_tokens": 850,
+      "total_tokens": 915,
+      "cost": 0,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "audio_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0,
+        "upstream_inference_prompt_cost": 0,
+        "upstream_inference_completions_cost": 0
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 0,
+        "audio_tokens": 0
+      }
+    },
+    "params": {
+      "temperature": 1,
+      "maxTokens": null
+    },
+    "path": "runs/2026/01/28/407e3602-4a41-4aeb-95f7-4e1ca2a30c41",
+    "scoreSummary": null
+  },
+  {
+    "id": "a29a938f-22fd-4ca9-bf94-cfbd9e73f709",
+    "createdAt": "2026-01-27T23:38:38.857Z",
+    "provider": "openrouter",
+    "model": "arcee-ai/trinity-large-preview:free",
+    "benchmark": {
+      "id": "amazing-design",
+      "title": "Amazing Design",
+      "category": "Design Terms"
+    },
+    "latencyMs": 5261,
+    "tokenUsage": {
+      "prompt_tokens": 77,
+      "completion_tokens": 524,
+      "total_tokens": 601,
+      "cost": 0,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "audio_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0,
+        "upstream_inference_prompt_cost": 0,
+        "upstream_inference_completions_cost": 0
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 0,
+        "audio_tokens": 0
+      }
+    },
+    "params": {
+      "temperature": 1,
+      "maxTokens": null
+    },
+    "path": "runs/2026/01/28/a29a938f-22fd-4ca9-bf94-cfbd9e73f709",
+    "scoreSummary": null
+  },
+  {
+    "id": "83ecf6f4-5e47-4d20-8f3a-2c1862acb01c",
+    "createdAt": "2026-01-27T23:38:33.589Z",
+    "provider": "openrouter",
+    "model": "arcee-ai/trinity-large-preview:free",
+    "benchmark": {
+      "id": "3d-learning",
+      "title": "3D Website for Learning",
+      "category": "Design Terms"
+    },
+    "latencyMs": 60621,
+    "tokenUsage": null,
+    "params": {
+      "temperature": 1,
+      "maxTokens": null
+    },
+    "path": "runs/2026/01/28/83ecf6f4-5e47-4d20-8f3a-2c1862acb01c",
+    "scoreSummary": null
+  },
+  {
+    "id": "f410b35c-7f82-45a8-80f6-429651e42ab8",
+    "createdAt": "2026-01-27T23:37:32.960Z",
+    "provider": "openrouter",
+    "model": "arcee-ai/trinity-large-preview:free",
+    "benchmark": {
+      "id": "premium-gradients",
+      "title": "Sharp Premium & Rich Gradients",
+      "category": "Design Terms"
+    },
+    "latencyMs": 39181,
+    "tokenUsage": {
+      "prompt_tokens": 76,
+      "completion_tokens": 3674,
+      "total_tokens": 3750,
+      "cost": 0,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "audio_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0,
+        "upstream_inference_prompt_cost": 0,
+        "upstream_inference_completions_cost": 0
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 0,
+        "audio_tokens": 0
+      }
+    },
+    "params": {
+      "temperature": 1,
+      "maxTokens": null
+    },
+    "path": "runs/2026/01/28/f410b35c-7f82-45a8-80f6-429651e42ab8",
+    "scoreSummary": null
+  },
+  {
+    "id": "15550e22-8db0-44b6-aa2e-b3d937b99fa2",
+    "createdAt": "2026-01-27T23:36:53.762Z",
+    "provider": "openrouter",
+    "model": "arcee-ai/trinity-large-preview:free",
+    "benchmark": {
+      "id": "soft-ui-landing",
+      "title": "Soft UI - Landing Page",
+      "category": "Design Terms"
+    },
+    "latencyMs": 60554,
+    "tokenUsage": null,
+    "params": {
+      "temperature": 1,
+      "maxTokens": null
+    },
+    "path": "runs/2026/01/28/15550e22-8db0-44b6-aa2e-b3d937b99fa2",
+    "scoreSummary": null
+  },
+  {
+    "id": "6c574abb-83e7-44de-8959-34e11c1249a2",
+    "createdAt": "2026-01-27T23:35:53.202Z",
+    "provider": "openrouter",
+    "model": "arcee-ai/trinity-large-preview:free",
+    "benchmark": {
+      "id": "night-ui-landing",
+      "title": "Night UI - Landing Page",
+      "category": "Design Terms"
+    },
+    "latencyMs": 15180,
+    "tokenUsage": {
+      "prompt_tokens": 79,
+      "completion_tokens": 1906,
+      "total_tokens": 1985,
+      "cost": 0,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "audio_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0,
+        "upstream_inference_prompt_cost": 0,
+        "upstream_inference_completions_cost": 0
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 0,
+        "audio_tokens": 0
+      }
+    },
+    "params": {
+      "temperature": 1,
+      "maxTokens": null
+    },
+    "path": "runs/2026/01/28/6c574abb-83e7-44de-8959-34e11c1249a2",
+    "scoreSummary": null
+  },
+  {
+    "id": "1264b470-3607-4206-8345-d027eef5f3eb",
+    "createdAt": "2026-01-27T23:35:38.014Z",
+    "provider": "openrouter",
+    "model": "arcee-ai/trinity-large-preview:free",
+    "benchmark": {
+      "id": "cyberpunk-landing",
+      "title": "Cyberpunk Aesthetic - Landing Page",
+      "category": "Design Terms"
+    },
+    "latencyMs": 4344,
+    "tokenUsage": {
+      "prompt_tokens": 83,
+      "completion_tokens": 416,
+      "total_tokens": 499,
+      "cost": 0,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "audio_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0,
+        "upstream_inference_prompt_cost": 0,
+        "upstream_inference_completions_cost": 0
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 0,
+        "audio_tokens": 0
+      }
+    },
+    "params": {
+      "temperature": 1,
+      "maxTokens": null
+    },
+    "path": "runs/2026/01/28/1264b470-3607-4206-8345-d027eef5f3eb",
+    "scoreSummary": null
+  },
+  {
+    "id": "38c42fef-fe20-4546-8ed5-58b3b0dcdc3c",
+    "createdAt": "2026-01-27T23:35:33.660Z",
+    "provider": "openrouter",
+    "model": "arcee-ai/trinity-large-preview:free",
+    "benchmark": {
+      "id": "neo-brutalism-landing",
+      "title": "Neo Brutalism - Landing Page",
+      "category": "Design Terms"
+    },
+    "latencyMs": 3082,
+    "tokenUsage": {
+      "prompt_tokens": 86,
+      "completion_tokens": 274,
+      "total_tokens": 360,
+      "cost": 0,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "audio_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0,
+        "upstream_inference_prompt_cost": 0,
+        "upstream_inference_completions_cost": 0
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 0,
+        "audio_tokens": 0
+      }
+    },
+    "params": {
+      "temperature": 1,
+      "maxTokens": null
+    },
+    "path": "runs/2026/01/28/38c42fef-fe20-4546-8ed5-58b3b0dcdc3c",
+    "scoreSummary": null
+  },
+  {
+    "id": "81c5c880-7678-49ab-b07a-a84d53d0a9fb",
+    "createdAt": "2026-01-27T23:35:30.569Z",
+    "provider": "openrouter",
+    "model": "arcee-ai/trinity-large-preview:free",
+    "benchmark": {
+      "id": "glassmorphic-landing",
+      "title": "Glassmorphic UI - Landing Page",
+      "category": "Design Terms"
+    },
+    "latencyMs": 9542,
+    "tokenUsage": {
+      "prompt_tokens": 80,
+      "completion_tokens": 1042,
+      "total_tokens": 1122,
+      "cost": 0,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "audio_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0,
+        "upstream_inference_prompt_cost": 0,
+        "upstream_inference_completions_cost": 0
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 0,
+        "audio_tokens": 0
+      }
+    },
+    "params": {
+      "temperature": 1,
+      "maxTokens": null
+    },
+    "path": "runs/2026/01/28/81c5c880-7678-49ab-b07a-a84d53d0a9fb",
+    "scoreSummary": null
+  },
+  {
+    "id": "8b524bc6-fa43-465c-9b70-7e4291968f6f",
+    "createdAt": "2026-01-27T23:35:21.014Z",
+    "provider": "openrouter",
+    "model": "arcee-ai/trinity-large-preview:free",
+    "benchmark": {
+      "id": "swiss-ui-landing",
+      "title": "Swiss UI - Landing Page",
+      "category": "Design Terms"
+    },
+    "latencyMs": 16165,
+    "tokenUsage": {
+      "prompt_tokens": 89,
+      "completion_tokens": 1418,
+      "total_tokens": 1507,
+      "cost": 0,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "audio_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0,
+        "upstream_inference_prompt_cost": 0,
+        "upstream_inference_completions_cost": 0
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 0,
+        "audio_tokens": 0
+      }
+    },
+    "params": {
+      "temperature": 1,
+      "maxTokens": null
+    },
+    "path": "runs/2026/01/28/8b524bc6-fa43-465c-9b70-7e4291968f6f",
+    "scoreSummary": null
+  },
+  {
+    "id": "861be236-1605-4d06-a2e4-2265005d3332",
+    "createdAt": "2026-01-27T22:49:12.730Z",
+    "provider": "openrouter",
+    "model": "moonshotai/kimi-k2.5",
+    "benchmark": {
+      "id": "flight-control-ui",
+      "title": "Flight Control Module UI",
+      "category": "Complexity of UI"
+    },
+    "latencyMs": 91446,
+    "tokenUsage": {
+      "prompt_tokens": 95,
+      "completion_tokens": 9022,
+      "total_tokens": 9117,
+      "cost": 0.027123,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "audio_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.027123,
+        "upstream_inference_prompt_cost": 0.000057,
+        "upstream_inference_completions_cost": 0.027066
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 749,
+        "audio_tokens": 0
+      }
+    },
+    "params": {
+      "temperature": 1,
+      "maxTokens": null
+    },
+    "path": "runs/2026/01/28/861be236-1605-4d06-a2e4-2265005d3332",
+    "scoreSummary": {
+      "overall": 20
+    }
+  },
+  {
+    "id": "3b670a1b-0902-4b86-83b6-40b81e20194a",
+    "createdAt": "2026-01-27T22:47:41.277Z",
+    "provider": "openrouter",
+    "model": "moonshotai/kimi-k2.5",
+    "benchmark": {
+      "id": "photoshop-clone",
+      "title": "Photoshop Web Clone",
+      "category": "Complexity of UI"
+    },
+    "latencyMs": 122855,
+    "tokenUsage": {
+      "prompt_tokens": 81,
+      "completion_tokens": 8321,
+      "total_tokens": 8402,
+      "cost": 0.0250116,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "audio_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.0250116,
+        "upstream_inference_prompt_cost": 0.0000486,
+        "upstream_inference_completions_cost": 0.024963
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 823,
+        "audio_tokens": 0
+      }
+    },
+    "params": {
+      "temperature": 1,
+      "maxTokens": null
+    },
+    "path": "runs/2026/01/28/3b670a1b-0902-4b86-83b6-40b81e20194a",
+    "scoreSummary": {
+      "overall": 7.4,
+      "visual": 5,
+      "fidelity": 6,
+      "usability": 8,
+      "completeness": 8,
+      "correctness": 10
+    }
+  },
+  {
+    "id": "090f5dd6-2456-480a-84c2-08e376a9fbfe",
+    "createdAt": "2026-01-27T22:45:38.416Z",
+    "provider": "openrouter",
+    "model": "moonshotai/kimi-k2.5",
+    "benchmark": {
+      "id": "video-editor",
+      "title": "Video Editor Interface",
+      "category": "Complexity of UI"
+    },
+    "latencyMs": 115325,
+    "tokenUsage": {
+      "prompt_tokens": 85,
+      "completion_tokens": 10298,
+      "total_tokens": 10383,
+      "cost": 0.030945,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "audio_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.030945,
+        "upstream_inference_prompt_cost": 0.000051,
+        "upstream_inference_completions_cost": 0.030894
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 772,
+        "audio_tokens": 0
+      }
+    },
+    "params": {
+      "temperature": 1,
+      "maxTokens": null
+    },
+    "path": "runs/2026/01/28/090f5dd6-2456-480a-84c2-08e376a9fbfe",
+    "scoreSummary": {
+      "overall": 7.6,
+      "visual": 5,
+      "fidelity": 7,
+      "usability": 7,
+      "completeness": 9,
+      "correctness": 10
+    }
+  },
+  {
+    "id": "9ff2cbc1-e29d-4160-b112-c55af8b3759f",
+    "createdAt": "2026-01-27T22:43:43.084Z",
+    "provider": "openrouter",
+    "model": "moonshotai/kimi-k2.5",
+    "benchmark": {
+      "id": "macos-clone",
+      "title": "macOS Clone",
+      "category": "Complexity of UI"
+    },
+    "latencyMs": 299361,
+    "tokenUsage": {
+      "prompt_tokens": 96,
+      "completion_tokens": 21851,
+      "total_tokens": 21947,
+      "cost": 0.0656106,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "audio_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.0656106,
+        "upstream_inference_prompt_cost": 0.0000576,
+        "upstream_inference_completions_cost": 0.065553
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 10362,
+        "audio_tokens": 0
+      }
+    },
+    "params": {
+      "temperature": 1,
+      "maxTokens": null
+    },
+    "path": "runs/2026/01/28/9ff2cbc1-e29d-4160-b112-c55af8b3759f",
+    "scoreSummary": {
+      "overall": 7.2,
+      "visual": 5,
+      "fidelity": 8,
+      "usability": 7,
+      "completeness": 8,
+      "correctness": 8
+    }
+  },
+  {
+    "id": "c5850f0e-58f9-4479-8102-f5b3158f7b29",
+    "createdAt": "2026-01-27T22:38:43.715Z",
+    "provider": "openrouter",
+    "model": "moonshotai/kimi-k2.5",
+    "benchmark": {
+      "id": "gta-web-game",
+      "title": "GTA Web Game",
+      "category": "3D"
+    },
+    "latencyMs": 111219,
+    "tokenUsage": {
+      "prompt_tokens": 85,
+      "completion_tokens": 7830,
+      "total_tokens": 7915,
+      "cost": 0.023541,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "audio_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.023541,
+        "upstream_inference_prompt_cost": 0.000051,
+        "upstream_inference_completions_cost": 0.02349
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 1034,
+        "audio_tokens": 0
+      }
+    },
+    "params": {
+      "temperature": 1,
+      "maxTokens": null
+    },
+    "path": "runs/2026/01/28/c5850f0e-58f9-4479-8102-f5b3158f7b29",
+    "scoreSummary": {
+      "overall": 0.6,
+      "visual": 2,
+      "fidelity": 1,
+      "usability": 0,
+      "completeness": 0,
+      "correctness": 0
+    }
+  },
+  {
+    "id": "c6156553-3d4e-4bbd-8162-94f8d5112e32",
+    "createdAt": "2026-01-27T22:36:52.488Z",
+    "provider": "openrouter",
+    "model": "moonshotai/kimi-k2.5",
+    "benchmark": {
+      "id": "floating-ui-3d",
+      "title": "3D Floating UI Components",
+      "category": "3D"
+    },
+    "latencyMs": 73667,
+    "tokenUsage": {
+      "prompt_tokens": 76,
+      "completion_tokens": 5065,
+      "total_tokens": 5141,
+      "cost": 0.0152406,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "audio_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.0152406,
+        "upstream_inference_prompt_cost": 0.0000456,
+        "upstream_inference_completions_cost": 0.015195
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 719,
+        "audio_tokens": 0
+      }
+    },
+    "params": {
+      "temperature": 1,
+      "maxTokens": null
+    },
+    "path": "runs/2026/01/28/c6156553-3d4e-4bbd-8162-94f8d5112e32",
+    "scoreSummary": {
+      "overall": 4.6,
+      "visual": 8,
+      "fidelity": 3,
+      "usability": 3,
+      "completeness": 4,
+      "correctness": 5
+    }
+  },
+  {
+    "id": "12d317eb-4147-49a2-9492-a8d49a963847",
+    "createdAt": "2026-01-27T22:35:38.813Z",
+    "provider": "openrouter",
+    "model": "moonshotai/kimi-k2.5",
+    "benchmark": {
+      "id": "earth-globe",
+      "title": "3D Earth Model",
+      "category": "3D"
+    },
+    "latencyMs": 37842,
+    "tokenUsage": {
+      "prompt_tokens": 81,
+      "completion_tokens": 4971,
+      "total_tokens": 5052,
+      "cost": 0.0060624,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 1,
+        "audio_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.0060624,
+        "upstream_inference_prompt_cost": 0.0000972,
+        "upstream_inference_completions_cost": 0.0059652
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 777,
+        "audio_tokens": 0
+      }
+    },
+    "params": {
+      "temperature": 1,
+      "maxTokens": null
+    },
+    "path": "runs/2026/01/28/12d317eb-4147-49a2-9492-a8d49a963847",
+    "scoreSummary": {
+      "overall": 8.8,
+      "visual": 8,
+      "fidelity": 8,
+      "usability": 8,
+      "completeness": 10,
+      "correctness": 10
+    }
+  },
+  {
+    "id": "f86d9fb7-af82-4262-9693-f88bb49796e2",
+    "createdAt": "2026-01-27T22:35:00.963Z",
+    "provider": "openrouter",
+    "model": "moonshotai/kimi-k2.5",
+    "benchmark": {
+      "id": "minecraft-clone",
+      "title": "Minecraft Clone",
+      "category": "3D"
+    },
+    "latencyMs": 90432,
+    "tokenUsage": {
+      "prompt_tokens": 79,
+      "completion_tokens": 6316,
+      "total_tokens": 6395,
+      "cost": 0.0189954,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "audio_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.0189954,
+        "upstream_inference_prompt_cost": 0.0000474,
+        "upstream_inference_completions_cost": 0.018948
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 683,
+        "audio_tokens": 0
+      }
+    },
+    "params": {
+      "temperature": 1,
+      "maxTokens": null
+    },
+    "path": "runs/2026/01/28/f86d9fb7-af82-4262-9693-f88bb49796e2",
+    "scoreSummary": {
+      "overall": 6.6,
+      "visual": 4,
+      "fidelity": 6,
+      "usability": 7,
+      "completeness": 8,
+      "correctness": 8
+    }
+  },
+  {
+    "id": "cc53e4fe-d5d4-4394-94d8-4abba6ff35ae",
+    "createdAt": "2026-01-27T22:33:30.525Z",
+    "provider": "openrouter",
+    "model": "moonshotai/kimi-k2.5",
+    "benchmark": {
+      "id": "img-to-code-4",
+      "title": "Image to Code #4",
+      "category": "Image to Code"
+    },
+    "latencyMs": 124044,
+    "tokenUsage": {
+      "prompt_tokens": 90,
+      "completion_tokens": 4272,
+      "total_tokens": 4362,
+      "cost": 0.01287,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "audio_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.01287,
+        "upstream_inference_prompt_cost": 0.000054,
+        "upstream_inference_completions_cost": 0.012816
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 782,
+        "audio_tokens": 0
+      }
+    },
+    "params": {
+      "temperature": 1,
+      "maxTokens": null
+    },
+    "path": "runs/2026/01/28/cc53e4fe-d5d4-4394-94d8-4abba6ff35ae",
+    "scoreSummary": {
+      "overall": 7.4,
+      "visual": 9,
+      "fidelity": 5,
+      "usability": 7,
+      "completeness": 8,
+      "correctness": 8
+    }
+  },
+  {
+    "id": "08386f8c-eda6-470c-9c77-d71ee4cbe531",
+    "createdAt": "2026-01-27T22:31:26.474Z",
+    "provider": "openrouter",
+    "model": "moonshotai/kimi-k2.5",
+    "benchmark": {
+      "id": "img-to-code-3",
+      "title": "Image to Code #3",
+      "category": "Image to Code"
+    },
+    "latencyMs": 113861,
+    "tokenUsage": {
+      "prompt_tokens": 91,
+      "completion_tokens": 7613,
+      "total_tokens": 7704,
+      "cost": 0.0228936,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "audio_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.0228936,
+        "upstream_inference_prompt_cost": 0.0000546,
+        "upstream_inference_completions_cost": 0.022839
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 439,
+        "audio_tokens": 0
+      }
+    },
+    "params": {
+      "temperature": 1,
+      "maxTokens": null
+    },
+    "path": "runs/2026/01/28/08386f8c-eda6-470c-9c77-d71ee4cbe531",
+    "scoreSummary": {
+      "overall": 5,
+      "visual": 6,
+      "fidelity": 5,
+      "usability": 6,
+      "completeness": 3,
+      "correctness": 5
+    }
+  },
+  {
+    "id": "1244802c-ad22-4153-9914-7b0e42762901",
+    "createdAt": "2026-01-27T22:29:32.668Z",
+    "provider": "openrouter",
+    "model": "moonshotai/kimi-k2.5",
+    "benchmark": {
+      "id": "img-to-code-2",
+      "title": "Image to Code #2",
+      "category": "Image to Code"
+    },
+    "latencyMs": 57927,
+    "tokenUsage": {
+      "prompt_tokens": 68,
+      "completion_tokens": 4050,
+      "total_tokens": 4118,
+      "cost": 0.0121908,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "audio_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.0121908,
+        "upstream_inference_prompt_cost": 0.0000408,
+        "upstream_inference_completions_cost": 0.01215
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 573,
+        "audio_tokens": 0
+      }
+    },
+    "params": {
+      "temperature": 1,
+      "maxTokens": null
+    },
+    "path": "runs/2026/01/28/1244802c-ad22-4153-9914-7b0e42762901",
+    "scoreSummary": {
+      "overall": 6.4,
+      "visual": 6,
+      "fidelity": 5,
+      "usability": 5,
+      "completeness": 7,
+      "correctness": 9
+    }
+  },
+  {
+    "id": "d2ca1e2b-11a3-4b73-922c-1e6912a7279a",
+    "createdAt": "2026-01-27T22:28:34.731Z",
+    "provider": "openrouter",
+    "model": "moonshotai/kimi-k2.5",
+    "benchmark": {
+      "id": "img-to-code-1",
+      "title": "Image to Code #1",
+      "category": "Image to Code"
+    },
+    "latencyMs": 53408,
+    "tokenUsage": {
+      "prompt_tokens": 68,
+      "completion_tokens": 3624,
+      "total_tokens": 3692,
+      "cost": 0.0109128,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "audio_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.0109128,
+        "upstream_inference_prompt_cost": 0.0000408,
+        "upstream_inference_completions_cost": 0.010872
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 430,
+        "audio_tokens": 0
+      }
+    },
+    "params": {
+      "temperature": 1,
+      "maxTokens": null
+    },
+    "path": "runs/2026/01/28/d2ca1e2b-11a3-4b73-922c-1e6912a7279a",
+    "scoreSummary": {
+      "overall": 7,
+      "visual": 7,
+      "fidelity": 7,
+      "usability": 6,
+      "completeness": 7,
+      "correctness": 8
+    }
+  },
+  {
+    "id": "a6d4fa54-f31f-4ef2-ab3e-5ae85cd6b3b4",
+    "createdAt": "2026-01-27T22:27:41.312Z",
+    "provider": "openrouter",
+    "model": "moonshotai/kimi-k2.5",
+    "benchmark": {
+      "id": "amazing-design",
+      "title": "Amazing Design",
+      "category": "Design Terms"
+    },
+    "latencyMs": 106155,
+    "tokenUsage": {
+      "prompt_tokens": 67,
+      "completion_tokens": 7402,
+      "total_tokens": 7469,
+      "cost": 0.0222462,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "audio_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.0222462,
+        "upstream_inference_prompt_cost": 0.0000402,
+        "upstream_inference_completions_cost": 0.022206
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 790,
+        "audio_tokens": 0
+      }
+    },
+    "params": {
+      "temperature": 1,
+      "maxTokens": null
+    },
+    "path": "runs/2026/01/28/a6d4fa54-f31f-4ef2-ab3e-5ae85cd6b3b4",
+    "scoreSummary": {
+      "overall": 8.4,
+      "visual": 8,
+      "fidelity": 9,
+      "usability": 8,
+      "completeness": 8,
+      "correctness": 9
+    }
+  },
+  {
+    "id": "87fdeb1d-11df-47b2-ac5d-2361678d6ca9",
+    "createdAt": "2026-01-27T22:25:55.141Z",
+    "provider": "openrouter",
+    "model": "moonshotai/kimi-k2.5",
+    "benchmark": {
+      "id": "3d-learning",
+      "title": "3D Website for Learning",
+      "category": "Design Terms"
+    },
+    "latencyMs": 171739,
+    "tokenUsage": {
+      "prompt_tokens": 76,
+      "completion_tokens": 11832,
+      "total_tokens": 11908,
+      "cost": 0.0355416,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "audio_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.0355416,
+        "upstream_inference_prompt_cost": 0.0000456,
+        "upstream_inference_completions_cost": 0.035496
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 717,
+        "audio_tokens": 0
+      }
+    },
+    "params": {
+      "temperature": 1,
+      "maxTokens": null
+    },
+    "path": "runs/2026/01/28/87fdeb1d-11df-47b2-ac5d-2361678d6ca9",
+    "scoreSummary": {
+      "overall": 4.8,
+      "visual": 3,
+      "fidelity": 6,
+      "usability": 7,
+      "completeness": 6,
+      "correctness": 2
+    }
+  },
+  {
+    "id": "3e47800a-0f31-4e8d-8501-facb302bf4c5",
+    "createdAt": "2026-01-27T22:23:03.390Z",
+    "provider": "openrouter",
+    "model": "moonshotai/kimi-k2.5",
+    "benchmark": {
+      "id": "premium-gradients",
+      "title": "Sharp Premium & Rich Gradients",
+      "category": "Design Terms"
+    },
+    "latencyMs": 105372,
+    "tokenUsage": {
+      "prompt_tokens": 69,
+      "completion_tokens": 7572,
+      "total_tokens": 7641,
+      "cost": 0.0227574,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "audio_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.0227574,
+        "upstream_inference_prompt_cost": 0.0000414,
+        "upstream_inference_completions_cost": 0.022716
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 704,
+        "audio_tokens": 0
+      }
+    },
+    "params": {
+      "temperature": 1,
+      "maxTokens": null
+    },
+    "path": "runs/2026/01/28/3e47800a-0f31-4e8d-8501-facb302bf4c5",
+    "scoreSummary": {
+      "overall": 7.4,
+      "visual": 7,
+      "fidelity": 7,
+      "usability": 8,
+      "completeness": 7,
+      "correctness": 8
+    }
+  },
+  {
+    "id": "35215d83-ca2a-456b-8cd3-f7c7c7ace038",
+    "createdAt": "2026-01-27T22:21:17.996Z",
+    "provider": "openrouter",
+    "model": "moonshotai/kimi-k2.5",
+    "benchmark": {
+      "id": "soft-ui-landing",
+      "title": "Soft UI - Landing Page",
+      "category": "Design Terms"
+    },
+    "latencyMs": 105829,
+    "tokenUsage": {
+      "prompt_tokens": 70,
+      "completion_tokens": 7562,
+      "total_tokens": 7632,
+      "cost": 0.022728,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "audio_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.022728,
+        "upstream_inference_prompt_cost": 0.000042,
+        "upstream_inference_completions_cost": 0.022686
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 591,
+        "audio_tokens": 0
+      }
+    },
+    "params": {
+      "temperature": 1,
+      "maxTokens": null
+    },
+    "path": "runs/2026/01/28/35215d83-ca2a-456b-8cd3-f7c7c7ace038",
+    "scoreSummary": {
+      "overall": 5.2,
+      "visual": 5,
+      "fidelity": 4,
+      "usability": 7,
+      "completeness": 4,
+      "correctness": 6
+    }
+  },
+  {
+    "id": "50d75496-2d2b-4c45-8eb0-2974d0802962",
+    "createdAt": "2026-01-27T22:19:32.157Z",
+    "provider": "openrouter",
+    "model": "moonshotai/kimi-k2.5",
+    "benchmark": {
+      "id": "night-ui-landing",
+      "title": "Night UI - Landing Page",
+      "category": "Design Terms"
+    },
+    "latencyMs": 129292,
+    "tokenUsage": {
+      "prompt_tokens": 71,
+      "completion_tokens": 9208,
+      "total_tokens": 9279,
+      "cost": 0.0276666,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "audio_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.0276666,
+        "upstream_inference_prompt_cost": 0.0000426,
+        "upstream_inference_completions_cost": 0.027624
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 832,
+        "audio_tokens": 0
+      }
+    },
+    "params": {
+      "temperature": 1,
+      "maxTokens": null
+    },
+    "path": "runs/2026/01/28/50d75496-2d2b-4c45-8eb0-2974d0802962",
+    "scoreSummary": {
+      "overall": 5,
+      "visual": 4,
+      "fidelity": 6,
+      "usability": 5,
+      "completeness": 5,
+      "correctness": 5
+    }
+  },
+  {
+    "id": "765a58ae-a25d-439a-acac-4f9fad67eed1",
+    "createdAt": "2026-01-27T22:17:22.855Z",
+    "provider": "openrouter",
+    "model": "moonshotai/kimi-k2.5",
+    "benchmark": {
+      "id": "cyberpunk-landing",
+      "title": "Cyberpunk Aesthetic - Landing Page",
+      "category": "Design Terms"
+    },
+    "latencyMs": 146937,
+    "tokenUsage": {
+      "prompt_tokens": 75,
+      "completion_tokens": 10383,
+      "total_tokens": 10458,
+      "cost": 0.031194,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "audio_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.031194,
+        "upstream_inference_prompt_cost": 0.000045,
+        "upstream_inference_completions_cost": 0.031149
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 628,
+        "audio_tokens": 0
+      }
+    },
+    "params": {
+      "temperature": 1,
+      "maxTokens": null
+    },
+    "path": "runs/2026/01/28/765a58ae-a25d-439a-acac-4f9fad67eed1",
+    "scoreSummary": {
+      "overall": 4,
+      "visual": 5,
+      "fidelity": 4,
+      "usability": 4,
+      "completeness": 3,
+      "correctness": 4
+    }
+  },
+  {
+    "id": "d60d3787-d522-47f9-9608-0c33db4443f4",
+    "createdAt": "2026-01-27T22:14:55.907Z",
+    "provider": "openrouter",
+    "model": "moonshotai/kimi-k2.5",
+    "benchmark": {
+      "id": "neo-brutalism-landing",
+      "title": "Neo Brutalism - Landing Page",
+      "category": "Design Terms"
+    },
+    "latencyMs": 117741,
+    "tokenUsage": {
+      "prompt_tokens": 77,
+      "completion_tokens": 8279,
+      "total_tokens": 8356,
+      "cost": 0.0248832,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "audio_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.0248832,
+        "upstream_inference_prompt_cost": 0.0000462,
+        "upstream_inference_completions_cost": 0.024837
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 727,
+        "audio_tokens": 0
+      }
+    },
+    "params": {
+      "temperature": 1,
+      "maxTokens": null
+    },
+    "path": "runs/2026/01/28/d60d3787-d522-47f9-9608-0c33db4443f4",
+    "scoreSummary": {
+      "overall": 7,
+      "visual": 7,
+      "fidelity": 7,
+      "usability": 6,
+      "completeness": 7,
+      "correctness": 8
+    }
+  },
+  {
+    "id": "7cb84034-2132-4c19-b8f6-6ebe3a49ad76",
+    "createdAt": "2026-01-27T22:12:58.149Z",
+    "provider": "openrouter",
+    "model": "moonshotai/kimi-k2.5",
+    "benchmark": {
+      "id": "glassmorphic-landing",
+      "title": "Glassmorphic UI - Landing Page",
+      "category": "Design Terms"
+    },
+    "latencyMs": 134233,
+    "tokenUsage": {
+      "prompt_tokens": 73,
+      "completion_tokens": 9565,
+      "total_tokens": 9638,
+      "cost": 0.0287388,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "audio_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.0287388,
+        "upstream_inference_prompt_cost": 0.0000438,
+        "upstream_inference_completions_cost": 0.028695
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 622,
+        "audio_tokens": 0
+      }
+    },
+    "params": {
+      "temperature": 1,
+      "maxTokens": null
+    },
+    "path": "runs/2026/01/28/7cb84034-2132-4c19-b8f6-6ebe3a49ad76",
+    "scoreSummary": {
+      "overall": 5,
+      "visual": 4,
+      "fidelity": 5,
+      "usability": 5,
+      "completeness": 5,
+      "correctness": 6
+    }
+  },
+  {
+    "id": "f5428278-8c65-4b7e-85fb-b08a16a3f588",
+    "createdAt": "2026-01-27T22:10:43.905Z",
+    "provider": "openrouter",
+    "model": "moonshotai/kimi-k2.5",
+    "benchmark": {
+      "id": "swiss-ui-landing",
+      "title": "Swiss UI - Landing Page",
+      "category": "Design Terms"
+    },
+    "latencyMs": 35054,
+    "tokenUsage": {
+      "prompt_tokens": 81,
+      "completion_tokens": 3799,
+      "total_tokens": 3880,
+      "cost": 0.004656,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 3,
+        "audio_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.004656,
+        "upstream_inference_prompt_cost": 0.0000972,
+        "upstream_inference_completions_cost": 0.0045588
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 564,
+        "audio_tokens": 0
+      }
+    },
+    "params": {
+      "temperature": 1,
+      "maxTokens": null
+    },
+    "path": "runs/2026/01/28/f5428278-8c65-4b7e-85fb-b08a16a3f588",
+    "scoreSummary": {
+      "overall": 6,
+      "visual": 7,
+      "fidelity": 7,
+      "usability": 6,
+      "completeness": 5,
+      "correctness": 5
+    }
+  },
+  {
+    "id": "08a4f565-066e-4378-9b7f-b7b0d06850b1",
+    "createdAt": "2026-01-27T21:51:22.908Z",
+    "provider": "zai",
+    "model": "glm-4.5",
+    "benchmark": {
+      "id": "flight-control-ui",
+      "title": "Flight Control Module UI",
+      "category": "Complexity of UI"
+    },
+    "latencyMs": 198498,
+    "tokenUsage": null,
+    "params": {
+      "temperature": 1,
+      "maxTokens": null
+    },
+    "path": "runs/2026/01/28/08a4f565-066e-4378-9b7f-b7b0d06850b1",
+    "scoreSummary": {
+      "overall": 4.2,
+      "visual": 4,
+      "fidelity": 4,
+      "usability": 4,
+      "completeness": 4,
+      "correctness": 5
+    }
+  },
+  {
+    "id": "cd6b4f20-1852-4c30-8c9b-0fed751f5cba",
+    "createdAt": "2026-01-27T21:48:04.391Z",
+    "provider": "zai",
+    "model": "glm-4.5",
+    "benchmark": {
+      "id": "photoshop-clone",
+      "title": "Photoshop Web Clone",
+      "category": "Complexity of UI"
+    },
+    "latencyMs": 195770,
+    "tokenUsage": null,
+    "params": {
+      "temperature": 1,
+      "maxTokens": null
+    },
+    "path": "runs/2026/01/28/cd6b4f20-1852-4c30-8c9b-0fed751f5cba",
+    "scoreSummary": {
+      "overall": 1.6,
+      "visual": 2,
+      "fidelity": 2,
+      "usability": 0,
+      "completeness": 1,
+      "correctness": 3
+    }
+  },
+  {
+    "id": "e5c139c5-4f04-40ee-94ec-2be75b01f585",
+    "createdAt": "2026-01-27T21:44:48.601Z",
+    "provider": "zai",
+    "model": "glm-4.5",
+    "benchmark": {
+      "id": "video-editor",
+      "title": "Video Editor Interface",
+      "category": "Complexity of UI"
+    },
+    "latencyMs": 175723,
+    "tokenUsage": null,
+    "params": {
+      "temperature": 1,
+      "maxTokens": null
+    },
+    "path": "runs/2026/01/28/e5c139c5-4f04-40ee-94ec-2be75b01f585",
+    "scoreSummary": {
+      "overall": 4.8,
+      "visual": 3,
+      "fidelity": 4,
+      "usability": 6,
+      "completeness": 3,
+      "correctness": 8
+    }
+  },
+  {
+    "id": "ab158ecd-570b-4bcd-b567-ce9fb545fa91",
+    "createdAt": "2026-01-27T21:41:52.855Z",
+    "provider": "zai",
+    "model": "glm-4.5",
+    "benchmark": {
+      "id": "macos-clone",
+      "title": "macOS Clone",
+      "category": "Complexity of UI"
+    },
+    "latencyMs": 140500,
+    "tokenUsage": null,
+    "params": {
+      "temperature": 1,
+      "maxTokens": null
+    },
+    "path": "runs/2026/01/28/ab158ecd-570b-4bcd-b567-ce9fb545fa91",
+    "scoreSummary": {
+      "overall": 3,
+      "visual": 5,
+      "fidelity": 1,
+      "usability": 2,
+      "completeness": 2,
+      "correctness": 5
+    }
+  },
+  {
+    "id": "a3b4d465-d985-4d53-a8cb-c06d7f34e7aa",
+    "createdAt": "2026-01-27T21:39:32.345Z",
+    "provider": "zai",
+    "model": "glm-4.5",
+    "benchmark": {
+      "id": "gta-web-game",
+      "title": "GTA Web Game",
+      "category": "3D"
+    },
+    "latencyMs": 100408,
+    "tokenUsage": null,
+    "params": {
+      "temperature": 1,
+      "maxTokens": null
+    },
+    "path": "runs/2026/01/28/a3b4d465-d985-4d53-a8cb-c06d7f34e7aa",
+    "scoreSummary": {
+      "overall": 4.6,
+      "visual": 3,
+      "fidelity": 5,
+      "usability": 5,
+      "completeness": 4,
+      "correctness": 6
+    }
+  },
+  {
+    "id": "51d3b46e-60f0-4d82-ada0-440ea17691bd",
+    "createdAt": "2026-01-27T21:37:51.926Z",
+    "provider": "zai",
+    "model": "glm-4.5",
+    "benchmark": {
+      "id": "floating-ui-3d",
+      "title": "3D Floating UI Components",
+      "category": "3D"
+    },
+    "latencyMs": 62553,
+    "tokenUsage": null,
+    "params": {
+      "temperature": 1,
+      "maxTokens": null
+    },
+    "path": "runs/2026/01/28/51d3b46e-60f0-4d82-ada0-440ea17691bd",
+    "scoreSummary": null
+  },
+  {
+    "id": "cee9aaa6-6ec0-4983-acdb-38a4c1dd916e",
+    "createdAt": "2026-01-27T21:36:49.355Z",
+    "provider": "zai",
+    "model": "glm-4.5",
+    "benchmark": {
+      "id": "earth-globe",
+      "title": "3D Earth Model",
+      "category": "3D"
+    },
+    "latencyMs": 130478,
+    "tokenUsage": null,
+    "params": {
+      "temperature": 1,
+      "maxTokens": null
+    },
+    "path": "runs/2026/01/28/cee9aaa6-6ec0-4983-acdb-38a4c1dd916e",
+    "scoreSummary": null
+  },
+  {
+    "id": "8f18a008-3a17-456f-a38a-af147a0faaca",
+    "createdAt": "2026-01-27T21:34:38.865Z",
+    "provider": "zai",
+    "model": "glm-4.5",
+    "benchmark": {
+      "id": "minecraft-clone",
+      "title": "Minecraft Clone",
+      "category": "3D"
+    },
+    "latencyMs": 90620,
+    "tokenUsage": null,
+    "params": {
+      "temperature": 1,
+      "maxTokens": null
+    },
+    "path": "runs/2026/01/28/8f18a008-3a17-456f-a38a-af147a0faaca",
+    "scoreSummary": null
+  },
+  {
+    "id": "5c5034a4-116b-461d-aef3-9095b2b973b0",
+    "createdAt": "2026-01-27T21:33:08.233Z",
+    "provider": "zai",
+    "model": "glm-4.5",
+    "benchmark": {
+      "id": "img-to-code-4",
+      "title": "Image to Code #4",
+      "category": "Image to Code"
+    },
+    "latencyMs": 40177,
+    "tokenUsage": null,
+    "params": {
+      "temperature": 1,
+      "maxTokens": null
+    },
+    "path": "runs/2026/01/28/5c5034a4-116b-461d-aef3-9095b2b973b0",
+    "scoreSummary": null
+  },
+  {
+    "id": "bb19c970-fce5-4840-a447-1478d4e21025",
+    "createdAt": "2026-01-27T21:32:28.041Z",
+    "provider": "zai",
+    "model": "glm-4.5",
+    "benchmark": {
+      "id": "img-to-code-3",
+      "title": "Image to Code #3",
+      "category": "Image to Code"
+    },
+    "latencyMs": 51979,
+    "tokenUsage": null,
+    "params": {
+      "temperature": 1,
+      "maxTokens": null
+    },
+    "path": "runs/2026/01/28/bb19c970-fce5-4840-a447-1478d4e21025",
+    "scoreSummary": null
+  },
+  {
+    "id": "1515ea37-cbd2-47df-b966-8e784902ee12",
+    "createdAt": "2026-01-27T21:31:36.047Z",
+    "provider": "zai",
+    "model": "glm-4.5",
+    "benchmark": {
+      "id": "img-to-code-2",
+      "title": "Image to Code #2",
+      "category": "Image to Code"
+    },
+    "latencyMs": 25747,
+    "tokenUsage": null,
+    "params": {
+      "temperature": 1,
+      "maxTokens": null
+    },
+    "path": "runs/2026/01/28/1515ea37-cbd2-47df-b966-8e784902ee12",
+    "scoreSummary": null
+  },
+  {
+    "id": "8306045a-45fe-467f-a71a-4bbbc1b5e564",
+    "createdAt": "2026-01-27T21:31:10.283Z",
+    "provider": "zai",
+    "model": "glm-4.5",
+    "benchmark": {
+      "id": "img-to-code-1",
+      "title": "Image to Code #1",
+      "category": "Image to Code"
+    },
+    "latencyMs": 55706,
+    "tokenUsage": null,
+    "params": {
+      "temperature": 1,
+      "maxTokens": null
+    },
+    "path": "runs/2026/01/28/8306045a-45fe-467f-a71a-4bbbc1b5e564",
+    "scoreSummary": null
+  },
+  {
+    "id": "829cc813-515c-4ece-ae71-dd91a2c788fd",
+    "createdAt": "2026-01-27T21:30:14.563Z",
+    "provider": "zai",
+    "model": "glm-4.5",
+    "benchmark": {
+      "id": "amazing-design",
+      "title": "Amazing Design",
+      "category": "Design Terms"
+    },
+    "latencyMs": 120119,
+    "tokenUsage": null,
+    "params": {
+      "temperature": 1,
+      "maxTokens": null
+    },
+    "path": "runs/2026/01/28/829cc813-515c-4ece-ae71-dd91a2c788fd",
+    "scoreSummary": null
+  },
+  {
+    "id": "1a1d38ba-11d7-469e-a960-be6b659c2185",
+    "createdAt": "2026-01-27T21:28:14.433Z",
+    "provider": "zai",
+    "model": "glm-4.5",
+    "benchmark": {
+      "id": "3d-learning",
+      "title": "3D Website for Learning",
+      "category": "Design Terms"
+    },
+    "latencyMs": 155772,
+    "tokenUsage": null,
+    "params": {
+      "temperature": 1,
+      "maxTokens": null
+    },
+    "path": "runs/2026/01/28/1a1d38ba-11d7-469e-a960-be6b659c2185",
+    "scoreSummary": null
+  },
+  {
+    "id": "2390d11b-af2c-49e7-94f3-05d213a7dd6d",
+    "createdAt": "2026-01-27T21:25:38.644Z",
+    "provider": "zai",
+    "model": "glm-4.5",
+    "benchmark": {
+      "id": "premium-gradients",
+      "title": "Sharp Premium & Rich Gradients",
+      "category": "Design Terms"
+    },
+    "latencyMs": 87876,
+    "tokenUsage": null,
+    "params": {
+      "temperature": 1,
+      "maxTokens": null
+    },
+    "path": "runs/2026/01/28/2390d11b-af2c-49e7-94f3-05d213a7dd6d",
+    "scoreSummary": null
+  },
+  {
+    "id": "2334868d-df6d-42d8-a6e1-4e6fd257ec86",
+    "createdAt": "2026-01-27T21:24:10.746Z",
+    "provider": "zai",
+    "model": "glm-4.5",
+    "benchmark": {
+      "id": "soft-ui-landing",
+      "title": "Soft UI - Landing Page",
+      "category": "Design Terms"
+    },
+    "latencyMs": 64323,
+    "tokenUsage": null,
+    "params": {
+      "temperature": 1,
+      "maxTokens": null
+    },
+    "path": "runs/2026/01/28/2334868d-df6d-42d8-a6e1-4e6fd257ec86",
+    "scoreSummary": null
+  },
+  {
+    "id": "b818d07c-b1fa-4f5d-b974-657988b19409",
+    "createdAt": "2026-01-27T21:23:06.414Z",
+    "provider": "zai",
+    "model": "glm-4.5",
+    "benchmark": {
+      "id": "night-ui-landing",
+      "title": "Night UI - Landing Page",
+      "category": "Design Terms"
+    },
+    "latencyMs": 53881,
+    "tokenUsage": null,
+    "params": {
+      "temperature": 1,
+      "maxTokens": null
+    },
+    "path": "runs/2026/01/28/b818d07c-b1fa-4f5d-b974-657988b19409",
+    "scoreSummary": null
+  },
+  {
+    "id": "97ea7fe6-3a5c-4972-a699-384a030e0e8a",
+    "createdAt": "2026-01-27T21:22:12.514Z",
+    "provider": "zai",
+    "model": "glm-4.5",
+    "benchmark": {
+      "id": "cyberpunk-landing",
+      "title": "Cyberpunk Aesthetic - Landing Page",
+      "category": "Design Terms"
+    },
+    "latencyMs": 92248,
+    "tokenUsage": null,
+    "params": {
+      "temperature": 1,
+      "maxTokens": null
+    },
+    "path": "runs/2026/01/28/97ea7fe6-3a5c-4972-a699-384a030e0e8a",
+    "scoreSummary": null
+  },
+  {
+    "id": "6f576830-5471-43b5-a700-f25f7268d87d",
+    "createdAt": "2026-01-27T21:20:40.248Z",
+    "provider": "zai",
+    "model": "glm-4.5",
+    "benchmark": {
+      "id": "neo-brutalism-landing",
+      "title": "Neo Brutalism - Landing Page",
+      "category": "Design Terms"
+    },
+    "latencyMs": 38902,
+    "tokenUsage": null,
+    "params": {
+      "temperature": 1,
+      "maxTokens": null
+    },
+    "path": "runs/2026/01/28/6f576830-5471-43b5-a700-f25f7268d87d",
+    "scoreSummary": null
+  },
+  {
+    "id": "0bae5e15-b916-4913-a528-617d75a1613b",
+    "createdAt": "2026-01-27T21:20:01.328Z",
+    "provider": "zai",
+    "model": "glm-4.5",
+    "benchmark": {
+      "id": "glassmorphic-landing",
+      "title": "Glassmorphic UI - Landing Page",
+      "category": "Design Terms"
+    },
+    "latencyMs": 67349,
+    "tokenUsage": null,
+    "params": {
+      "temperature": 1,
+      "maxTokens": null
+    },
+    "path": "runs/2026/01/28/0bae5e15-b916-4913-a528-617d75a1613b",
+    "scoreSummary": null
+  },
+  {
+    "id": "290a830d-fef4-472e-a374-8a263727c5a6",
+    "createdAt": "2026-01-27T21:18:53.962Z",
+    "provider": "zai",
+    "model": "glm-4.5",
+    "benchmark": {
+      "id": "swiss-ui-landing",
+      "title": "Swiss UI - Landing Page",
+      "category": "Design Terms"
+    },
+    "latencyMs": 60730,
+    "tokenUsage": null,
+    "params": {
+      "temperature": 1,
+      "maxTokens": null
+    },
+    "path": "runs/2026/01/28/290a830d-fef4-472e-a374-8a263727c5a6",
+    "scoreSummary": null
+  },
+  {
+    "id": "2c2e91b1-8bfb-402e-bb57-99b355c3844a",
+    "createdAt": "2026-01-27T21:16:43.962Z",
+    "provider": "zai",
+    "model": "glm-4.6",
+    "benchmark": {
+      "id": "swiss-ui-landing",
+      "title": "Swiss UI - Landing Page",
+      "category": "Design Terms"
+    },
+    "latencyMs": 65625,
+    "tokenUsage": null,
+    "params": {
+      "temperature": 1,
+      "maxTokens": null
+    },
+    "path": "runs/2026/01/28/2c2e91b1-8bfb-402e-bb57-99b355c3844a",
+    "scoreSummary": null
+  },
+  {
+    "id": "ac6d42fc-eb27-4fd8-9193-1588becce82e",
+    "createdAt": "2026-01-27T21:13:35.698Z",
+    "provider": "zai",
+    "model": "glm-4.5-air",
+    "benchmark": {
+      "id": "swiss-ui-landing",
+      "title": "Swiss UI - Landing Page",
+      "category": "Design Terms"
+    },
+    "latencyMs": 38750,
+    "tokenUsage": null,
+    "params": {
+      "temperature": 1,
+      "maxTokens": null
+    },
+    "path": "runs/2026/01/28/ac6d42fc-eb27-4fd8-9193-1588becce82e",
+    "scoreSummary": null
+  },
+  {
+    "id": "c4229dc9-c409-434f-9d5a-4a3978a598c0",
+    "createdAt": "2026-01-27T21:09:30.932Z",
+    "provider": "zai",
+    "model": "glm-4.7",
+    "benchmark": {
+      "id": "swiss-ui-landing",
+      "title": "Swiss UI - Landing Page",
+      "category": "Design Terms"
+    },
+    "latencyMs": 115505,
+    "tokenUsage": null,
+    "params": {
+      "temperature": 1,
+      "maxTokens": null
+    },
+    "path": "runs/2026/01/28/c4229dc9-c409-434f-9d5a-4a3978a598c0",
+    "scoreSummary": null
+  },
+  {
+    "id": "3cfdcaeb-0108-42ca-9207-5226144d1d3c",
+    "createdAt": "2026-01-27T21:06:47.530Z",
+    "provider": "minimax",
+    "model": "MiniMax-M2.1",
+    "benchmark": {
+      "id": "neo-brutalism-landing",
+      "title": "Neo Brutalism - Landing Page",
+      "category": "Design Terms"
+    },
+    "latencyMs": 62770,
+    "tokenUsage": {
+      "total_tokens": 5242,
+      "total_characters": 0,
+      "prompt_tokens": 80,
+      "completion_tokens": 5162,
+      "completion_tokens_details": {
+        "reasoning_tokens": 1611
+      }
+    },
+    "params": {
+      "temperature": 1,
+      "maxTokens": null
+    },
+    "path": "runs/2026/01/28/3cfdcaeb-0108-42ca-9207-5226144d1d3c",
+    "scoreSummary": null
+  },
+  {
+    "id": "d8757a5c-5a68-48ae-9365-a66891d5cfec",
+    "createdAt": "2026-01-27T21:05:19.302Z",
+    "provider": "minimax",
+    "model": "MiniMax-M2.1",
+    "benchmark": {
+      "id": "glassmorphic-landing",
+      "title": "Glassmorphic UI - Landing Page",
+      "category": "Design Terms"
+    },
+    "latencyMs": 68044,
+    "tokenUsage": {
+      "total_tokens": 4945,
+      "total_characters": 0,
+      "prompt_tokens": 76,
+      "completion_tokens": 4869,
+      "completion_tokens_details": {
+        "reasoning_tokens": 1322
+      }
+    },
+    "params": {
+      "temperature": 1,
+      "maxTokens": null
+    },
+    "path": "runs/2026/01/28/d8757a5c-5a68-48ae-9365-a66891d5cfec",
+    "scoreSummary": null
+  },
+  {
+    "id": "17f9a65e-3499-423e-87ff-86c28ab899b8",
+    "createdAt": "2026-01-27T21:03:22.257Z",
+    "provider": "minimax",
+    "model": "MiniMax-M2.1",
+    "benchmark": {
+      "id": "swiss-ui-landing",
+      "title": "Swiss UI - Landing Page",
+      "category": "Design Terms"
+    },
+    "latencyMs": 70604,
+    "tokenUsage": {
+      "total_tokens": 5931,
+      "total_characters": 0,
+      "prompt_tokens": 83,
+      "completion_tokens": 5848,
+      "completion_tokens_details": {
+        "reasoning_tokens": 3099
+      }
+    },
+    "params": {
+      "temperature": 1,
+      "maxTokens": null
+    },
+    "path": "runs/2026/01/28/17f9a65e-3499-423e-87ff-86c28ab899b8",
+    "scoreSummary": null
+  }
+]

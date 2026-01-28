@@ -1,0 +1,18 @@
+{
+  "id": "1a1d38ba-11d7-469e-a960-be6b659c2185",
+  "createdAt": "2026-01-27T21:28:14.433Z",
+  "provider": "zai",
+  "model": "glm-4.5",
+  "benchmark": {
+    "id": "3d-learning",
+    "title": "3D Website for Learning",
+    "category": "Design Terms"
+  },
+  "latencyMs": 155772,
+  "tokenUsage": null,
+  "params": {
+    "temperature": 1,
+    "maxTokens": null
+  },
+  "path": "runs/2026/01/28/1a1d38ba-11d7-469e-a960-be6b659c2185"
+}

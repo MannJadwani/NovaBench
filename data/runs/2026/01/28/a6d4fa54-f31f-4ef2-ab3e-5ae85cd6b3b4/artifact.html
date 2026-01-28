@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AETHER | Next Gen Digital Presence</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        :root {
+            --cursor-size: 20px;
+            --cursor-hover-size: 60px;
+            --bg-color: #0f0f11;
+            --accent: #6366f1;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: #ffffff;
+            font-family: 'Space Grotesk', sans-serif;
+            overflow-x: hidden;
+            cursor: none; /* Custom cursor */
+        }
+
+        h1, h2, h3, .font-display {
+            font-family: 'Syne', sans-serif;
+        }
+
+        /* Custom Cursor */
+        #cursor {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: var(--cursor-size);
+            height: var(--cursor-size);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s, height 0.3s, background-color 0.3s, border-color 0.3s;
+            mix-blend-mode: difference;
+        }
+
+        #cursor.hovered {
+            width: var(--cursor-hover-size);
+            height: var(--cursor-hover-size);
+            background-color: white;
+            border-color: transparent;
+            mix-blend-mode: difference;
+        }
+
+        /* WebGL Canvas Background */
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.6;
+        }
+
+        /* Utilities */
+        .text-gradient {
+            background: linear-gradient(135deg, #fff 0%, #a5b4fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .reveal-text {
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+        }
+
+        .char {
+            display: inline-block;
+            transform: translateY(100%);
+            opacity: 0;
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s;
+        }
+
+        .revealed .char {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* Magnetic Button */
+        .magnetic-btn {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        /* Glitch Effect on Hover */
+        .glitch-hover {
+            position: relative;
+        }
+        
+        .glitch-hover:hover {
+            animation: glitch-anim 0.3s infinite;
+        }
+
+        @keyframes glitch-anim {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+            100% { transform: translate(0); }
+        }
+
+        /* Horizontal Scroll Section */
+        .horizontal-scroll-container {
+            display: flex;
+            flex-wrap: nowrap;
+            width: 300%; /* 3 slides */
+        }
+
+        .panel {
+            width: 100vw;
+            height: 100vh;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Marquee */
+        .marquee-container {
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        .marquee-content {
+            display: inline-block;
+            animation: marquee 20s linear infinite;
+        }
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f0f11;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #6366f1;
+        }
+
+        .feature-icon-wrapper:hover .feature-icon {
+            transform: rotate(360deg) scale(1.2);
+            color: #6366f1;
+        }
+        .feature-icon {
+            transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        /* Input Animation */
+        .input-group {
+            position: relative;
+        }
+        .input-group input, .input-group textarea {
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+            outline: none;
+            color: white;
+            width: 100%;
+            padding: 10px 0;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        .input-group label {
+            position: absolute;
+            top: 10px;
+            left: 0;
+            pointer-events: none;
+            transition: 0.3s ease all;
+            color: rgba(255,255,255,0.5);
+        }
+        .input-group input:focus ~ label,
+        .input-group input:valid ~ label,
+        .input-group textarea:focus ~ label,
+        .input-group textarea:valid ~ label {
+            top: -15px;
+            font-size: 0.8rem;
+            color: #6366f1;
+        }
+        .input-group input:focus,
+        .input-group textarea:focus {
+            border-bottom: 1px solid #6366f1;
+        }
+        .input-group .line {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #6366f1;
+            transition: width 0.3s ease;
+        }
+        .input-group input:focus ~ .line,
+        .input-group textarea:focus ~ .line {
+            width: 100%;
+        }
+
+    </style>
+</head>
+<body class="antialiased selection:bg-indigo-500 selection:text-white">
+
+    <!-- Custom Cursor -->
+    <div id="cursor"></div>
+
+    <!-- Background Canvas -->
+    <div id="canvas-container">
+        <canvas id="webgl"></canvas>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 px-6 py-6 flex justify-between items-center mix-blend-difference text-white">
+        <div class="text-2xl font-bold font-display tracking-tighter hover-trigger" data-cursor="hover">AETHER.</div>
+        <div class="hidden md:flex space-x-8 text-sm font-medium tracking-widest uppercase">
+            <a href="#vision" class="hover:text-indigo-400 transition-colors hover-trigger" data-cursor="hover">Vision</a>
+            <a href="#work" class="hover:text-indigo-400 transition-colors hover-trigger" data-cursor="hover">Work</a>
+            <a href="#services" class="hover:text-indigo-400 transition-colors hover-trigger" data-cursor="hover">Services</a>
+            <a href="#contact" class="hover:text-indigo-400 transition-colors hover-trigger" data-cursor="hover">Contact</a>
+        </div>
+        <button class="md:hidden hover-trigger" data-cursor="hover">
+            <i data-lucide="menu" class="w-6 h-6"></i>
+        </button>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="relative h-screen w-full flex flex-col justify-center items-center px-4 overflow-hidden">
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-indigo-900/20 via-transparent to-transparent pointer-events-none"></div>
+        
+        <div class="z-10 text-center max-w-5xl">
+            <p class="text-indigo-400 mb-4 tracking-[0.3em] text-sm font-bold uppercase opacity-0 animate-fade-in" style="animation-delay: 0.2s; animation-fill-mode: forwards;">Digital Architects</p>
+            <h1 class="text-6xl md:text-8xl lg:text-9xl font-bold leading-none tracking-tight mb-8 mix-blend-overlay">
+                <span class="block overflow-hidden"><span class="inline-block transform translate-y-full animate-slide-up" style="animation-delay: 0.4s; animation-fill-mode: forwards;">SHAPE</span></span>
+                <span class="block overflow-hidden"><span class="inline-block transform translate-y-full animate-slide-up text-transparent bg-clip-text bg-gradient-to-r from-white to-indigo-200" style="animation-delay: 0.6s; animation-fill-mode: forwards;">THE VOID</span></span>
+            </h1>
+            <p class="text-gray-400 max-w-xl mx-auto text-lg md:text-xl mb-10 opacity-0 animate-fade-in" style="animation-delay: 0.8s; animation-fill-mode: forwards;">
+                We craft immersive digital experiences that transcend the ordinary. Bridging the gap between imagination and reality.
+            </p>
+            
+            <div class="opacity-0 animate-fade-in" style="animation-delay: 1s; animation-fill-mode: forwards;">
+                <a href="#work" class="magnetic-btn group relative px-8 py-4 bg-white text-black rounded-full font-bold overflow-hidden hover-trigger" data-cursor="hover">
+                    <span class="relative z-10 flex items-center gap-2 group-hover:text-white transition-colors duration-300">
+                        Explore Work <i data-lucide="arrow-down-right" class="w-4 h-4"></i>
+                    </span>
+                    <div class="absolute inset-0 bg-indigo-600 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300 ease-out"></div>
+                </a>
+            </div>
+        </div>
+
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce text-white/30">
+            <i data-lucide="chevron-down" class="w-6 h-6"></i>
+        </div>
+    </header>
+
+    <!-- Infinite Marquee -->
+    <div class="py-12 border-y border-white/10 bg-black/50 backdrop-blur-sm rotate-1 scale-105 z-20 relative">
+        <div class="marquee-container">
+            <div class="marquee-content text-6xl md:text-8xl font-display font-bold text-white/5">
+                AESTHETICS • FUTURE • DESIGN • TECHNOLOGY • INNOVATION • AESTHETICS • FUTURE • DESIGN • TECHNOLOGY • INNOVATION •
+            </div>
+        </div>
+    </div>
+
+    <!-- Feature Grid (Sticky Cards) -->
+    <section id="services" class="relative py-32 px-4 md:px-12 min-h-screen">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row gap-16">
+                <div class="md:w-1/3">
+                    <h2 class="text-4xl md:text-6xl font-bold mb-6 sticky top-32">
+                        Our <br>
+                        <span class="text-indigo-500">Expertise</span>
+                    </h2>
+                    <p class="text-gray-400 sticky top-60">
+                        We combine strategic thinking with digital craftsmanship to build brands that stand the test of time.
+                    </p>
+                </div>
+                
+                <div class="md:w-2/3 space-y-8">
+                    <!-- Card 1 -->
+                    <div class="service-card glass-card p-8 md:p-12 rounded-2xl transform transition-all duration-500 hover:scale-[1.02] hover:bg-white/5 group hover-trigger" data-cursor="hover">
+                        <div class="flex items-start justify-between mb-6">
+                            <div class="feature-icon-wrapper">
+                                <i data-lucide="layout" class="w-12 h-12 text-white feature-icon"></i>
+                            </div>
+                            <span class="text-6xl font-bold text-white/5 group-hover:text-indigo-500/20 transition-colors">01</span>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-4">UI/UX Design</h3>
+                        <p class="text-gray-400 leading-relaxed">
+                            Intuitive interfaces designed for humans. We map user journeys that feel natural, fluid, and engaging, ensuring maximum retention and satisfaction.
+                        </p>
+                    </div>
+
+                    <!-- Card 2 -->
+                    <div class="service-card glass-card p-8 md:p-12 rounded-2xl transform transition-all duration-500 hover:scale-[1.02] hover:bg-white/5 group hover-trigger" data-cursor="hover">
+                        <div class="flex items-start justify-between mb-6">
+                            <div class="feature-icon-wrapper">
+                                <i data-lucide="code-2" class="w-12 h-12 text-white feature-icon"></i>
+                            </div>
+                            <span class="text-6xl font-bold text-white/5 group-hover:text-indigo-500/20 transition-colors">02</span>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-4">Development</h3>
+                        <p class="text-gray-400 leading-relaxed">
+                            Robust, scalable code. From React to WebGL, we engineer high-performance applications that run smoothly across all devices and platforms.
+                        </p>
+                    </div>
+
+                    <!-- Card 3 -->
+                    <div class="service-card glass-card p-8 md:p-12 rounded-2xl transform transition-all duration-500 hover:scale-[1.02] hover:bg-white/5 group hover-trigger" data-cursor="hover">
+                        <div class="flex items-start justify-between mb-6">
+                            <div class="feature-icon-wrapper">
+                                <i data-lucide="trending-up" class="w-12 h-12 text-white feature-icon"></i>
+                            </div>
+                            <span class="text-6xl font-bold text-white/5 group-hover:text-indigo-500/20 transition-colors">03</span>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-4">Growth Strategy</h3>
+                        <p class="text-gray-400 leading-relaxed">
+                            Data-driven marketing meets creative storytelling. We help you find your voice and amplify it to reach the audiences that matter most.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Horizontal Scroll Section -->
+    <section id="vision" class="relative bg-zinc-900">
+        <div class="h-screen flex items-center overflow-hidden" id="horizontal-wrapper">
+            <div class="horizontal-scroll-container" id="horizontal-content">
+                
+                <!-- Panel 1 -->
+                <div class="panel bg-zinc-900 relative">
+                    <div class="absolute inset-0 opacity-20 bg-[url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop')] bg-cover bg-center grayscale mix-blend-luminosity"></div>
+                    <div class="relative z-10 max-w-4xl px-12">
+                        <h2 class="text-5xl md:text-7xl font-bold mb-8 leading-tight">Future-Ready <br> Architecture</h2>
+                        <p class="text-xl text-gray-300 max-w-lg">
+                            Building digital ecosystems that adapt, evolve, and scale with your ambitions.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Panel 2 -->
+                <div class="panel bg-zinc-800 relative">
+                    <div class="absolute inset-0 opacity-20 bg-[url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1964&auto=format&fit=crop')] bg-cover bg-center grayscale mix-blend-luminosity"></div>
+                    <div class="relative z-10 max-w-4xl px-12 ml-auto text-right">
+                        <h2 class="text-5xl md:text-7xl font-bold mb-8 leading-tight">Immersive <br> Realities</h2>
+                        <p class="text-xl text-gray-300 max-w-lg ml-auto">
+                            Blending the physical and digital worlds through WebGL, 3D, and spatial design.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Panel 3 -->
+                <div class="panel bg-zinc-900 relative flex flex-col justify-center items-center">
+                    <div class="absolute inset-0 opacity-20 bg-[url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center grayscale mix-blend-luminosity"></div>
+                    <div class="relative z-10 text-center">
+                        <h2 class="text-6xl md:text-8xl font-bold mb-8 glitch-hover">HUMAN FIRST</h2>
+                        <button class="px-8 py-3 border border-white rounded-full hover:bg-white hover:text-black transition-colors hover-trigger" data-cursor="hover">
+                            Start Project
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Showcase -->
+    <section id="work" class="py-32 px-4 relative">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-6xl font-bold mb-20 text-center">Selected Works</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Project 1 -->
+                <div class="group relative h-[600px] w-full overflow-hidden rounded-3xl cursor-pointer hover-trigger" data-cursor="hover">
+                    <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1481487484168-9b995ecc168d?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center transition-transform duration-700 group-hover:scale-110"></div>
+                    <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors duration-500"></div>
+                    <div class="absolute bottom-0 left-0 p-10 w-full translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                        <p class="text-indigo-400 mb-2 font-mono text-sm tracking-widest">BRANDING / WEB</p>
+                        <h3 class="text-4xl font-bold mb-4">Neon Horizons</h3>
+                        <div class="h-0 group-hover:h-auto overflow-hidden transition-all duration-500 opacity-0 group-hover:opacity-100">
+                            <p class="text-gray-300 max-w-md">A futuristic brand identity for a leading VR gaming startup.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 2 -->
+                <div class="group relative h-[600px] w-full overflow-hidden rounded-3xl cursor-pointer mt-0 md:mt-20 hover-trigger" data-cursor="hover">
+                    <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center transition-transform duration-700 group-hover:scale-110"></div>
+                    <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors duration-500"></div>
+                    <div class="absolute bottom-0 left-0 p-10 w-full translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                        <p class="text-indigo-400 mb-2 font-mono text-sm tracking-widest">DEVELOPMENT</p>
+                        <h3 class="text-4xl font-bold mb-4">Cyber Deck</h3>
+                        <div class="h-0 group-hover:h-auto overflow-hidden transition-all duration-500 opacity-0 group-hover:opacity-100">
+                            <p class="text-gray-300 max-w-md">High-performance dashboard for real-time crypto analytics.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-32 px-4 bg-zinc-900 relative overflow-hidden">
+        <!-- Decorative gradient orb -->
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-indigo-600/20 rounded-full blur-[100px] pointer-events-none"></div>
+
+        <div class="max-w-3xl mx-auto relative z-10">
+            <h2 class="text-5xl md:text-7xl font-bold mb-12 text-center">Let's Build <br> <span class="text-indigo-500">The Future</span></h2>
+            
+            <form class="space-y-12" onsubmit="event.preventDefault(); alert('Transmission Received. We will contact you shortly.');">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                    <div class="input-group">
+                        <input type="text" id="name" required>
+                        <label for="name">Your Name</label>
+                        <div class="line"></div>
+                    </div>
+                    <div class="input-group">
+                        <input type="email" id="email" required>
+                        <label for="email">Email Address</label>
+                        <div class="line"></div>
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <textarea id="message" rows="4" required></textarea>
+                    <label for="message">Tell us about your project</label>
+                    <div class="line"></div>
+                </div>
+
+                <div class="text-center pt-8">
+                    <button type="submit" class="magnetic-btn px-12 py-5 bg-indigo-600 text-white rounded-full font-bold text-lg hover:bg-indigo-500 transition-colors hover-trigger" data-cursor="hover">
+                        Send Message
+                    </button>
+                </div>
+            </form>
+
+            <div class="mt-24 flex justify-center gap-8 text-gray-400">
+                <a href="#" class="hover:text-white transition-colors hover-trigger" data-cursor="hover"><i data-lucide="twitter" class="w-6 h-6"></i></a>
+                <a href="#" class="hover:text-white transition-colors hover-trigger" data-cursor="hover"><i data-lucide="instagram" class="w-6 h-6"></i></a>
+                <a href="#" class="hover:text-white transition-colors hover-trigger" data-cursor="hover"><i data-lucide="linkedin" class="w-6 h-6"></i></a>
+                <a href="#" class="hover:text-white transition-colors hover-trigger" data-cursor="hover"><i data-lucide="github" class="w-6 h-6"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-8 text-center text-gray-600 text-sm border-t border-white/5">
+        &copy; 2023 AETHER STUDIO. ALL RIGHTS RESERVED.
+    </footer>
+
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Custom Cursor Logic
+        const cursor = document.getElementById('cursor');
+        const hoverTriggers = document.querySelectorAll('.hover-trigger');
+
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
+        hoverTriggers.forEach(trigger => {
+            trigger.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
+            trigger.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
+        });
+
+        // Magnetic Button Effect
+        const magneticBtns = document.querySelectorAll('.magnetic-btn');
+        magneticBtns.forEach(btn => {
+            btn.addEventListener('mousemove', function(e) {
+                const pos = btn.getBoundingClientRect();
+                const x = e.clientX - pos.left - pos.width / 2;
+                const y = e.clientY - pos.top - pos.height / 2;
+                
+                btn.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
+            });
+
+            btn.addEventListener('mouseleave', function() {
+                btn.style.transform = 'translate(0px, 0px)';
+            });
+        });
+
+        // WebGL Particle Background (Simple Implementation)
+        const canvas = document.getElementById('webgl');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        let particles = [];
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.5;
+                this.vy = (Math.random() - 0.5) * 0.5;
+                this.size = Math.random() * 2;
+            }
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                if (this.x < 0 || this.x > width) this.vx *= -1;
+                if (this.y < 0 || this.y > height) this.vy *= -1;
+            }
+            draw() {
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < 50; i++) particles.push(new Particle());
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            
+            // Draw connections
+            particles.forEach((p1, i) => {
+                particles.slice(i + 1).forEach(p2 => {
+                    const dx = p1.x - p2.x;
+                    const dy = p1.y - p2.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < 150) {
+                        ctx.strokeStyle = `rgba(99, 102, 241, ${0.1 - dist/1500})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.beginPath();
+                        ctx.moveTo(p1.x, p1.y);
+                        ctx.lineTo(p2.x, p2.y);
+                        ctx.stroke();
+                    }
+                });
+            });
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+        // GSAP Animations
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Animate Service Cards on Scroll
+        gsap.utils.toArray('.service-card').forEach((card, i) => {
+            gsap.from(card, {
+                scrollTrigger: {
+                    trigger: card,
+                    start: "top 85%",
+                    toggleActions: "play none none reverse"
+                },
+                y: 50,
+                opacity: 0,
+                duration: 0.8,
+                delay: i * 0.1,
+                ease: "power3.out"
+            });
+        });
+
+        // Horizontal Scroll
+        const horizontalSection = document.querySelector('#horizontal-wrapper');
+        const horizontalContent = document.querySelector('#horizontal-content');
+        
+        if (window.innerWidth > 768) {
+            gsap.to(horizontalContent, {
+                x: () => -(horizontalContent.scrollWidth - window.innerWidth),
+                ease: "none",
+                scrollTrigger: {
+                    trigger: horizontalSection,
+                    pin: true,
+                    scrub: 1,
+                    end: () => "+=" + horizontalContent.scrollWidth
+                }
+            });
+        }
+
+        // Add animation styles dynamically for text reveal
+        const style = document.createElement('style');
+        style.innerHTML = `
+            @keyframes slide-up {
+                from { transform: translateY(100%); opacity: 0; }
+                to { transform: translateY(0); opacity: 1; }
+            }
+            @keyframes fade-in {
+                from { opacity: 0; }
+                to { opacity: 1; }
+            }
+            .animate-slide-up {
+                animation: slide-up 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            }
+            .animate-fade-in {
+                animation: fade-in 1s ease-out forwards;
+            }
+        `;
+        document.head.appendChild(style);
+
+    </script>
+</body>
+</html>

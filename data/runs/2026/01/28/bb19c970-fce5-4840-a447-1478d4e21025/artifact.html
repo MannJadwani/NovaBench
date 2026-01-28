@@ -1,0 +1,214 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Design</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50 font-sans text-gray-800">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-md fixed w-full z-10">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <div class="w-10 h-10 rounded-full bg-indigo-600 flex items-center justify-center">
+                    <span class="text-white font-bold text-lg">D</span>
+                </div>
+                <span class="text-xl font-bold text-indigo-600">DesignHub</span>
+            </div>
+            <div class="hidden md:flex space-x-8">
+                <a href="#" class="font-medium hover:text-indigo-600 transition">Home</a>
+                <a href="#" class="font-medium hover:text-indigo-600 transition">Services</a>
+                <a href="#" class="font-medium hover:text-indigo-600 transition">Projects</a>
+                <a href="#" class="font-medium hover:text-indigo-600 transition">About</a>
+                <a href="#" class="font-medium hover:text-indigo-600 transition">Contact</a>
+            </div>
+            <button class="md:hidden">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="pt-24 pb-16 md:pt-32 md:pb-24 bg-gradient-to-r from-indigo-500 to-purple-600 text-white">
+        <div class="container mx-auto px-4">
+            <div class="max-w-3xl mx-auto text-center">
+                <h1 class="text-4xl md:text-6xl font-bold mb-6">Beautiful Designs That Inspire</h1>
+                <p class="text-xl mb-10 opacity-90">Creating exceptional digital experiences through thoughtful design and innovative solutions</p>
+                <div class="flex flex-col sm:flex-row justify-center gap-4">
+                    <button class="px-8 py-3 bg-white text-indigo-600 font-bold rounded-lg hover:bg-gray-100 transition shadow-lg">Get Started</button>
+                    <button class="px-8 py-3 bg-transparent border-2 border-white font-bold rounded-lg hover:bg-white hover:text-indigo-600 transition">View Portfolio</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">What We Offer</h2>
+                <p class="text-gray-600">Our design services are tailored to meet your unique needs and business objectives</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-gray-50 rounded-xl p-8 text-center shadow-sm hover:shadow-md transition">
+                    <div class="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-paint-brush text-indigo-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">UI/UX Design</h3>
+                    <p class="text-gray-600">Creating intuitive and visually appealing interfaces that enhance user experience</p>
+                </div>
+                
+                <div class="bg-gray-50 rounded-xl p-8 text-center shadow-sm hover:shadow-md transition">
+                    <div class="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-mobile-alt text-indigo-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Responsive Design</h3>
+                    <p class="text-gray-600">Designs that work flawlessly across all devices and screen sizes</p>
+                </div>
+                
+                <div class="bg-gray-50 rounded-xl p-8 text-center shadow-sm hover:shadow-md transition">
+                    <div class="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-code text-indigo-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Development</h3>
+                    <p class="text-gray-600">Turning designs into fully functional websites and applications</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section class="py-20 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Our Portfolio</h2>
+                <p class="text-gray-600">Explore our latest projects and design work</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="overflow-hidden rounded-xl shadow-lg hover:shadow-xl transition">
+                    <img src="https://picsum.photos/seed/project1/600/400.jpg" alt="Project 1" class="w-full h-64 object-cover">
+                    <div class="p-6 bg-white">
+                        <h3 class="text-xl font-bold mb-2">E-commerce Platform</h3>
+                        <p class="text-gray-600 mb-4">Modern online shopping experience with intuitive navigation</p>
+                        <a href="#" class="text-indigo-600 font-medium hover:text-indigo-800">View Details <i class="fas fa-arrow-right ml-1"></i></a>
+                    </div>
+                </div>
+                
+                <div class="overflow-hidden rounded-xl shadow-lg hover:shadow-xl transition">
+                    <img src="https://picsum.photos/seed/project2/600/400.jpg" alt="Project 2" class="w-full h-64 object-cover">
+                    <div class="p-6 bg-white">
+                        <h3 class="text-xl font-bold mb-2">Mobile Banking App</h3>
+                        <p class="text-gray-600 mb-4">Secure and user-friendly financial management solution</p>
+                        <a href="#" class="text-indigo-600 font-medium hover:text-indigo-800">View Details <i class="fas fa-arrow-right ml-1"></i></a>
+                    </div>
+                </div>
+                
+                <div class="overflow-hidden rounded-xl shadow-lg hover:shadow-xl transition">
+                    <img src="https://picsum.photos/seed/project3/600/400.jpg" alt="Project 3" class="w-full h-64 object-cover">
+                    <div class="p-6 bg-white">
+                        <h3 class="text-xl font-bold mb-2">Travel Booking Website</h3>
+                        <p class="text-gray-600 mb-4">Seamless travel planning with stunning visual design</p>
+                        <a href="#" class="text-indigo-600 font-medium hover:text-indigo-800">View Details <i class="fas fa-arrow-right ml-1"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Client Testimonials</h2>
+                <p class="text-gray-600">What our clients say about working with us</p>
+            </div>
+            
+            <div class="max-w-4xl mx-auto">
+                <div class="bg-indigo-50 rounded-2xl p-8 md:p-12 relative">
+                    <div class="absolute top-0 left-8 md:left-12 -translate-y-1/2 bg-indigo-600 text-white w-12 h-12 rounded-full flex items-center justify-center">
+                        <i class="fas fa-quote-left"></i>
+                    </div>
+                    <p class="text-lg md:text-xl italic mb-8">The team exceeded our expectations with their creative approach and attention to detail. Our new website has dramatically improved user engagement and conversion rates.</p>
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 rounded-full bg-gray-300 mr-4"></div>
+                        <div>
+                            <h4 class="font-bold">Sarah Johnson</h4>
+                            <p class="text-gray-600">CEO, TechStart Inc.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20 bg-gradient-to-r from-indigo-500 to-purple-600 text-white">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto text-center">
+                <h2 class="text-3xl md:text-4xl font-bold mb-6">Ready to Start Your Project?</h2>
+                <p class="text-xl mb-10 opacity-90 max-w-2xl mx-auto">Let's work together to bring your vision to life with exceptional design</p>
+                <button class="px-8 py-4 bg-white text-indigo-600 font-bold rounded-lg hover:bg-gray-100 transition shadow-lg">Get in Touch</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-300 py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <div class="w-8 h-8 rounded-full bg-indigo-600 flex items-center justify-center">
+                            <span class="text-white font-bold">D</span>
+                        </div>
+                        <span class="text-xl font-bold text-white">DesignHub</span>
+                    </div>
+                    <p class="mb-4">Creating exceptional digital experiences through thoughtful design.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-300 hover:text-white"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-gray-300 hover:text-white"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-gray-300 hover:text-white"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-gray-300 hover:text-white"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold text-white mb-4">Services</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="hover:text-white transition">UI/UX Design</a></li>
+                        <li><a href="#" class="hover:text-white transition">Web Development</a></li>
+                        <li><a href="#" class="hover:text-white transition">Mobile Apps</a></li>
+                        <li><a href="#" class="hover:text-white transition">Brand Identity</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold text-white mb-4">Company</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="hover:text-white transition">About Us</a></li>
+                        <li><a href="#" class="hover:text-white transition">Our Team</a></li>
+                        <li><a href="#" class="hover:text-white transition">Careers</a></li>
+                        <li><a href="#" class="hover:text-white transition">Blog</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold text-white mb-4">Contact</h3>
+                    <ul class="space-y-2">
+                        <li>123 Design Street, Creative City</li>
+                        <li>info@designhub.com</li>
+                        <li>+1 (555) 123-4567</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-12 pt-8 text-center">
+                <p>&copy; 2023 DesignHub. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

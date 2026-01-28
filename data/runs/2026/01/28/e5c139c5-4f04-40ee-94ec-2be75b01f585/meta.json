@@ -1,0 +1,18 @@
+{
+  "id": "e5c139c5-4f04-40ee-94ec-2be75b01f585",
+  "createdAt": "2026-01-27T21:44:48.601Z",
+  "provider": "zai",
+  "model": "glm-4.5",
+  "benchmark": {
+    "id": "video-editor",
+    "title": "Video Editor Interface",
+    "category": "Complexity of UI"
+  },
+  "latencyMs": 175723,
+  "tokenUsage": null,
+  "params": {
+    "temperature": 1,
+    "maxTokens": null
+  },
+  "path": "runs/2026/01/28/e5c139c5-4f04-40ee-94ec-2be75b01f585"
+}

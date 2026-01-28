@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEON GENESIS | Cyberpunk Interface</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cyber: {
+                            black: '#050505',
+                            dark: '#0a0a12',
+                            gray: '#1a1a2e',
+                            neonBlue: '#00f3ff',
+                            neonPink: '#ff00ff',
+                            neonPurple: '#bc13fe',
+                            neonYellow: '#faff00'
+                        }
+                    },
+                    fontFamily: {
+                        display: ['Orbitron', 'sans-serif'],
+                        mono: ['Share Tech Mono', 'monospace'],
+                    },
+                    animation: {
+                        'pulse-fast': 'pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'spin-slow': 'spin 8s linear infinite',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a0a12; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #00f3ff; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #ff00ff; 
+        }
+
+        /* Glitch Effect Keyframes */
+        @keyframes glitch-anim-1 {
+            0% { clip-path: inset(20% 0 80% 0); transform: translate(-2px, 1px); }
+            20% { clip-path: inset(60% 0 10% 0); transform: translate(2px, -1px); }
+            40% { clip-path: inset(40% 0 50% 0); transform: translate(-2px, 2px); }
+            60% { clip-path: inset(80% 0 5% 0); transform: translate(2px, -2px); }
+            80% { clip-path: inset(10% 0 70% 0); transform: translate(-1px, 1px); }
+            100% { clip-path: inset(30% 0 50% 0); transform: translate(1px, -1px); }
+        }
+
+        @keyframes glitch-anim-2 {
+            0% { clip-path: inset(10% 0 60% 0); transform: translate(2px, -1px); }
+            20% { clip-path: inset(80% 0 5% 0); transform: translate(-2px, 2px); }
+            40% { clip-path: inset(30% 0 20% 0); transform: translate(2px, 1px); }
+            60% { clip-path: inset(15% 0 80% 0); transform: translate(-1px, -2px); }
+            80% { clip-path: inset(55% 0 10% 0); transform: translate(1px, 2px); }
+            100% { clip-path: inset(40% 0 30% 0); transform: translate(-2px, 1px); }
+        }
+
+        @keyframes scanline {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100%); }
+        }
+
+        @keyframes text-flicker {
+            0% { opacity: 0.1; }
+            2% { opacity: 1; }
+            8% { opacity: 0.1; }
+            9% { opacity: 1; }
+            12% { opacity: 0.1; }
+            20% { opacity: 1; }
+            25% { opacity: 0.3; }
+            30% { opacity: 1; }
+            70% { opacity: 0.7; }
+            72% { opacity: 0.2; }
+            77% { opacity: 0.9; }
+            100% { opacity: 0.9; }
+        }
+
+        /* Utility Classes for Glitch */
+        .glitch-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .glitch-wrapper::before,
+        .glitch-wrapper::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #0a0a12; /* Matches bg */
+        }
+
+        .glitch-wrapper::before {
+            left: 2px;
+            text-shadow: -1px 0 #ff00ff;
+            clip-path: inset(0 0 0 0); 
+            animation: glitch-anim-1 2.5s infinite linear alternate-reverse;
+        }
+
+        .glitch-wrapper::after {
+            left: -2px;
+            text-shadow: -1px 0 #00f3ff;
+            clip-path: inset(0 0 0 0);
+            animation: glitch-anim-2 3s infinite linear alternate-reverse;
+        }
+
+        .glitch-wrapper:hover::before {
+            animation: glitch-anim-1 0.4s infinite linear alternate-reverse;
+        }
+        .glitch-wrapper:hover::after {
+            animation: glitch-anim-2 0.4s infinite linear alternate-reverse;
+        }
+
+        /* CRT Scanline Overlay */
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.2));
+            background-size: 100% 4px;
+            z-index: 9999;
+            pointer-events: none;
+            opacity: 0.6;
+        }
+        
+        .scanlines::before {
+            content: " ";
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 2;
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+        }
+
+        /* Neon Glow Utilities */
+        .text-glow-blue { text-shadow: 0 0 5px #00f3ff, 0 0 10px #00f3ff; }
+        .text-glow-pink { text-shadow: 0 0 5px #ff00ff, 0 0 10px #ff00ff; }
+        .box-glow-blue { box-shadow: 0 0 10px #00f3ff, inset 0 0 5px #00f3ff; }
+        .box-glow-pink { box-shadow: 0 0 10px #ff00ff, inset 0 0 5px #ff00ff; }
+        
+        /* Grid Background */
+        .cyber-grid {
+            background-size: 40px 40px;
+            background-image:
+                linear-gradient(to right, rgba(0, 243, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0, 243, 255, 0.05) 1px, transparent 1px);
+            mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+        }
+
+        /* Card Hover Tilt */
+        .cyber-card {
+            transition: transform 0.1s ease, box-shadow 0.3s ease;
+            transform-style: preserve-3d;
+        }
+        
+        .clip-corner {
+            clip-path: polygon(
+                0 0, 
+                100% 0, 
+                100% calc(100% - 20px), 
+                calc(100% - 20px) 100%, 
+                0 100%
+            );
+        }
+    </style>
+</head>
+<body class="bg-cyber-black text-gray-200 font-mono overflow-x-hidden selection:bg-cyber-neonPink selection:text-white">
+
+    <!-- CRT Overlay -->
+    <div class="scanlines"></div>
+
+    <!-- Navigation -->
+    <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 border-b border-transparent">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex-shrink-0 flex items-center gap-2 cursor-pointer group">
+                    <div class="w-8 h-8 border-2 border-cyber-neonBlue flex items-center justify-center animate-pulse-fast group-hover:bg-cyber-neonBlue group-hover:text-black transition-colors">
+                        <span class="font-bold font-display">N</span>
+                    </div>
+                    <span class="font-display font-bold text-2xl tracking-wider text-white group-hover:text-cyber-neonBlue transition-colors">NEON<span class="text-cyber-neonPink">SYS</span></span>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="#home" class="text-gray-300 hover:text-cyber-neonBlue hover:bg-cyber-gray px-3 py-2 rounded-none border border-transparent hover:border-cyber-neonBlue transition-all duration-300 font-display text-sm tracking-widest">HOME</a>
+                        <a href="#features" class="text-gray-300 hover:text-cyber-neonPink hover:bg-cyber-gray px-3 py-2 rounded-none border border-transparent hover:border-cyber-neonPink transition-all duration-300 font-display text-sm tracking-widest">MODULES</a>
+                        <a href="#gallery" class="text-gray-300 hover:text-cyber-neonYellow hover:bg-cyber-gray px-3 py-2 rounded-none border border-transparent hover:border-cyber-neonYellow transition-all duration-300 font-display text-sm tracking-widest">VISUALS</a>
+                        <a href="#contact" class="bg-cyber-neonBlue/10 text-cyber-neonBlue border border-cyber-neonBlue px-4 py-2 font-display font-bold hover:bg-cyber-neonBlue hover:text-black transition-all duration-300 clip-corner">CONNECT</a>
+                    </div>
+                </div>
+                <!-- Mobile menu button -->
+                <div class="-mr-2 flex md:hidden">
+                    <button type="button" id="mobile-menu-btn" class="inline-flex items-center justify-center p-2 rounded-md text-cyber-neonPink hover:text-white hover:bg-cyber-gray focus:outline-none">
+                        <svg class="h-8 w-8" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div class="md:hidden hidden bg-cyber-dark border-b border-cyber-neonBlue" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#home" class="text-gray-300 hover:text-cyber-neonBlue block px-3 py-2 font-display text-base">HOME</a>
+                <a href="#features" class="text-gray-300 hover:text-cyber-neonPink block px-3 py-2 font-display text-base">MODULES</a>
+                <a href="#gallery" class="text-gray-300 hover:text-cyber-neonYellow block px-3 py-2 font-display text-base">VISUALS</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="relative h-screen flex items-center justify-center overflow-hidden">
+        <!-- Background Grid -->
+        <div class="absolute inset-0 cyber-grid pointer-events-none"></div>
+        
+        <!-- Decorative Elements -->
+        <div class="absolute top-1/4 left-10 w-32 h-32 border border-cyber-neonPink/20 rounded-full animate-pulse hidden md:block"></div>
+        <div class="absolute bottom-1/4 right-10 w-64 h-64 border border-cyber-neonBlue/20 rotate-45 hidden md:block"></div>
+
+        <div class="relative z-10 text-center px-4 max-w-5xl mx-auto">
+            <p class="text-cyber-neonBlue font-mono text-sm md:text-lg mb-4 tracking-[0.5em] animate-pulse">SYSTEM INITIALIZED...</p>
+            
+            <h1 class="text-6xl md:text-8xl lg:text-9xl font-display font-black text-white mb-6 tracking-tighter leading-none">
+                <div class="glitch-wrapper" data-text="CYBER">
+                    CYBER
+                </div>
+                <br>
+                <div class="glitch-wrapper text-cyber-neonPink" data-text="PROTOCOL">
+                    PROTOCOL
+                </div>
+            </h1>
+
+            <p class="mt-6 max-w-2xl mx-auto text-xl text-gray-400 font-mono border-l-4 border-cyber-neonBlue pl-4 text-left md:text-center md:border-l-0 md:pl-0">
+                <span class="text-cyber-neonBlue">></span> ENTER THE MAINFRAME. UPGRADE YOUR REALITY WITH QUANTUM ENHANCEMENTS AND NEON-OPTIMIZED AUGMENTATIONS.
+            </p>
+
+            <div class="mt-10 flex flex-col md:flex-row justify-center items-center gap-6">
+                <button class="magnetic-btn group relative px-8 py-4 bg-transparent border border-cyber-neonBlue text-cyber-neonBlue font-display font-bold text-lg tracking-widest hover:text-black hover:bg-cyber-neonBlue transition-all duration-300 clip-corner overflow-hidden">
+                    <span class="relative z-10">INITIALIZE</span>
+                    <div class="absolute inset-0 bg-cyber-neonBlue transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300"></div>
+                </button>
+                
+                <button class="magnetic-btn group relative px-8 py-4 bg-transparent border border-cyber-neonPink text-cyber-neonPink font-display font-bold text-lg tracking-widest hover:text-black hover:bg-cyber-neonPink transition-all duration-300 clip-corner overflow-hidden">
+                    <span class="relative z-10">DATABANK</span>
+                    <div class="absolute inset-0 bg-cyber-neonPink transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300"></div>
+                </button>
+            </div>
+        </div>
+
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-2 opacity-70">
+            <span class="text-[10px] tracking-widest text-cyber-neonBlue animate-pulse">SCROLL DOWN</span>
+            <div class="w-[1px] h-12 bg-gradient-to-b from-cyber-neonBlue to-transparent"></div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-24 bg-cyber-dark relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-end gap-4 mb-16">
+                <h2 class="text-4xl md:text-5xl font-display font-bold text-white">
+                    <span class="text-cyber-neonPink">01</span> MODULES
+                </h2>
+                <div class="h-[1px] flex-grow bg-gradient-to-r from-cyber-neonPink to-transparent mb-3"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 perspective-1000">
+                <!-- Card 1 -->
+                <div class="cyber-card group relative bg-cyber-gray/50 border border-cyber-gray hover:border-cyber-neonBlue p-8 transition-colors duration-300 clip-corner overflow-hidden">
+                    <div class="absolute top-0 right-0 p-2 opacity-50 group-hover:opacity-100 transition-opacity">
+                        <svg class="w-6 h-6 text-cyber-neonBlue" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                    </div>
+                    <h3 class="text-2xl font-display font-bold text-white mb-4 group-hover:text-cyber-neonBlue transition-colors decode-text" data-value="NEURAL_LINK">NEURAL_LINK</h3>
+                    <p class="text-gray-400 font-mono text-sm leading-relaxed">
+                        Direct cortex synchronization for zero-latency data transmission. Bypass biological limitations.
+                    </p>
+                    <div class="mt-6 flex items-center text-cyber-neonBlue text-xs font-mono tracking-widest opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300">
+                        ACCESS MODULE ->
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="cyber-card group relative bg-cyber-gray/50 border border-cyber-gray hover:border-cyber-neonPink p-8 transition-colors duration-300 clip-corner overflow-hidden">
+                    <div class="absolute top-0 right-0 p-2 opacity-50 group-hover:opacity-100 transition-opacity">
+                        <svg class="w-6 h-6 text-cyber-neonPink" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                    </div>
+                    <h3 class="text-2xl font-display font-bold text-white mb-4 group-hover:text-cyber-neonPink transition-colors decode-text" data-value="ICE_BREAKER">ICE_BREAKER</h3>
+                    <p class="text-gray-400 font-mono text-sm leading-relaxed">
+                        Military-grade encryption bypass algorithms. Penetrate the most secure corporate mainframes undetected.
+                    </p>
+                    <div class="mt-6 flex items-center text-cyber-neonPink text-xs font-mono tracking-widest opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300">
+                        ACCESS MODULE ->
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="cyber-card group relative bg-cyber-gray/50 border border-cyber-gray hover:border-cyber-neonYellow p-8 transition-colors duration-300 clip-corner overflow-hidden">
+                    <div class="absolute top-0 right-0 p-2 opacity-50 group-hover:opacity-100 transition-opacity">
+                        <svg class="w-6 h-6 text-cyber-neonYellow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                    </div>
+                    <h3 class="text-2xl font-display font-bold text-white mb-4 group-hover:text-cyber-neonYellow transition-colors decode-text" data-value="OPTIC_CAMO">OPTIC_CAMO</h3>
+                    <p class="text-gray-400 font-mono text-sm leading-relaxed">
+                        Light-bending nanotech weave. Become invisible to the naked eye and standard electronic surveillance.
+                    </p>
+                    <div class="mt-6 flex items-center text-cyber-neonYellow text-xs font-mono tracking-widest opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300">
+                        ACCESS MODULE ->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Visual Gallery Section -->
+    <section id="gallery" class="py-24 bg-cyber-black relative overflow-hidden">
+        <!-- Background Elements -->
+        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-cyber-neonPurple to-transparent opacity-50"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="flex items-end gap-4 mb-16">
+                <h2 class="text-4xl md:text-5xl font-display font-bold text-white">
+                    <span class="text-cyber-neonPurple">02</span> VISUALS
+                </h2>
+                <div class="h-[1px] flex-grow bg-gradient-to-r from-cyber-neonPurple to-transparent mb-3"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 h-[600px]">
+                <!-- Large Item -->
+                <div class="group relative h-full overflow-hidden border border-cyber-gray hover:border-cyber-neonPurple transition-colors duration-300 cursor-pointer" onclick="openModal('CYBER-TOKYO', 'Population: 37.4M. Neon density: Critical.')">
+                    <img src="https://images.unsplash.com/photo-1542259681-d306e9b9526c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" alt="Cyberpunk City" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 filter brightness-75 group-hover:brightness-100">
+                    <div class="absolute inset-0 bg-gradient-to-t from-cyber-black via-transparent to-transparent opacity-90"></div>
+                    <div class="absolute bottom-0 left-0 p-6 w-full">
+                        <div class="text-cyber-neonPurple font-mono text-xs mb-1">LOCATION_TAG: TOKYO-3</div>
+                        <h3 class="text-2xl font-display font-bold text-white">NEON SPRAWL</h3>
+                        <div class="w-0 h-[2px] bg-cyber-neonPurple mt-2 transition-all duration-500 group-hover:w-full"></div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 gap-4 h-full">
+                    <!-- Small Item 1 -->
+                    <div class="group relative h-full overflow-hidden border border-cyber-gray hover:border-cyber-neonBlue transition-colors duration-300 cursor-pointer" onclick="openModal('CYBER-WARE', 'Military grade augmentations for daily life.')">
+                        <img src="https://images.unsplash.com/photo-1535295972055-1c762f4483e5?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Cyberpunk Portrait" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 filter brightness-75 group-hover:brightness-100">
+                        <div class="absolute inset-0 bg-gradient-to-t from-cyber-black via-transparent to-transparent opacity-90"></div>
+                        <div class="absolute bottom-0 left-0 p-6 w-full">
+                            <div class="text-cyber-neonBlue font-mono text-xs mb-1">SUBJECT: ANDROID-09</div>
+                            <h3 class="text-xl font-display font-bold text-white">SYNTHETIC DREAMS</h3>
+                            <div class="w-0 h-[2px] bg-cyber-neonBlue mt-2 transition-all duration-500 group-hover:w-full"></div>
+                        </div>
+                    </div>
+                    <!-- Small Item 2 -->
+                    <div class="group relative h-full overflow-hidden border border-cyber-gray hover:border-cyber-neonYellow transition-colors duration-300 cursor-pointer" onclick="openModal('TECH-NOIR', 'High tech, low life. The streets speak in binary.')">
+                        <img src="https://images.unsplash.com/photo-1515630278258-407f66498911?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Cyberpunk Tech" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 filter brightness-75 group-hover:brightness-100">
+                        <div class="absolute inset-0 bg-gradient-to-t from-cyber-black via-transparent to-transparent opacity-90"></div>
+                        <div class="absolute bottom-0 left-0 p-6 w-full">
+                            <div class="text-cyber-neonYellow font-mono text-xs mb-1">SYSTEM: BROADCAST</div>
+                            <h3 class="text-xl font-display font-bold text-white">DATA STREAM</h3>
+                            <div class="w-0 h-[2px] bg-cyber-neonYellow mt-2 transition-all duration-500 group-hover:w-full"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-24 bg-cyber-dark relative">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-cyber-gray/30 border border-cyber-gray p-8 md:p-12 clip-corner relative overflow-hidden">
+                <!-- Decorative BG code -->
+                <div class="absolute top-0 right-0 p-4 text-6xl font-mono text-white opacity-5 select-none pointer-events-none">
+                    010010<br>101101
+                </div>
+
+                <h2 class="text-3xl font-display font-bold text-white mb-2">ESTABLISH UPLINK</h2>
+                <p class="text-gray-400 font-mono mb-8 text-sm">Encrypted transmission channel active. Awaiting input.</p>
+
+                <form onsubmit="event.preventDefault(); simulateUpload();" class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="relative group">
+                            <input type="text" id="name" required class="w-full bg-cyber-black border-b-2 border-cyber-gray text-white px-4 py-3 focus:outline-none focus:border-cyber-neonBlue transition-colors peer font-mono" placeholder=" ">
+                            <label for="name" class="absolute left-4 top-3 text-gray-500 text-sm transition-all peer-focus:-top-6 peer-focus:text-cyber-neonBlue peer-focus:text-xs peer-not-placeholder-shown:-top-6 peer-not-placeholder-shown:text-xs">CODENAME</label>
+                        </div>
+                        <div class="relative group">
+                            <input type="email" id="email" required class="w-full bg-cyber-black border-b-2 border-cyber-gray text-white px-4 py-3 focus:outline-none focus:border-cyber-neonPink transition-colors peer font-mono" placeholder=" ">
+                            <label for="email" class="absolute left-4 top-3 text-gray-500 text-sm transition-all peer-focus:-top-6 peer-focus:text-cyber-neonPink peer-focus:text-xs peer-not-placeholder-shown:-top-6 peer-not-placeholder-shown:text-xs">FREQUENCY (EMAIL)</label>
+                        </div>
+                    </div>
+                    
+                    <div class="relative group">
+                        <textarea id="message" rows="4" required class="w-full bg-cyber-black border-b-2 border-cyber-gray text-white px-4 py-3 focus:outline-none focus:border-cyber-neonPurple transition-colors peer font-mono" placeholder=" "></textarea>
+                        <label for="message" class="absolute left-4 top-3 text-gray-500 text-sm transition-all peer-focus:-top-6 peer-focus:text-cyber-neonPurple peer-focus:text-xs peer-not-placeholder-shown:-top-6 peer-not-placeholder-shown:text-xs">DATA PACKET (MESSAGE)</label>
+                    </div>
+
+                    <div class="flex items-center justify-between pt-4">
+                        <div class="text-xs font-mono text-cyber-neonBlue animate-pulse" id="status-msg">SYSTEM READY</div>
+                        <button type="submit" class="px-8 py-3 bg-cyber-neonBlue text-black font-display font-bold tracking-widest hover:bg-white hover:scale-105 transition-all duration-300 clip-corner relative overflow-hidden">
+                            TRANSMIT_DATA
+                        </button>
+                    </div>
+                    
+                    <!-- Progress Bar (Hidden by default) -->
+                    <div class="w-full h-1 bg-cyber-gray mt-4 hidden" id="progress-container">
+                        <div class="h-full bg-cyber-neonBlue w-0 transition-all duration-[2000ms] ease-out" id="progress-bar"></div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-cyber-black border-t border-cyber-gray py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="text-center md:text-left">
+                <h4 class="text-2xl font-display font-bold text-white">NEON<span class="text-cyber-neonPink">SYS</span></h4>
+                <p class="text-gray-500 text-xs font-mono mt-1">COPYRIGHT 2077 NEON SYSTEMS INC.</p>
+            </div>
+            
+            <div class="flex gap-6">
+                <a href="#" class="text-gray-400 hover:text-cyber-neonBlue transition-colors">
+                    <span class="sr-only">Twitter</span>
+                    <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84"></path></svg>
+                </a>
+                <a href="#" class="text-gray-400 hover:text-cyber-neonPink transition-colors">
+                    <span class="sr-only">GitHub</span>
+                    <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd"></path></svg>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal Overlay -->
+    <div id="modal" class="fixed inset-0 z-[100] hidden flex items-center justify-center px-4">
+        <div class="absolute inset-0 bg-black/90 backdrop-blur-sm" onclick="closeModal()"></div>
+        <div class="relative bg-cyber-gray border border-cyber-neonBlue w-full max-w-lg p-1 transform scale-95 opacity-0 transition-all duration-300" id="modal-content">
+            <div class="bg-cyber-black p-6 md:p-8 clip-corner border border-cyber-gray">
+                <div class="flex justify-between items-start mb-4">
+                    <h3 class="text-2xl font-display font-bold text-cyber-neonBlue" id="modal-title">TITLE</h3>
+                    <button onclick="closeModal()" class="text-gray-500 hover:text-white text-xl">&times;</button>
+                </div>
+                <div class="w-full h-[1px] bg-cyber-gray mb-4"></div>
+                <p class="text-gray-300 font-mono mb-6 leading-relaxed" id="modal-desc">Description goes here.</p>
+                
+                <div class="flex gap-4">
+                    <button onclick="closeModal()" class="flex-1 py-2 border border-cyber-neonBlue text-cyber-neonBlue font-mono hover:bg-cyber-neonBlue hover:text-black transition-colors">EXECUTE</button>
+                    <button onclick="closeModal()" class="flex-1 py-2 border border-cyber-neonPink text-cyber-neonPink font-mono hover:bg-cyber-neonPink hover:text-black transition-colors">ABORT</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- Mobile Menu Logic ---
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
+
+        // --- Navbar Glass Effect on Scroll ---
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('bg-cyber-black/90', 'backdrop-blur-md', 'border-cyber-gray');
+                navbar.classList.remove('border-transparent');
+            } else {
+                navbar.classList.remove('bg-cyber-black/90', 'backdrop-blur-md', 'border-cyber-gray');
+                navbar.classList.add('border-transparent');
+            }
+        });
+
+        // --- Text Scramble/Decode Effect ---
+        const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_!@#$%^&*";
+        
+        document.querySelectorAll('.decode-text').forEach(element => {
+            element.onmouseover = event => {
+                let iteration = 0;
+                const originalText = event.target.dataset.value;
+                
+                clearInterval(event.target.interval);
+                
+                event.target.interval = setInterval(() => {
+                    event.target.innerText = originalText
+                        .split("")
+                        .map((letter, index) => {
+                            if(index < iteration) {
+                                return originalText[index];
+                            }
+                            return letters[Math.floor(Math.random() * 26)];
+                        })
+                        .join("");
+                    
+                    if(iteration >= originalText.length){ 
+                        clearInterval(event.target.interval);
+                    }
+                    
+                    iteration += 1 / 3;
+                }, 30);
+            }
+        });
+
+        // --- 3D Tilt Effect for Cards ---
+        const cards = document.querySelectorAll('.cyber-card');
+        
+        cards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const rotateX = ((y - centerY) / centerY) * -10; // Max rotation deg
+                const rotateY = ((x - centerX) / centerX) * 10;
+
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)';
+            });
+        });
+
+        // --- Magnetic Button Effect ---
+        const magBtns = document.querySelectorAll('.magnetic-btn');
+        magBtns.forEach(btn => {
+            btn.addEventListener('mousemove', (e) => {
+                const rect = btn.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                
+                btn.style.transform = `translate(${x * 0.2}px, ${y * 0.2}px)`;
+            });
+            
+            btn.addEventListener('mouseleave', () => {
+                btn.style.transform = 'translate(0px, 0px)';
+            });
+        });
+
+        // --- Modal Logic ---
+        const modal = document.getElementById('modal');
+        const modalContent = document.getElementById('modal-content');
+        const modalTitle = document.getElementById('modal-title');
+        const modalDesc = document.getElementById('modal-desc');
+
+        function openModal(title, desc) {
+            modalTitle.innerText = title;
+            modalDesc.innerText = desc;
+            modal.classList.remove('hidden');
+            // Small delay to allow display:block to apply before opacity transition
+            setTimeout(() => {
+                modalContent.classList.remove('scale-95', 'opacity-0');
+                modalContent.classList.add('scale-100', 'opacity-100');
+            }, 10);
+        }
+
+        function closeModal() {
+            modalContent.classList.remove('scale-100', 'opacity-100');
+            modalContent.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        }
+
+        // --- Form Simulation ---
+        function simulateUpload() {
+            const btn = document.querySelector('button[type="submit"]');
+            const status = document.getElementById('status-msg');
+            const barContainer = document.getElementById('progress-container');
+            const bar = document.getElementById('progress-bar');
+            
+            btn.disabled = true;
+            btn.innerText = "ENCRYPTING...";
+            status.innerText = "UPLOADING DATA PACKET...";
+            status.classList.remove('text-cyber-neonBlue');
+            status.classList.add('text-cyber-neonPink');
+            
+            barContainer.classList.remove('hidden');
+            
+            // Force reflow
+            void bar.offsetWidth; 
+            bar.style.width = "100%";
+
+            setTimeout(() => {
+                status.innerText = "TRANSMISSION COMPLETE";
+                status.classList.remove('text-cyber-neonPink');
+                status.classList.add('text-cyber-neonBlue');
+                btn.innerText = "DATA_SENT";
+                
+                setTimeout(() => {
+                    // Reset
+                    bar.style.width = "0";
+                    barContainer.classList.add('hidden');
+                    btn.disabled = false;
+                    btn.innerText = "TRANSMIT_DATA";
+                    document.querySelector('form').reset();
+                }, 2000);
+            }, 2200);
+        }
+
+        // --- Mouse Spotlight Effect ---
+        const hero = document.getElementById('home');
+        document.addEventListener('mousemove', (e) => {
+            const x = e.clientX;
+            const y = e.clientY;
+            
+            // Update CSS variables or apply gradient to body
+            document.body.style.background = `radial-gradient(circle at ${x}px ${y}px, rgba(10, 10, 18, 0.8) 0%, #050505 60%)`;
+        });
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+{
+  "id": "b818d07c-b1fa-4f5d-b974-657988b19409",
+  "createdAt": "2026-01-27T21:23:06.414Z",
+  "provider": "zai",
+  "model": "glm-4.5",
+  "benchmark": {
+    "id": "night-ui-landing",
+    "title": "Night UI - Landing Page",
+    "category": "Design Terms"
+  },
+  "latencyMs": 53881,
+  "tokenUsage": null,
+  "params": {
+    "temperature": 1,
+    "maxTokens": null
+  },
+  "path": "runs/2026/01/28/b818d07c-b1fa-4f5d-b974-657988b19409"
+}

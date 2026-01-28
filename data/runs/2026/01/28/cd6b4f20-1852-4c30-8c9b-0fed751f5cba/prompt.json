@@ -1,0 +1,12 @@
+{
+  "prompt": "Design a comprehensive photo editing web app with canvas workspace, tools panel, layers panel with blending modes, adjustments panel, filters, color picker, history panel, and keyboard shortcuts. Output HTML + JS.\n\nReturn only HTML. Do not wrap in markdown. Use Tailwind CSS classes.",
+  "params": {
+    "temperature": 1,
+    "maxTokens": null
+  },
+  "benchmark": {
+    "id": "photoshop-clone",
+    "title": "Photoshop Web Clone",
+    "category": "Complexity of UI"
+  }
+}

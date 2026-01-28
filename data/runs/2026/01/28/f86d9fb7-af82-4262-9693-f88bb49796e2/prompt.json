@@ -1,0 +1,12 @@
+{
+  "prompt": "Create a Minecraft-style voxel game using Three.js with first-person controls, block placement/destruction, multiple block types, procedural terrain, and a day/night cycle. Output HTML + JS.\n\nReturn only HTML. Do not wrap in markdown. Use Tailwind CSS classes.",
+  "params": {
+    "temperature": 1,
+    "maxTokens": null
+  },
+  "benchmark": {
+    "id": "minecraft-clone",
+    "title": "Minecraft Clone",
+    "category": "3D"
+  }
+}

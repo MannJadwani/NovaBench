@@ -1,0 +1,18 @@
+{
+  "id": "2390d11b-af2c-49e7-94f3-05d213a7dd6d",
+  "createdAt": "2026-01-27T21:25:38.644Z",
+  "provider": "zai",
+  "model": "glm-4.5",
+  "benchmark": {
+    "id": "premium-gradients",
+    "title": "Sharp Premium & Rich Gradients",
+    "category": "Design Terms"
+  },
+  "latencyMs": 87876,
+  "tokenUsage": null,
+  "params": {
+    "temperature": 1,
+    "maxTokens": null
+  },
+  "path": "runs/2026/01/28/2390d11b-af2c-49e7-94f3-05d213a7dd6d"
+}

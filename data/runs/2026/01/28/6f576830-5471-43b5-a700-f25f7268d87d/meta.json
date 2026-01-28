@@ -1,0 +1,18 @@
+{
+  "id": "6f576830-5471-43b5-a700-f25f7268d87d",
+  "createdAt": "2026-01-27T21:20:40.248Z",
+  "provider": "zai",
+  "model": "glm-4.5",
+  "benchmark": {
+    "id": "neo-brutalism-landing",
+    "title": "Neo Brutalism - Landing Page",
+    "category": "Design Terms"
+  },
+  "latencyMs": 38902,
+  "tokenUsage": null,
+  "params": {
+    "temperature": 1,
+    "maxTokens": null
+  },
+  "path": "runs/2026/01/28/6f576830-5471-43b5-a700-f25f7268d87d"
+}

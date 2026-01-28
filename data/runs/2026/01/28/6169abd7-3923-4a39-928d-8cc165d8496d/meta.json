@@ -1,0 +1,18 @@
+{
+  "id": "6169abd7-3923-4a39-928d-8cc165d8496d",
+  "createdAt": "2026-01-27T23:39:48.591Z",
+  "provider": "openrouter",
+  "model": "arcee-ai/trinity-large-preview:free",
+  "benchmark": {
+    "id": "img-to-code-2",
+    "title": "Image to Code #2",
+    "category": "Image to Code"
+  },
+  "latencyMs": 60577,
+  "tokenUsage": null,
+  "params": {
+    "temperature": 1,
+    "maxTokens": null
+  },
+  "path": "runs/2026/01/28/6169abd7-3923-4a39-928d-8cc165d8496d"
+}

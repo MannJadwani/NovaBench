@@ -1,0 +1,18 @@
+{
+  "id": "e771c01d-2e08-438b-8981-2eb46ee5598b",
+  "createdAt": "2026-01-27T23:44:59.272Z",
+  "provider": "openrouter",
+  "model": "arcee-ai/trinity-large-preview:free",
+  "benchmark": {
+    "id": "video-editor",
+    "title": "Video Editor Interface",
+    "category": "Complexity of UI"
+  },
+  "latencyMs": 60854,
+  "tokenUsage": null,
+  "params": {
+    "temperature": 1,
+    "maxTokens": null
+  },
+  "path": "runs/2026/01/28/e771c01d-2e08-438b-8981-2eb46ee5598b"
+}

@@ -1,0 +1,18 @@
+{
+  "id": "1515ea37-cbd2-47df-b966-8e784902ee12",
+  "createdAt": "2026-01-27T21:31:36.047Z",
+  "provider": "zai",
+  "model": "glm-4.5",
+  "benchmark": {
+    "id": "img-to-code-2",
+    "title": "Image to Code #2",
+    "category": "Image to Code"
+  },
+  "latencyMs": 25747,
+  "tokenUsage": null,
+  "params": {
+    "temperature": 1,
+    "maxTokens": null
+  },
+  "path": "runs/2026/01/28/1515ea37-cbd2-47df-b966-8e784902ee12"
+}

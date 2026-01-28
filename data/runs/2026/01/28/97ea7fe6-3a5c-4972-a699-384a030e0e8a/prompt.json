@@ -1,0 +1,12 @@
+{
+  "prompt": "Create a cyberpunk landing page with neon colors, glitch effects, and futuristic typography on a dark background. Use Tailwind CSS classes and output a single HTML file.\n\nReturn only HTML. Do not wrap in markdown. Use Tailwind CSS classes.",
+  "params": {
+    "temperature": 1,
+    "maxTokens": null
+  },
+  "benchmark": {
+    "id": "cyberpunk-landing",
+    "title": "Cyberpunk Aesthetic - Landing Page",
+    "category": "Design Terms"
+  }
+}

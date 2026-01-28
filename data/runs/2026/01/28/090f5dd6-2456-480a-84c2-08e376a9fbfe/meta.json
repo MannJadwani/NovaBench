@@ -1,0 +1,37 @@
+{
+  "id": "090f5dd6-2456-480a-84c2-08e376a9fbfe",
+  "createdAt": "2026-01-27T22:45:38.416Z",
+  "provider": "openrouter",
+  "model": "moonshotai/kimi-k2.5",
+  "benchmark": {
+    "id": "video-editor",
+    "title": "Video Editor Interface",
+    "category": "Complexity of UI"
+  },
+  "latencyMs": 115325,
+  "tokenUsage": {
+    "prompt_tokens": 85,
+    "completion_tokens": 10298,
+    "total_tokens": 10383,
+    "cost": 0.030945,
+    "is_byok": false,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "audio_tokens": 0
+    },
+    "cost_details": {
+      "upstream_inference_cost": 0.030945,
+      "upstream_inference_prompt_cost": 0.000051,
+      "upstream_inference_completions_cost": 0.030894
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 772,
+      "audio_tokens": 0
+    }
+  },
+  "params": {
+    "temperature": 1,
+    "maxTokens": null
+  },
+  "path": "runs/2026/01/28/090f5dd6-2456-480a-84c2-08e376a9fbfe"
+}

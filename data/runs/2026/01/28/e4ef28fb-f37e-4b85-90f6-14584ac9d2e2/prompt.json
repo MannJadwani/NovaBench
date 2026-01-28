@@ -1,0 +1,12 @@
+{
+  "prompt": "Create a macOS desktop environment replica with dock magnification, draggable/resizable windows, top menu bar with dropdowns, system apps (Finder, System Preferences, Calculator, Notes, Calendar), Spotlight search, notification center, multiple desktops, and Mission Control. Output HTML + JS.\n\nReturn only HTML. Do not wrap in markdown. Use Tailwind CSS classes.",
+  "params": {
+    "temperature": 1,
+    "maxTokens": null
+  },
+  "benchmark": {
+    "id": "macos-clone",
+    "title": "macOS Clone",
+    "category": "Complexity of UI"
+  }
+}

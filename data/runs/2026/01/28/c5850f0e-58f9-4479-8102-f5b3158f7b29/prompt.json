@@ -1,0 +1,12 @@
+{
+  "prompt": "Create an open-world GTA-style game in the browser with a 3D city, drivable vehicles with physics, third-person character controls, mini-map, mission markers, and basic collision detection. Output HTML + JS.\n\nReturn only HTML. Do not wrap in markdown. Use Tailwind CSS classes.",
+  "params": {
+    "temperature": 1,
+    "maxTokens": null
+  },
+  "benchmark": {
+    "id": "gta-web-game",
+    "title": "GTA Web Game",
+    "category": "3D"
+  }
+}

@@ -1,0 +1,207 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modul – Precision in Design</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                fontFamily: {
+                    'sans': ['Inter', 'system-ui', 'sans-serif'],
+                },
+                extend: {
+                    colors: {
+                        'primary': '#111111',
+                        'secondary': '#666666',
+                        'accent': '#0077FF',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body class="font-sans text-primary bg-white antialiased">
+    <!-- Navigation -->
+    <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-sm border-b border-gray-100">
+        <nav class="container mx-auto px-4">
+            <div class="flex items-center justify-between h-16">
+                <div class="text-xl font-semibold tracking-tight">Modul</div>
+                <div class="hidden md:flex space-x-8 text-sm font-medium">
+                    <a href="#work" class="hover:text-accent transition-colors">Work</a>
+                    <a href="#approach" class="hover:text-accent transition-colors">Approach</a>
+                    <a href="#studio" class="hover:text-accent transition-colors">Studio</a>
+                    <a href="#contact" class="hover:text-accent transition-colors">Contact</a>
+                </div>
+                <button class="md:hidden">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="py-20 md:py-32">
+            <div class="container mx-auto px-4">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                    <div class="lg:col-span-7">
+                        <h1 class="text-4xl md:text-6xl font-light tracking-tight leading-tight">
+                            A design practice rooted in <span class="font-semibold">clarity</span>, <span class="font-semibold">system</span>, and <span class="font-semibold">purpose</span>.
+                        </h1>
+                    </div>
+                    <div class="lg:col-span-1"></div>
+                    <div class="lg:col-span-4">
+                        <p class="text-secondary text-lg mb-8">
+                            We are a Swiss-inspired studio creating digital products and visual identities for forward-thinking institutions.
+                        </p>
+                        <a href="#contact" class="inline-flex items-center text-accent font-medium group">
+                            Start a project
+                            <svg class="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Featured Work -->
+        <section id="work" class="py-20 bg-gray-50">
+            <div class="container mx-auto px-4">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-12">
+                    <div class="lg:col-span-3">
+                        <h2 class="text-2xl font-semibold">Selected Work</h2>
+                    </div>
+                    <div class="lg:col-span-6">
+                        <p class="text-secondary">
+                            A curated selection of projects demonstrating systematic design thinking and precise execution.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8">
+                    <div class="md:col-span-1 lg:col-span-6 bg-white p-8">
+                        <div class="aspect-video bg-gray-200 mb-6 flex items-center justify-center">
+                            <span class="text-gray-400">Project Visual</span>
+                        </div>
+                        <div class="text-sm font-medium text-accent mb-2">Identity & Digital</div>
+                        <h3 class="text-xl font-semibold mb-2">Kunstmuseum Basel</h3>
+                        <p class="text-secondary">A comprehensive visual identity and responsive web system for the museum's digital collection.</p>
+                    </div>
+                    <div class="md:col-span-1 lg:col-span-6 bg-white p-8">
+                        <div class="aspect-video bg-gray-200 mb-6 flex items-center justify-center">
+                            <span class="text-gray-400">Project Visual</span>
+                        </div>
+                        <div class="text-sm font-medium text-accent mb-2">UI/UX Design</div>
+                        <h3 class="text-xl font-semibold mb-2">Helvetica Finance</h3>
+                        <p class="text-secondary">A data-intensive interface for financial analytics, prioritizing clarity and user efficiency.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Approach -->
+        <section id="approach" class="py-20">
+            <div class="container mx-auto px-4">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+                    <div class="lg:col-span-4">
+                        <h2 class="text-2xl font-semibold mb-6">Our Approach</h2>
+                        <p class="text-secondary">
+                            We believe in a methodical, grid-based design process that yields timeless and functional results.
+                        </p>
+                    </div>
+                    <div class="lg:col-span-8">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                            <div>
+                                <div class="text-4xl font-light text-gray-300 mb-4">01</div>
+                                <h3 class="text-lg font-semibold mb-2">Research</h3>
+                                <p class="text-secondary text-sm">Understanding context, constraints, and audience to define the core problem.</p>
+                            </div>
+                            <div>
+                                <div class="text-4xl font-light text-gray-300 mb-4">02</div>
+                                <h3 class="text-lg font-semibold mb-2">Structure</h3>
+                                <p class="text-secondary text-sm">Establishing modular systems, grids, and typographic scales as a foundation.</p>
+                            </div>
+                            <div>
+                                <div class="text-4xl font-light text-gray-300 mb-4">03</div>
+                                <h3 class="text-lg font-semibold mb-2">Precision</h3>
+                                <p class="text-secondary text-sm">Meticulous execution, attention to detail, and rigorous refinement.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Studio -->
+        <section id="studio" class="py-20 bg-primary text-white">
+            <div class="container mx-auto px-4">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                    <div class="lg:col-span-7">
+                        <h2 class="text-3xl md:text-4xl font-light mb-6">A studio dedicated to the principles of International Typographic Style.</h2>
+                        <p class="text-gray-300">
+                            Founded in Zurich, now operating globally. We collaborate with clients who value rationality, objectivity, and enduring design.
+                        </p>
+                    </div>
+                    <div class="lg:col-span-5">
+                        <div class="aspect-square bg-gray-800 flex items-center justify-center">
+                            <span class="text-gray-400">Studio Image</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact CTA -->
+        <section id="contact" class="py-20">
+            <div class="container mx-auto px-4">
+                <div class="max-w-3xl mx-auto text-center">
+                    <h2 class="text-3xl font-light mb-6">Interested in a disciplined approach to your next project?</h2>
+                    <p class="text-secondary text-lg mb-10">
+                        We welcome inquiries about new collaborations, speaking engagements, and studio visits.
+                    </p>
+                    <a href="mailto:contact@modul.example" class="inline-block bg-accent text-white font-medium py-3 px-8 hover:bg-opacity-90 transition-colors">
+                        contact@modul.example
+                    </a>
+                    <div class="mt-12 pt-8 border-t border-gray-100 text-sm text-secondary">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div>
+                                <div class="font-medium text-primary">Zurich</div>
+                                <div>+41 44 123 45 67</div>
+                            </div>
+                            <div>
+                                <div class="font-medium text-primary">New York</div>
+                                <div>+1 212 123 4567</div>
+                            </div>
+                            <div>
+                                <div class="font-medium text-primary">Tokyo</div>
+                                <div>+81 3 1234 5678</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="py-8 border-t border-gray-100">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="text-sm text-secondary mb-4 md:mb-0">© 2023 Modul. All work displayed is proprietary.</div>
+                <div class="flex space-x-6 text-sm font-medium">
+                    <a href="#" class="hover:text-accent transition-colors">Instagram</a>
+                    <a href="#" class="hover:text-accent transition-colors">LinkedIn</a>
+                    <a href="#" class="hover:text-accent transition-colors">Behance</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,37 @@
+{
+  "id": "765a58ae-a25d-439a-acac-4f9fad67eed1",
+  "createdAt": "2026-01-27T22:17:22.855Z",
+  "provider": "openrouter",
+  "model": "moonshotai/kimi-k2.5",
+  "benchmark": {
+    "id": "cyberpunk-landing",
+    "title": "Cyberpunk Aesthetic - Landing Page",
+    "category": "Design Terms"
+  },
+  "latencyMs": 146937,
+  "tokenUsage": {
+    "prompt_tokens": 75,
+    "completion_tokens": 10383,
+    "total_tokens": 10458,
+    "cost": 0.031194,
+    "is_byok": false,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "audio_tokens": 0
+    },
+    "cost_details": {
+      "upstream_inference_cost": 0.031194,
+      "upstream_inference_prompt_cost": 0.000045,
+      "upstream_inference_completions_cost": 0.031149
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 628,
+      "audio_tokens": 0
+    }
+  },
+  "params": {
+    "temperature": 1,
+    "maxTokens": null
+  },
+  "path": "runs/2026/01/28/765a58ae-a25d-439a-acac-4f9fad67eed1"
+}

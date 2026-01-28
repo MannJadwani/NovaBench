@@ -1,0 +1,12 @@
+{
+  "prompt": "Create a glassmorphic landing page with frosted cards, transparent layers, and a gradient background. Use Tailwind CSS classes and output a single HTML file.\n\nReturn only HTML. Do not wrap in markdown. Use Tailwind CSS classes.",
+  "params": {
+    "temperature": 1,
+    "maxTokens": null
+  },
+  "benchmark": {
+    "id": "glassmorphic-landing",
+    "title": "Glassmorphic UI - Landing Page",
+    "category": "Design Terms"
+  }
+}

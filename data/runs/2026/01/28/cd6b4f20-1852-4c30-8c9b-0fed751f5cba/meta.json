@@ -1,0 +1,18 @@
+{
+  "id": "cd6b4f20-1852-4c30-8c9b-0fed751f5cba",
+  "createdAt": "2026-01-27T21:48:04.391Z",
+  "provider": "zai",
+  "model": "glm-4.5",
+  "benchmark": {
+    "id": "photoshop-clone",
+    "title": "Photoshop Web Clone",
+    "category": "Complexity of UI"
+  },
+  "latencyMs": 195770,
+  "tokenUsage": null,
+  "params": {
+    "temperature": 1,
+    "maxTokens": null
+  },
+  "path": "runs/2026/01/28/cd6b4f20-1852-4c30-8c9b-0fed751f5cba"
+}

@@ -1,0 +1,12 @@
+{
+  "prompt": "Create a sophisticated cockpit UI with PFD (horizon, altitude, airspeed), navigation display with route/waypoints, engine instruments, autopilot controls, radio panel, warning/caution annunciators, and FMS route planning. Output HTML + JS.\n\nReturn only HTML. Do not wrap in markdown. Use Tailwind CSS classes.",
+  "params": {
+    "temperature": 1,
+    "maxTokens": null
+  },
+  "benchmark": {
+    "id": "flight-control-ui",
+    "title": "Flight Control Module UI",
+    "category": "Complexity of UI"
+  }
+}

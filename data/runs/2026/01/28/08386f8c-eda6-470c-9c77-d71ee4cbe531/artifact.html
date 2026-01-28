@@ -1,0 +1,318 @@
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskFlow - Manage Your Team's Work</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .gradient-text {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="bg-white text-gray-900 antialiased">
+    <!-- Navigation -->
+    <nav class="fixed w-full bg-white/80 backdrop-blur-md border-b border-gray-100 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                        </svg>
+                    </div>
+                    <span class="text-xl font-bold text-gray-900">TaskFlow</span>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#" class="text-gray-600 hover:text-gray-900 font-medium transition">Product</a>
+                    <a href="#" class="text-gray-600 hover:text-gray-900 font-medium transition">Features</a>
+                    <a href="#" class="text-gray-600 hover:text-gray-900 font-medium transition">Pricing</a>
+                    <a href="#" class="text-gray-600 hover:text-gray-900 font-medium transition">Resources</a>
+                </div>
+                <div class="flex items-center gap-4">
+                    <button class="hidden md:block text-gray-600 hover:text-gray-900 font-medium">Log in</button>
+                    <button class="bg-indigo-600 text-white px-5 py-2.5 rounded-full font-medium hover:bg-indigo-700 transition shadow-lg shadow-indigo-200">Get Started</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="pt-32 pb-20 lg:pt-40 lg:pb-32 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div class="space-y-8">
+                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-50 text-indigo-700 text-sm font-semibold">
+                        <span class="w-2 h-2 rounded-full bg-indigo-600 animate-pulse"></span>
+                        New: AI-powered insights now available
+                    </div>
+                    <h1 class="text-5xl lg:text-7xl font-bold leading-tight">
+                        Work smarter with <span class="gradient-text">your team</span>
+                    </h1>
+                    <p class="text-xl text-gray-600 leading-relaxed max-w-lg">
+                        The all-in-one platform that helps teams organize, track, and manage their work. From high-level roadmaps to daily tasks.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <button class="bg-indigo-600 text-white px-8 py-4 rounded-full font-semibold hover:bg-indigo-700 transition shadow-xl shadow-indigo-200 flex items-center justify-center gap-2">
+                            Start for free
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                            </svg>
+                        </button>
+                        <button class="bg-white text-gray-700 border border-gray-200 px-8 py-4 rounded-full font-semibold hover:bg-gray-50 transition flex items-center justify-center gap-2">
+                            <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                            Watch Demo
+                        </button>
+                    </div>
+                    <div class="flex items-center gap-4 text-sm text-gray-500">
+                        <div class="flex -space-x-2">
+                            <img src="https://i.pravatar.cc/100?img=1" alt="" class="w-8 h-8 rounded-full border-2 border-white">
+                            <img src="https://i.pravatar.cc/100?img=2" alt="" class="w-8 h-8 rounded-full border-2 border-white">
+                            <img src="https://i.pravatar.cc/100?img=3" alt="" class="w-8 h-8 rounded-full border-2 border-white">
+                            <div class="w-8 h-8 rounded-full border-2 border-white bg-gray-100 flex items-center justify-center text-xs font-medium">+2k</div>
+                        </div>
+                        <p>Trusted by 10,000+ teams worldwide</p>
+                    </div>
+                </div>
+                <div class="relative">
+                    <div class="absolute -top-20 -right-20 w-72 h-72 bg-purple-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
+                    <div class="absolute -bottom-20 -left-20 w-72 h-72 bg-indigo-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
+                    <div class="relative bg-white rounded-2xl shadow-2xl border border-gray-100 p-4 lg:p-6">
+                        <div class="flex items-center justify-between mb-6">
+                            <div class="flex items-center gap-3">
+                                <div class="w-3 h-3 rounded-full bg-red-400"></div>
+                                <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
+                                <div class="w-3 h-3 rounded-full bg-green-400"></div>
+                            </div>
+                            <div class="text-sm text-gray-400 font-medium">Dashboard</div>
+                        </div>
+                        <div class="space-y-4">
+                            <div class="flex items-center gap-4 p-4 bg-gray-50 rounded-xl">
+                                <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                                    <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                                    </svg>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="h-2 bg-gray-200 rounded-full w-3/4 mb-2"></div>
+                                    <div class="h-2 bg-gray-200 rounded-full w-1/2"></div>
+                                </div>
+                                <div class="px-3 py-1 bg-green-100 text-green-700 text-xs font-semibold rounded-full">Done</div>
+                            </div>
+                            <div class="flex items-center gap-4 p-4 bg-gray-50 rounded-xl">
+                                <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
+                                    <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"/>
+                                    </svg>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="h-2 bg-gray-200 rounded-full w-2/3 mb-2"></div>
+                                    <div class="h-2 bg-gray-200 rounded-full w-1/3"></div>
+                                </div>
+                                <div class="px-3 py-1 bg-yellow-100 text-yellow-700 text-xs font-semibold rounded-full">In Progress</div>
+                            </div>
+                            <div class="flex items-center gap-4 p-4 bg-gray-50 rounded-xl">
+                                <div class="w-10 h-10 bg-pink-100 rounded-lg flex items-center justify-center">
+                                    <svg class="w-5 h-5 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                                    </svg>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="h-2 bg-gray-200 rounded-full w-5/6 mb-2"></div>
+                                    <div class="h-2 bg-gray-200 rounded-full w-2/3"></div>
+                                </div>
+                                <div class="px-3 py-1 bg-gray-100 text-gray-600 text-xs font-semibold rounded-full">Review</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Logos -->
+    <section class="py-12 border-y border-gray-100 bg-gray-50/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <p class="text-center text-sm font-semibold text-gray-500 uppercase tracking-wider mb-8">Trusted by leading companies</p>
+            <div class="flex flex-wrap justify-center items-center gap-8 md:gap-16 opacity-50 grayscale">
+                <div class="h-8 w-24 bg-gray-800 rounded opacity-20"></div>
+                <div class="h-8 w-32 bg-gray-800 rounded opacity-20"></div>
+                <div class="h-8 w-28 bg-gray-800 rounded opacity-20"></div>
+                <div class="h-8 w-24 bg-gray-800 rounded opacity-20"></div>
+                <div class="h-8 w-32 bg-gray-800 rounded opacity-20"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Grid -->
+    <section class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-4xl font-bold mb-4">Everything you need to manage projects</h2>
+                <p class="text-xl text-gray-600">Powerful features to help your team collaborate, communicate, and deliver work faster.</p>
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="p-8 rounded-2xl bg-gray-50 hover:bg-white hover:shadow-xl transition border border-transparent hover:border-gray-100">
+                    <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mb-6">
+                        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Advanced Analytics</h3>
+                    <p class="text-gray-600 leading-relaxed">Track progress with real-time dashboards and detailed reports on team performance.</p>
+                </div>
+                <div class="p-8 rounded-2xl bg-gray-50 hover:bg-white hover:shadow-xl transition border border-transparent hover:border-gray-100">
+                    <div class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center mb-6">
+                        <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Team Collaboration</h3>
+                    <p class="text-gray-600 leading-relaxed">Work together seamlessly with shared workspaces, comments, and file sharing.</p>
+                </div>
+                <div class="p-8 rounded-2xl bg-gray-50 hover:bg-white hover:shadow-xl transition border border-transparent hover:border-gray-100">
+                    <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center mb-6">
+                        <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Automation</h3>
+                    <p class="text-gray-600 leading-relaxed">Automate repetitive tasks and workflows to save time and reduce errors.</p>
+                </div>
+                <div class="p-8 rounded-2xl bg-gray-50 hover:bg-white hover:shadow-xl transition border border-transparent hover:border-gray-100">
+                    <div class="w-12 h-12 bg-pink-100 rounded-xl flex items-center justify-center mb-6">
+                        <svg class="w-6 h-6 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Enterprise Security</h3>
+                    <p class="text-gray-600 leading-relaxed">Bank-grade encryption and compliance certifications to keep your data safe.</p>
+                </div>
+                <div class="p-8 rounded-2xl bg-gray-50 hover:bg-white hover:shadow-xl transition border border-transparent hover:border-gray-100">
+                    <div class="w-12 h-12 bg-yellow-100 rounded-xl flex items-center justify-center mb-6">
+                        <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Custom Workflows</h3>
+                    <p class="text-gray-600 leading-relaxed">Build workflows that match your team's unique processes and requirements.</p>
+                </div>
+                <div class="p-8 rounded-2xl bg-gray-50 hover:bg-white hover:shadow-xl transition border border-transparent hover:border-gray-100">
+                    <div class="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center mb-6">
+                        <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Cloud Storage</h3>
+                    <p class="text-gray-600 leading-relaxed">Unlimited cloud storage with smart search and version control built-in.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="py-20 bg-indigo-600">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-3 gap-8 text-center">
+                <div class="space-y-2">
+                    <div class="text-4xl lg:text-5xl font-bold text-white">10k+</div>
+                    <div class="text-indigo-200 font-medium">Active Teams</div>
+                </div>
+                <div class="space-y-2">
+                    <div class="text-4xl lg:text-5xl font-bold text-white">1M+</div>
+                    <div class="text-indigo-200 font-medium">Tasks Completed</div>
+                </div>
+                <div class="space-y-2">
+                    <div class="text-4xl lg:text-5xl font-bold text-white">99.9%</div>
+                    <div class="text-indigo-200 font-medium">Uptime SLA</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-24 bg-gray-50">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-4xl font-bold mb-6">Ready to streamline your workflow?</h2>
+            <p class="text-xl text-gray-600 mb-10 max-w-2xl mx-auto">Join thousands of teams already using TaskFlow to deliver better work, faster.</p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <button class="bg-indigo-600 text-white px-8 py-4 rounded-full font-semibold hover:bg-indigo-700 transition shadow-xl shadow-indigo-200">
+                    Get Started for Free
+                </button>
+                <button class="bg-white text-gray-700 border border-gray-300 px-8 py-4 rounded-full font-semibold hover:bg-gray-50 transition">
+                    Contact Sales
+                </button>
+            </div>
+            <p class="mt-6 text-sm text-gray-500">No credit card required • 14-day free trial • Cancel anytime</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-200 pt-16 pb-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-8 mb-12">
+                <div class="col-span-2">
+                    <div class="flex items-center gap-2 mb-4">
+                        <div class="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center">
+                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                            </svg>
+                        </div>
+                        <span class="text-xl font-bold">TaskFlow</span>
+                    </div>
+                    <p class="text-gray-600 mb-4 max-w-xs">Making work management simple, powerful, and collaborative for teams everywhere.</p>
+                    <div class="flex gap-4">
+                        <a href="#" class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200 transition">
+                            <svg class="w-4 h-4 text-gray-600" fill="currentColor" viewBox="0 0 24 24"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/></svg>
+                        </a>
+                        <a href="#" class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200 transition">
+                            <svg class="w-4 h-4 text-gray-600" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                        </a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-gray-900 mb-4">Product</h4>
+                    <ul class="space-y-2 text-sm text-gray-600">
+                        <li><a href="#" class="hover:text-indigo-600 transition">Features</a></li>
+                        <li><a href="#" class="hover:text-indigo-600 transition">Pricing</a></li>
+                        <li><a href="#" class="hover:text-indigo-600 transition">Integrations</a></li>
+                        <li><a href="#" class="hover:text-indigo-600 transition">Changelog</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-gray-900 mb-4">Company</h4>
+                    <ul class="space-y-2 text-sm text-gray-600">
+                        <li><a href="#" class="hover:text-indigo-600 transition">About</a></li>
+                        <li><a href="#" class="hover:text-indigo-600 transition">Blog</a></li>
+                        <li><a href="#" class="hover:text-indigo-600 transition">Careers</a></li>
+                        <li><a href="#" class="hover:text-indigo-600 transition">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-gray-900 mb-4">Resources</h4>
+                    <ul class="space-y-2 text-sm text-gray-600">
+                        <li><a href="#" class="hover:text-indigo-600 transition">Documentation</a></li>
+                        <li><a href="#" class="hover:text-indigo-600 transition">Help Center</a></li>
+                        <li><a href="#" class="hover:text-indigo-600 transition">Community</a></li>
+                        <li><a href="#" class="hover:text-indigo-600 transition">Templates</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-200 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-sm text-gray-500">© 2024 TaskFlow. All rights reserved.</p>
+                <div class="flex gap-6 text-sm text-gray-500">
+                    <a href="#" class="hover:text-gray-900 transition">Privacy Policy</a>
+                    <a href="#" class="hover:text-gray-900 transition">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

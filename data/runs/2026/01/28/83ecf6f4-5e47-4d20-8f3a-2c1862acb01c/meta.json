@@ -1,0 +1,18 @@
+{
+  "id": "83ecf6f4-5e47-4d20-8f3a-2c1862acb01c",
+  "createdAt": "2026-01-27T23:38:33.589Z",
+  "provider": "openrouter",
+  "model": "arcee-ai/trinity-large-preview:free",
+  "benchmark": {
+    "id": "3d-learning",
+    "title": "3D Website for Learning",
+    "category": "Design Terms"
+  },
+  "latencyMs": 60621,
+  "tokenUsage": null,
+  "params": {
+    "temperature": 1,
+    "maxTokens": null
+  },
+  "path": "runs/2026/01/28/83ecf6f4-5e47-4d20-8f3a-2c1862acb01c"
+}

@@ -1,0 +1,477 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VoxelCraft - Three.js Minecraft Clone</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        body { 
+            margin: 0; 
+            overflow: hidden; 
+            cursor: crosshair;
+        }
+        #gameCanvas { 
+            display: block; 
+        }
+        .block-button {
+            transition: all 0.2s ease;
+            transform-origin: center;
+        }
+        .block-button:hover {
+            transform: scale(1.1);
+        }
+        .block-button.active {
+            transform: scale(1.15);
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.8);
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white">
+    <div id="gameContainer" class="relative w-full h-screen">
+        <canvas id="gameCanvas"></canvas>
+        
+        <!-- Crosshair -->
+        <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <div class="w-4 h-4 border-2 border-white relative">
+                <div class="absolute w-full h-0.5 bg-white top-1/2 transform -translate-y-1/2"></div>
+                <div class="absolute h-full w-0.5 bg-white left-1/2 transform -translate-x-1/2"></div>
+            </div>
+        </div>
+        
+        <!-- HUD -->
+        <div class="absolute top-4 left-4 bg-black bg-opacity-50 p-4 rounded-lg">
+            <div class="text-lg font-bold mb-2">VoxelCraft</div>
+            <div class="text-sm">Block: <span id="selectedBlock">Grass</span></div>
+            <div class="text-sm">Position: <span id="playerPosition">0, 0, 0</span></div>
+        </div>
+        
+        <!-- Time/Day Cycle -->
+        <div class="absolute top-4 right-4 bg-black bg-opacity-50 p-4 rounded-lg">
+            <div class="text-lg font-bold mb-2">
+                <span id="timeOfDay">Day</span>
+            </div>
+            <div class="flex items-center">
+                <div class="w-4 h-4 rounded-full mr-2" id="sunMoonIndicator"></div>
+                <div class="text-sm" id="timeText">12:00</div>
+            </div>
+        </div>
+        
+        <!-- Controls Info -->
+        <div class="absolute bottom-4 left-4 bg-black bg-opacity-50 p-4 rounded-lg text-sm">
+            <div class="font-bold mb-1">Controls:</div>
+            <div>WASD - Move</div>
+            <div>Mouse - Look</div>
+            <div>Left Click - Destroy Block</div>
+            <div>Right Click - Place Block</div>
+            <div>1-5 - Select Block Type</div>
+            <div>Space - Jump</div>
+            <div>Shift - Descend</div>
+        </div>
+        
+        <!-- Block Selection -->
+        <div class="absolute bottom-4 right-4 bg-black bg-opacity-50 p-4 rounded-lg">
+            <div class="text-sm font-bold mb-2">Block Types:</div>
+            <div class="flex space-x-2">
+                <button class="block-button active w-12 h-12 bg-green-600 border-2 border-white rounded" data-block="0" title="Grass"></button>
+                <button class="block-button w-12 h-12 bg-yellow-800 border-2 border-white rounded" data-block="1" title="Dirt"></button>
+                <button class="block-button w-12 h-12 bg-gray-500 border-2 border-white rounded" data-block="2" title="Stone"></button>
+                <button class="block-button w-12 h-12 bg-yellow-700 border-2 border-white rounded" data-block="3" title="Wood"></button>
+                <button class="block-button w-12 h-12 bg-blue-500 border-2 border-white rounded" data-block="4" title="Water"></button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Game variables
+        let scene, camera, renderer;
+        let world = {};
+        let selectedBlockType = 0;
+        let player, moveForward = false, moveBackward = false, moveLeft = false, moveRight = false;
+        let canJump = false;
+        let velocity = new THREE.Vector3();
+        let direction = new THREE.Vector3();
+        let raycaster = new THREE.Raycaster();
+        let clock = new THREE.Clock();
+        let time = 0;
+        
+        // Block materials
+        const blockMaterials = [
+            new THREE.MeshLambertMaterial({ color: 0x7CFC00 }), // Grass
+            new THREE.MeshLambertMaterial({ color: 0x8B4513 }), // Dirt
+            new THREE.MeshLambertMaterial({ color: 0x808080 }), // Stone
+            new THREE.MeshLambertMaterial({ color: 0xA0522D }), // Wood
+            new THREE.MeshLambertMaterial({ color: 0x1E90FF, transparent: true, opacity: 0.7 }) // Water
+        ];
+        
+        const blockNames = ["Grass", "Dirt", "Stone", "Wood", "Water"];
+        
+        // Initialize the game
+        function init() {
+            // Create scene
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x87CEEB); // Sky blue
+            scene.fog = new THREE.Fog(0x87CEEB, 100, 500);
+            
+            // Create camera
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.set(0, 20, 0);
+            
+            // Create renderer
+            renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('gameCanvas'), antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.shadowMap.enabled = true;
+            
+            // Add lighting
+            const ambientLight = new THREE.AmbientLight(0x404040, 1.0);
+            scene.add(ambientLight);
+            
+            const sunLight = new THREE.DirectionalLight(0xFFFFFF, 1.0);
+            sunLight.position.set(100, 100, 50);
+            sunLight.castShadow = true;
+            sunLight.shadow.camera.left = -100;
+            sunLight.shadow.camera.right = 100;
+            sunLight.shadow.camera.top = 100;
+            sunLight.shadow.camera.bottom = -100;
+            scene.add(sunLight);
+            
+            // Create player
+            createPlayer();
+            
+            // Generate world
+            generateWorld();
+            
+            // Add event listeners
+            setupEventListeners();
+            
+            // Start animation loop
+            animate();
+        }
+        
+        function createPlayer() {
+            const playerGeometry = new THREE.BoxGeometry(0.6, 1.8, 0.6);
+            const playerMaterial = new THREE.MeshBasicMaterial({ color: 0xFF5733, visible: false });
+            player = new THREE.Mesh(playerGeometry, playerMaterial);
+            player.position.set(0, 10, 0);
+            scene.add(player);
+            
+            camera.position.copy(player.position);
+            camera.position.y += 0.8;
+        }
+        
+        function generateWorld() {
+            const worldSize = 50;
+            const maxHeight = 10;
+            
+            for (let x = -worldSize; x < worldSize; x++) {
+                for (let z = -worldSize; z < worldSize; z++) {
+                    // Simple height function using sine waves
+                    const height = Math.floor(
+                        Math.sin(x * 0.1) * Math.cos(z * 0.1) * maxHeight + 
+                        Math.random() * 3 + 
+                        maxHeight
+                    );
+                    
+                    for (let y = 0; y < height; y++) {
+                        let blockType;
+                        if (y === height - 1) {
+                            blockType = 0; // Grass on top
+                        } else if (y > height - 4) {
+                            blockType = 1; // Dirt under grass
+                        } else {
+                            blockType = 2; // Stone deeper down
+                        }
+                        
+                        addBlock(x, y, z, blockType);
+                    }
+                    
+                    // Occasionally add trees
+                    if (Math.random() < 0.02) {
+                        createTree(x, height, z);
+                    }
+                }
+            }
+        }
+        
+        function createTree(x, y, z) {
+            // Trunk
+            const trunkHeight = 3 + Math.floor(Math.random() * 3);
+            for (let i = 0; i < trunkHeight; i++) {
+                addBlock(x, y + i, z, 3); // Wood
+            }
+            
+            // Leaves
+            const leafSize = 2;
+            for (let dx = -leafSize; dx <= leafSize; dx++) {
+                for (let dy = 0; dy <= leafSize; dy++) {
+                    for (let dz = -leafSize; dz <= leafSize; dz++) {
+                        if (Math.abs(dx) + Math.abs(dy) + Math.abs(dz) <= leafSize + 1) {
+                            addBlock(x + dx, y + trunkHeight + dy, z + dz, 0); // Leaves (using grass)
+                        }
+                    }
+                }
+            }
+        }
+        
+        function addBlock(x, y, z, type) {
+            const key = `${x},${y},${z}`;
+            if (world[key]) return; // Block already exists
+            
+            const geometry = new THREE.BoxGeometry(1, 1, 1);
+            const cube = new THREE.Mesh(geometry, blockMaterials[type]);
+            cube.position.set(x, y, z);
+            cube.castShadow = true;
+            cube.receiveShadow = true;
+            cube.userData = { x, y, z, type };
+            
+            scene.add(cube);
+            world[key] = cube;
+        }
+        
+        function removeBlock(x, y, z) {
+            const key = `${x},${y},${z}`;
+            if (!world[key]) return; // Block doesn't exist
+            
+            scene.remove(world[key]);
+            delete world[key];
+        }
+        
+        function setupEventListeners() {
+            // Keyboard controls
+            document.addEventListener('keydown', (event) => {
+                switch (event.code) {
+                    case 'KeyW': moveForward = true; break;
+                    case 'KeyS': moveBackward = true; break;
+                    case 'KeyA': moveLeft = true; break;
+                    case 'KeyD': moveRight = true; break;
+                    case 'Space': 
+                        if (canJump) velocity.y = 10; 
+                        canJump = false; 
+                        break;
+                    case 'ShiftLeft': velocity.y = -5; break;
+                    case 'Digit1': selectBlock(0); break;
+                    case 'Digit2': selectBlock(1); break;
+                    case 'Digit3': selectBlock(2); break;
+                    case 'Digit4': selectBlock(3); break;
+                    case 'Digit5': selectBlock(4); break;
+                }
+            });
+            
+            document.addEventListener('keyup', (event) => {
+                switch (event.code) {
+                    case 'KeyW': moveForward = false; break;
+                    case 'KeyS': moveBackward = false; break;
+                    case 'KeyA': moveLeft = false; break;
+                    case 'KeyD': moveRight = false; break;
+                }
+            });
+            
+            // Mouse controls
+            document.addEventListener('mousemove', (event) => {
+                if (document.pointerLockElement === renderer.domElement) {
+                    const movementX = event.movementX || 0;
+                    const movementY = event.movementY || 0;
+                    
+                    player.rotation.y -= movementX * 0.002;
+                    camera.rotation.x -= movementY * 0.002;
+                    camera.rotation.x = Math.max(-Math.PI/2, Math.min(Math.PI/2, camera.rotation.x));
+                }
+            });
+            
+            document.addEventListener('click', () => {
+                renderer.domElement.requestPointerLock();
+            });
+            
+            // Block interaction
+            document.addEventListener('mousedown', (event) => {
+                if (document.pointerLockElement === renderer.domElement) {
+                    raycaster.setFromCamera(new THREE.Vector2(), camera);
+                    const intersects = raycaster.intersectObjects(Object.values(world));
+                    
+                    if (intersects.length > 0) {
+                        const intersect = intersects[0];
+                        const block = intersect.object;
+                        const pos = block.userData;
+                        
+                        if (event.button === 0) { // Left click - destroy
+                            removeBlock(pos.x, pos.y, pos.z);
+                        } else if (event.button === 2) { // Right click - place
+                            const normal = intersect.face.normal;
+                            addBlock(
+                                pos.x + normal.x,
+                                pos.y + normal.y,
+                                pos.z + normal.z,
+                                selectedBlockType
+                            );
+                        }
+                    }
+                }
+            });
+            
+            // Block selection buttons
+            document.querySelectorAll('.block-button').forEach(button => {
+                button.addEventListener('click', () => {
+                    selectBlock(parseInt(button.dataset.block));
+                });
+            });
+            
+            // Prevent context menu
+            document.addEventListener('contextmenu', (event) => {
+                event.preventDefault();
+            });
+            
+            // Window resize
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+        }
+        
+        function selectBlock(type) {
+            selectedBlockType = type;
+            document.getElementById('selectedBlock').textContent = blockNames[type];
+            
+            // Update button UI
+            document.querySelectorAll('.block-button').forEach(button => {
+                button.classList.remove('active');
+                if (parseInt(button.dataset.block) === type) {
+                    button.classList.add('active');
+                }
+            });
+        }
+        
+        function updatePlayer(delta) {
+            velocity.x -= velocity.x * 10.0 * delta;
+            velocity.z -= velocity.z * 10.0 * delta;
+            velocity.y -= 20.0 * delta; // Gravity
+            
+            direction.z = Number(moveForward) - Number(moveBackward);
+            direction.x = Number(moveRight) - Number(moveLeft);
+            direction.normalize();
+            
+            if (moveForward || moveBackward) velocity.z -= direction.z * 50.0 * delta;
+            if (moveLeft || moveRight) velocity.x -= direction.x * 50.0 * delta;
+            
+            // Apply rotation to movement
+            const moveVector = new THREE.Vector3();
+            moveVector.x = -velocity.x * delta;
+            moveVector.z = -velocity.z * delta;
+            moveVector.applyQuaternion(player.quaternion);
+            
+            // Move player
+            player.position.x += moveVector.x;
+            player.position.z += moveVector.z;
+            
+            // Vertical movement
+            const playerBottom = player.position.y - 0.9;
+            const playerTop = player.position.y + 0.9;
+            
+            // Simple collision detection
+            let onGround = false;
+            for (let x = -0.3; x <= 0.3; x += 0.3) {
+                for (let z = -0.3; z <= 0.3; z += 0.3) {
+                    const checkX = Math.floor(player.position.x + x);
+                    const checkY = Math.floor(playerBottom);
+                    const checkZ = Math.floor(player.position.z + z);
+                    
+                    if (world[`${checkX},${checkY},${checkZ}`]) {
+                        if (velocity.y < 0) {
+                            player.position.y = checkY + 1 + 0.9;
+                            velocity.y = 0;
+                            onGround = true;
+                        }
+                    }
+                }
+            }
+            
+            if (onGround) canJump = true;
+            
+            // Update camera position
+            camera.position.copy(player.position);
+            camera.position.y += 0.8;
+            
+            // Update HUD
+            document.getElementById('playerPosition').textContent = 
+                `${Math.floor(player.position.x)}, ${Math.floor(player.position.y)}, ${Math.floor(player.position.z)}`;
+        }
+        
+        function updateDayNightCycle() {
+            // 20 seconds = full day cycle
+            const dayDuration = 20; // seconds
+            time += clock.getDelta();
+            const dayTime = (time % dayDuration) / dayDuration;
+            
+            // Calculate sun position
+            const sunAngle = dayTime * Math.PI * 2;
+            const sunHeight = Math.sin(sunAngle);
+            const sunX = Math.cos(sunAngle) * 100;
+            const sunY = sunHeight * 100;
+            
+            // Update sun position
+            const sunLight = scene.children.find(child => child instanceof THREE.DirectionalLight);
+            if (sunLight) {
+                sunLight.position.set(sunX, sunY, 50);
+                sunLight.intensity = Math.max(0.1, sunHeight);
+            }
+            
+            // Update sky color and fog
+            const isDay = sunHeight > 0;
+            const dayColor = new THREE.Color(0x87CEEB); // Sky blue
+            const nightColor = new THREE.Color(0x0A1929); // Dark blue
+            const sunsetColor = new THREE.Color(0xFF7E5F); // Orange
+            
+            let skyColor;
+            if (sunHeight > 0.3) {
+                skyColor = dayColor;
+            } else if (sunHeight > 0) {
+                // Sunset/sunrise
+                const t = sunHeight / 0.3;
+                skyColor = dayColor.clone().lerp(sunsetColor, 1 - t);
+            } else {
+                skyColor = nightColor;
+            }
+            
+            scene.background = skyColor;
+            scene.fog.color = skyColor;
+            
+            // Update ambient light
+            const ambientLight = scene.children.find(child => child instanceof THREE.AmbientLight);
+            if (ambientLight) {
+                ambientLight.intensity = Math.max(0.2, sunHeight);
+            }
+            
+            // Update UI
+            const timeIndicator = document.getElementById('sunMoonIndicator');
+            const timeText = document.getElementById('timeText');
+            const timeOfDay = document.getElementById('timeOfDay');
+            
+            if (isDay) {
+                timeIndicator.style.backgroundColor = '#FFD700'; // Yellow for sun
+                timeOfDay.textContent = 'Day';
+            } else {
+                timeIndicator.style.backgroundColor = '#DDDDDD'; // Gray for moon
+                timeOfDay.textContent = 'Night';
+            }
+            
+            const hours = Math.floor(dayTime * 24);
+            const minutes = Math.floor((dayTime * 24 - hours) * 60);
+            timeText.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+        }
+        
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            const delta = clock.getDelta();
+            
+            updatePlayer(delta);
+            updateDayNightCycle();
+            
+            renderer.render(scene, camera);
+        }
+        
+        // Start the game
+        init();
+    </script>
+</body>
+</html>

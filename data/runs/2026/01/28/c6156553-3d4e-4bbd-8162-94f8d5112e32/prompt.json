@@ -1,0 +1,12 @@
+{
+  "prompt": "Design a futuristic interface with 3D floating cards and parallax depth, hover animations, smooth transitions, and a dynamic camera that responds to interaction. Output HTML + JS.\n\nReturn only HTML. Do not wrap in markdown. Use Tailwind CSS classes.",
+  "params": {
+    "temperature": 1,
+    "maxTokens": null
+  },
+  "benchmark": {
+    "id": "floating-ui-3d",
+    "title": "3D Floating UI Components",
+    "category": "3D"
+  }
+}

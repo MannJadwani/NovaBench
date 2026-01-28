@@ -1,0 +1,37 @@
+{
+  "id": "a29a938f-22fd-4ca9-bf94-cfbd9e73f709",
+  "createdAt": "2026-01-27T23:38:38.857Z",
+  "provider": "openrouter",
+  "model": "arcee-ai/trinity-large-preview:free",
+  "benchmark": {
+    "id": "amazing-design",
+    "title": "Amazing Design",
+    "category": "Design Terms"
+  },
+  "latencyMs": 5261,
+  "tokenUsage": {
+    "prompt_tokens": 77,
+    "completion_tokens": 524,
+    "total_tokens": 601,
+    "cost": 0,
+    "is_byok": false,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "audio_tokens": 0
+    },
+    "cost_details": {
+      "upstream_inference_cost": 0,
+      "upstream_inference_prompt_cost": 0,
+      "upstream_inference_completions_cost": 0
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 0,
+      "audio_tokens": 0
+    }
+  },
+  "params": {
+    "temperature": 1,
+    "maxTokens": null
+  },
+  "path": "runs/2026/01/28/a29a938f-22fd-4ca9-bf94-cfbd9e73f709"
+}

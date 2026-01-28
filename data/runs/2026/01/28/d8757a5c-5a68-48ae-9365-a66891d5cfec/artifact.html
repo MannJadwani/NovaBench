@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glassmorphic Landing Page</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white overflow-x-hidden">
+
+    <!-- Background Gradient Orbs -->
+    <div class="fixed inset-0 w-full h-full overflow-hidden -z-10">
+        <div class="absolute top-[-10%] left-[-10%] w-96 h-96 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-50 animate-blob"></div>
+        <div class="absolute top-[-10%] right-[-10%] w-96 h-96 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl opacity-50 animate-blob animation-delay-2000"></div>
+        <div class="absolute bottom-[-20%] left-[20%] w-96 h-96 bg-pink-500 rounded-full mix-blend-multiply filter blur-3xl opacity-50 animate-blob animation-delay-4000"></div>
+        <div class="absolute bottom-0 right-0 w-[500px] h-[500px] bg-indigo-600 rounded-full mix-blend-overlay filter blur-3xl opacity-40"></div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="relative min-h-screen flex flex-col">
+
+        <!-- Navigation -->
+        <nav class="fixed w-full z-50 top-0 start-0 border-b border-white/10 bg-white/5 backdrop-blur-lg bg-opacity-30">
+            <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+                <a href="#" class="flex items-center space-x-3 rtl:space-x-reverse">
+                    <div class="w-8 h-8 bg-gradient-to-br from-pink-500 to-violet-500 rounded-lg"></div>
+                    <span class="self-center text-2xl font-semibold whitespace-nowrap tracking-tight">GlassUI</span>
+                </a>
+                <div class="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
+                    <button type="button" class="text-white bg-white/10 hover:bg-white/20 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center border border-white/20 backdrop-blur-sm transition-all duration-300 hover:shadow-[0_0_15px_rgba(255,255,255,0.3)]">
+                        Get Started
+                    </button>
+                </div>
+                <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1">
+                    <ul class="flex flex-col p-4 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0">
+                        <li><a href="#" class="block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-300 md:p-0" aria-current="page">Home</a></li>
+                        <li><a href="#" class="block py-2 px-3 text-gray-300 rounded hover:bg-white/10 md:hover:bg-transparent md:hover:text-white md:p-0 transition-colors">About</a></li>
+                        <li><a href="#" class="block py-2 px-3 text-gray-300 rounded hover:bg-white/10 md:hover:bg-transparent md:hover:text-white md:p-0 transition-colors">Services</a></li>
+                        <li><a href="#" class="block py-2 px-3 text-gray-300 rounded hover:bg-white/10 md:hover:bg-transparent md:hover:text-white md:p-0 transition-colors">Pricing</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Hero Section -->
+        <section class="flex-grow flex items-center pt-32 pb-12 px-4">
+            <div class="grid max-w-screen-xl mx-auto lg:grid-cols-12 gap-8 items-center w-full">
+                
+                <!-- Hero Text -->
+                <div class="col-span-6 flex flex-col justify-center space-y-6 text-center md:text-left">
+                    <h1 class="text-5xl font-extrabold tracking-tight leading-none text-white md:text-6xl lg:text-7xl drop-shadow-lg">
+                        Future of <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-pink-300">Digital Design</span>
+                    </h1>
+                    <p class="text-lg font-normal text-gray-200 lg:text-xl sm:px-16 xl:px-48 drop-shadow-md">
+                        Experience the next generation of UI. Frosted glass effects, vibrant gradients, and depth perception combined in a single framework.
+                    </p>
+                    <div class="flex flex-col mb-8 lg:mb-16 space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
+                        <a href="#" class="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-white/10 border border-white/20 hover:bg-white/20 focus:ring-4 focus:ring-white/30 backdrop-blur-md transition-all hover:shadow-[0_0_20px_rgba(255,255,255,0.2)]">
+                            Learn more
+                            <svg class="ml-2 -mr-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Hero Visual / Glass Card -->
+                <div class="col-span-6 relative lg:ml-auto">
+                    <!-- Main Glass Card -->
+                    <div class="relative bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl shadow-2xl p-8 overflow-hidden group hover:bg-white/15 transition-all duration-500">
+                        <!-- Card Header -->
+                        <div class="flex items-center justify-between mb-6">
+                            <div class="flex space-x-2">
+                                <div class="w-3 h-3 bg-red-400/80 rounded-full"></div>
+                                <div class="w-3 h-3 bg-yellow-400/80 rounded-full"></div>
+                                <div class="w-3 h-3 bg-green-400/80 rounded-full"></div>
+                            </div>
+                            <div class="text-sm text-gray-300 font-mono">Dashboard v2.0</div>
+                        </div>
+                        
+                        <!-- Fake UI Content -->
+                        <div class="space-y-6">
+                            <!-- Stat Row -->
+                            <div class="flex gap-4">
+                                <div class="w-1/3 h-24 bg-gradient-to-br from-white/5 to-white/10 rounded-2xl border border-white/10 p-4">
+                                    <div class="text-gray-400 text-xs uppercase tracking-wider">Revenue</div>
+                                    <div class="text-2xl font-bold mt-2">$45k</div>
+                                    <div class="w-full bg-gray-700/50 h-1 mt-3 rounded-full">
+                                        <div class="bg-green-400 h-1 rounded-full" style="width: 70%"></div>
+                                    </div>
+                                </div>
+                                <div class="w-1/3 h-24 bg-gradient-to-br from-white/5 to-white/10 rounded-2xl border border-white/10 p-4">
+                                    <div class="text-gray-400 text-xs uppercase tracking-wider">Users</div>
+                                    <div class="text-2xl font-bold mt-2">1,204</div>
+                                    <div class="w-full bg-gray-700/50 h-1 mt-3 rounded-full">
+                                        <div class="bg-blue-400 h-1 rounded-full" style="width: 45%"></div>
+                                    </div>
+                                </div>
+                                <div class="w-1/3 h-24 bg-gradient-to-br from-white/5 to-white/10 rounded-2xl border border-white/10 p-4">
+                                    <div class="text-gray-400 text-xs uppercase tracking-wider">Active</div>
+                                    <div class="text-2xl font-bold mt-2">89%</div>
+                                    <div class="w-full bg-gray-700/50 h-1 mt-3 rounded-full">
+                                        <div class="bg-purple-400 h-1 rounded-full" style="width: 89%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Chart Area -->
+                            <div class="h-40 bg-gradient-to-br from-white/5 to-transparent rounded-2xl border border-white/10 flex items-end justify-between px-6 pb-4 relative overflow-hidden">
+                                <!-- Background Blobs in Chart -->
+                                <div class="absolute top-0 right-0 w-32 h-32 bg-purple-500/20 rounded-full blur-2xl -mr-10 -mt-10"></div>
+                                
+                                <div class="w-1/6 bg-blue-500/40 h-[40%] rounded-t-lg relative group-hover:bg-blue-500/60 transition-all"></div>
+                                <div class="w-1/6 bg-blue-500/40 h-[60%] rounded-t-lg relative group-hover:bg-blue-500/60 transition-all"></div>
+                                <div class="w-1/6 bg-blue-500/40 h-[30%] rounded-t-lg relative group-hover:bg-blue-500/60 transition-all"></div>
+                                <div class="w-1/6 bg-blue-500/40 h-[80%] rounded-t-lg relative group-hover:bg-blue-500/60 transition-all shadow-[0_0_15px_rgba(59,130,246,0.5)]"></div>
+                                <div class="w-1/6 bg-blue-500/40 h-[55%] rounded-t-lg relative group-hover:bg-blue-500/60 transition-all"></div>
+                                <div class="w-1/6 bg-blue-500/40 h-[90%] rounded-t-lg relative group-hover:bg-blue-500/60 transition-all"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Floating Elements -->
+                    <div class="absolute -top-10 -right-10 w-24 h-24 bg-gradient-to-br from-pink-400 to-purple-600 rounded-2xl blur-xl opacity-60 animate-pulse"></div>
+                    <div class="absolute -bottom-6 -left-6 w-32 h-32 bg-gradient-to-tr from-blue-400 to-cyan-200 rounded-full blur-2xl opacity-40"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="py-16 px-4">
+            <div class="max-w-screen-xl mx-auto">
+                <div class="grid md:grid-cols-3 gap-8">
+                    
+                    <!-- Card 1 -->
+                    <div class="bg-white/5 backdrop-blur-md border border-white/10 p-8 rounded-3xl hover:bg-white/10 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl group">
+                        <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-xl flex items-center justify-center mb-6 text-2xl shadow-lg group-hover:scale-110 transition-transform">
+                            ✨
+                        </div>
+                        <h3 class="text-xl font-bold mb-3 text-white">Frosted Glass</h3>
+                        <p class="text-gray-300 leading-relaxed">
+                            Utilizes backdrop-filter and semi-transparent backgrounds to create depth and hierarchy in your interface.
+                        </p>
+                    </div>
+
+                    <!-- Card 2 -->
+                    <div class="bg-white/5 backdrop-blur-md border border-white/10 p-8 rounded-3xl hover:bg-white/10 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl group">
+                        <div class="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center mb-6 text-2xl shadow-lg group-hover:scale-110 transition-transform">
+                            💧
+                        </div>
+                        <h3 class="text-xl font-bold mb-3 text-white">Liquid Gradients</h3>
+                        <p class="text-gray-300 leading-relaxed">
+                            Vibrant, mesh-like gradients that move behind the glass elements, creating a fluid and modern aesthetic.
+                        </p>
+                    </div>
+
+                    <!-- Card 3 -->
+                    <div class="bg-white/5 backdrop-blur-md border border-white/10 p-8 rounded-3xl hover:bg-white/10 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl group">
+                        <div class="w-12 h-12 bg-gradient-to-br from-orange-400 to-red-400 rounded-xl flex items-center justify-center mb-6 text-2xl shadow-lg group-hover:scale-110 transition-transform">
+                            🛡️
+                        </div>
+                        <h3 class="text-xl font-bold mb-3 text-white">Layered Depth</h3>
+                        <p class="text-gray-300 leading-relaxed">
+                            Subtle borders and shadows ensure that content layers remain distinct and accessible regardless of complexity.
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="border-t border-white/10 bg-black/20 backdrop-blur-lg mt-auto">
+            <div class="w-full mx-auto max-w-screen-xl p-4 md:flex md:items-center md:justify-between">
+                <span class="text-sm text-gray-400 sm:text-center">© 2023 <a href="#" class="hover:underline">GlassUI™</a>. All Rights Reserved.</span>
+                <ul class="flex flex-wrap items-center mt-3 text-sm font-medium text-gray-400 sm:mt-0">
+                    <li><a href="#" class="hover:underline me-4 md:me-6">About</a></li>
+                    <li><a href="#" class="hover:underline me-4 md:me-6">Privacy Policy</a></li>
+                    <li><a href="#" class="hover:underline">Contact</a></li>
+                </ul>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Custom Animation Styles -->
+    <style>
+        @keyframes blob {
+            0% { transform: translate(0px, 0px) scale(1); }
+            33% { transform: translate(30px, -50px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+            100% { transform: translate(0px, 0px) scale(1); }
+        }
+        .animate-blob {
+            animation: blob 7s infinite;
+        }
+        .animation-delay-2000 {
+            animation-delay: 2s;
+        }
+        .animation-delay-4000 {
+            animation-delay: 4s;
+        }
+    </style>
+</body>
+</html>

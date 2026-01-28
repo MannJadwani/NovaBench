@@ -1,0 +1,37 @@
+{
+  "id": "12d317eb-4147-49a2-9492-a8d49a963847",
+  "createdAt": "2026-01-27T22:35:38.813Z",
+  "provider": "openrouter",
+  "model": "moonshotai/kimi-k2.5",
+  "benchmark": {
+    "id": "earth-globe",
+    "title": "3D Earth Model",
+    "category": "3D"
+  },
+  "latencyMs": 37842,
+  "tokenUsage": {
+    "prompt_tokens": 81,
+    "completion_tokens": 4971,
+    "total_tokens": 5052,
+    "cost": 0.0060624,
+    "is_byok": false,
+    "prompt_tokens_details": {
+      "cached_tokens": 1,
+      "audio_tokens": 0
+    },
+    "cost_details": {
+      "upstream_inference_cost": 0.0060624,
+      "upstream_inference_prompt_cost": 0.0000972,
+      "upstream_inference_completions_cost": 0.0059652
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 777,
+      "audio_tokens": 0
+    }
+  },
+  "params": {
+    "temperature": 1,
+    "maxTokens": null
+  },
+  "path": "runs/2026/01/28/12d317eb-4147-49a2-9492-a8d49a963847"
+}

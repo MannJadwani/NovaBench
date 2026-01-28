@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comprehensive Photo Editor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.0/fabric.min.js"></script>
+    <style>
+        .tools-panel {
+            min-width: 250px;
+            background: #1a1a1a;
+        }
+
+        .adjustments-panel {
+            min-width: 300px;
+        }
+
+        .layers-panel {
+            min-width: 200px;
+        }
+
+        .history-panel {
+            min-width: 200px;
+        }
+
+        .canvas-wrapper {
+            background: #434343;
+            overflow: auto;
+        }
+
+        .tools-btn {
+            background: #333;
+            border: 1px solid #555;
+            color: #fff;
+            transition: all 0.2s;
+        }
+
+        .tools-btn:hover {
+            background: #555;
+        }
+
+        .active {
+            background: #007fff;
+        }
+
+        .color-swatch {
+            width: 40px;
+            height: 40px;
+            border: none;
+            border-radius: 4px;
+        }
+
+        .slider {
+            width: 100%;
+        }
+
+        .warning {
+            color: #fab005;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-4px); }
+            75% { transform: translateX(4px); }
+        }
+
+        .shake {
+            animation: shake 0.5s;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white w-screen h-screen flex overflow-hidden">
+    <div id="tools-panel" class="tools-panel flex-shrink-0">
+        <div class="p-4">
+            <h2 class="text-lg font-semibold mb-4">Tools</h2>
+            <div class="grid grid-cols-2 gap-2">
+                <button id="select-tool" class="tools-btn w-full p-2 active" title="Select Tool (V)">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11l-7 7-7-7"></path>
+                    </svg>
+                </button>
+                <button id="move-tool" class="tools-btn w-full p-2" title="Move Tool (M)">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5"></path>
+                    </svg>
+                </button>
+                <button id="crop-tool" class="tools-btn w-full p-2" title="Crop Tool (C)">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5h16a2 2 0 002-2V4a2 2 0 00-2-2H4a2 2 0 00-2 2v1a2 2 0 002 2zm0 6h16a2 2 0 002-2v-1a2 2 0 00-2-2H4a2 2 0 00-2 2v1a2 2 0 002 2zm0 6h16a2 2 0 002-2v-1a2 2 0 00-2-2H4a2 2 0 00-2 2v1a2 2 0 002 2z"></path>
+                    </svg>
+                </button>
+                <button id="text-tool" class="tools-btn w-full p-2" title="Text Tool (T)">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.56 0-1.055-.29-1.338-.725l-3.5-7A2 2 0 003 12V10a2 2 0 012-2h4"></path>
+                    </svg>
+                </button>
+                <button id="draw-tool" class="tools-btn w-full p-2" title="Draw Tool (B)">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                    </svg>
+                </button>
+                <button id="erase-tool" class="tools-btn w-full p-2" title="Erase Tool (E)">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="main-panel" class="flex flex-1">
+        <div class="canvas-wrapper flex-1 border-b border-r border-gray-800">
+            <canvas id="main-canvas" class="mx-auto"></canvas>
+            <div id="crop-guide" class="hidden absolute bg-gray-600 bg-opacity-50 border-2 border-dashed border-white"></div>
+        </div>
+
+        <div class="flex flex-col">
+            <div id="adjustments-panel" class="adjustments-panel p-4">
+                <h2 class="text-lg font-semibold mb-4">Adjustments</h2>
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm">Brightness</span>
+                        <span id="brightness-value" class="ml-2 text-sm w-8 text-right">0</span>
+                    </div>
+                    <input type="range" id="brightness-slider" class="slider" min="-100" max="100" value="0">
+
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm">Contrast</span>
+                        <span id="contrast-value" class="ml-2 text-sm w-8 text-right">0</span>
+                    </div>
+                    <input type="range" id="contrast-slider" class="slider" min="-100" max="100" value="0">
+
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm">Saturation</span>
+                        <span id="saturation-value" class="ml-2 text-sm w-8 text-right">0</span>
+                    </div>
+                    <input type="range" id="saturation-slider" class="slider" min="-100" max="100" value="0">
+
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm">Blur</span>
+                        <span id="blur-value" class="ml-2 text-sm w-8 text-right">0</span>
+                    </div>
+                    <input type="range" id="blur-slider" class="slider" min="0" max="10" step="0.1" value="0">
+                </div>
+            </div>
+
+            <div id="layers-panel" class="layers-panel p-4">
+                <h2 class="text-lg font-semibold mb-4">Layers</h2>
+                <div id="layers-list" class="space-y-2"></div>
+            </div>
+
+            <div id="history-panel" class="history-panel p-4">
+                <h2 class="text-lg font-semibold mb-4">History</h2>
+                <div id="history-list" class="space-y-1"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="color-picker" class="hidden fixed inset-0 bg-gray-900 bg-opacity-90 flex items-center justify-center z-50">
+        <div class="bg-gray-800 p-4 rounded-lg">
+            <h3 class="text-lg font-semibold mb-4">Color Picker</h3>
+            <input type="color" id="picker" class="color-swatch mb-4">
+            <input type="text" id="hex-input" class="w-full bg-gray-700 text-white px-2 py-1 mb-3">
+            <div class="flex justify-end gap-2">
+                <button id="color-cancel" class="bg-gray-700 px-3 py-1">Cancel</button>
+                <button id="color-confirm" class="bg-blue-600 px-3 py-1">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="text-input-modal" class="hidden fixed inset-0 bg-gray-900 bg-opacity-90 flex items-center justify-center z-50">
+        <div class="bg-gray-800 p-4 rounded-lg w-96">
+            <h3 class="text-lg font-semibold mb-4">Add Text</h3>
+            <textarea id="text-input" class="w-full bg-gray-700 text-white px-2 py-1 mb-3" rows="4"></textarea>
+            <div class="flex justify-end gap-2">
+                <button id="text-cancel" class="bg-gray-700 px-3 py-1">Cancel</button>
+                <button id="text-confirm" class="bg-blue-600 px-3 py-1">Add</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

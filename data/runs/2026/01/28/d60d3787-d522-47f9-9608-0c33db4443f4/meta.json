@@ -1,0 +1,37 @@
+{
+  "id": "d60d3787-d522-47f9-9608-0c33db4443f4",
+  "createdAt": "2026-01-27T22:14:55.907Z",
+  "provider": "openrouter",
+  "model": "moonshotai/kimi-k2.5",
+  "benchmark": {
+    "id": "neo-brutalism-landing",
+    "title": "Neo Brutalism - Landing Page",
+    "category": "Design Terms"
+  },
+  "latencyMs": 117741,
+  "tokenUsage": {
+    "prompt_tokens": 77,
+    "completion_tokens": 8279,
+    "total_tokens": 8356,
+    "cost": 0.0248832,
+    "is_byok": false,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "audio_tokens": 0
+    },
+    "cost_details": {
+      "upstream_inference_cost": 0.0248832,
+      "upstream_inference_prompt_cost": 0.0000462,
+      "upstream_inference_completions_cost": 0.024837
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 727,
+      "audio_tokens": 0
+    }
+  },
+  "params": {
+    "temperature": 1,
+    "maxTokens": null
+  },
+  "path": "runs/2026/01/28/d60d3787-d522-47f9-9608-0c33db4443f4"
+}

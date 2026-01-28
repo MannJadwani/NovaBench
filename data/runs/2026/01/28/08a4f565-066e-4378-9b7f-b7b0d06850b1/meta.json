@@ -1,0 +1,18 @@
+{
+  "id": "08a4f565-066e-4378-9b7f-b7b0d06850b1",
+  "createdAt": "2026-01-27T21:51:22.908Z",
+  "provider": "zai",
+  "model": "glm-4.5",
+  "benchmark": {
+    "id": "flight-control-ui",
+    "title": "Flight Control Module UI",
+    "category": "Complexity of UI"
+  },
+  "latencyMs": 198498,
+  "tokenUsage": null,
+  "params": {
+    "temperature": 1,
+    "maxTokens": null
+  },
+  "path": "runs/2026/01/28/08a4f565-066e-4378-9b7f-b7b0d06850b1"
+}

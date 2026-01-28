@@ -1,0 +1,18 @@
+{
+  "id": "15550e22-8db0-44b6-aa2e-b3d937b99fa2",
+  "createdAt": "2026-01-27T23:36:53.762Z",
+  "provider": "openrouter",
+  "model": "arcee-ai/trinity-large-preview:free",
+  "benchmark": {
+    "id": "soft-ui-landing",
+    "title": "Soft UI - Landing Page",
+    "category": "Design Terms"
+  },
+  "latencyMs": 60554,
+  "tokenUsage": null,
+  "params": {
+    "temperature": 1,
+    "maxTokens": null
+  },
+  "path": "runs/2026/01/28/15550e22-8db0-44b6-aa2e-b3d937b99fa2"
+}

@@ -1,0 +1,12 @@
+{
+  "prompt": "Build an interactive 3D Earth globe with realistic textures, atmospheric glow, rotation, clickable countries with info popups, orbit controls, and visible latitude/longitude lines. Output HTML + JS.\n\nReturn only HTML. Do not wrap in markdown. Use Tailwind CSS classes.",
+  "params": {
+    "temperature": 1,
+    "maxTokens": null
+  },
+  "benchmark": {
+    "id": "earth-globe",
+    "title": "3D Earth Model",
+    "category": "3D"
+  }
+}

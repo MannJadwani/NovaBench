@@ -1,0 +1,37 @@
+{
+  "id": "d2ca1e2b-11a3-4b73-922c-1e6912a7279a",
+  "createdAt": "2026-01-27T22:28:34.731Z",
+  "provider": "openrouter",
+  "model": "moonshotai/kimi-k2.5",
+  "benchmark": {
+    "id": "img-to-code-1",
+    "title": "Image to Code #1",
+    "category": "Image to Code"
+  },
+  "latencyMs": 53408,
+  "tokenUsage": {
+    "prompt_tokens": 68,
+    "completion_tokens": 3624,
+    "total_tokens": 3692,
+    "cost": 0.0109128,
+    "is_byok": false,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "audio_tokens": 0
+    },
+    "cost_details": {
+      "upstream_inference_cost": 0.0109128,
+      "upstream_inference_prompt_cost": 0.0000408,
+      "upstream_inference_completions_cost": 0.010872
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 430,
+      "audio_tokens": 0
+    }
+  },
+  "params": {
+    "temperature": 1,
+    "maxTokens": null
+  },
+  "path": "runs/2026/01/28/d2ca1e2b-11a3-4b73-922c-1e6912a7279a"
+}

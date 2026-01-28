@@ -1,0 +1,891 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aircraft Cockpit UI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+        
+        body {
+            background-color: #0f172a;
+            font-family: 'Orbitron', monospace;
+            overflow: hidden;
+        }
+        
+        .cockpit-panel {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            border: 2px solid #475569;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3), inset 0 1px 2px rgba(255, 255, 255, 0.1);
+        }
+        
+        .gauge-container {
+            position: relative;
+            width: 150px;
+            height: 150px;
+        }
+        
+        .attitude-indicator {
+            width: 200px;
+            height: 200px;
+            position: relative;
+            overflow: hidden;
+            border-radius: 50%;
+            background: #1e293b;
+            border: 4px solid #334155;
+        }
+        
+        .horizon {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.3s ease;
+        }
+        
+        .horizon-sky {
+            position: absolute;
+            width: 100%;
+            height: 50%;
+            top: 0;
+            background: linear-gradient(180deg, #3b82f6 0%, #60a5fa 100%);
+        }
+        
+        .horizon-ground {
+            position: absolute;
+            width: 100%;
+            height: 50%;
+            bottom: 0;
+            background: linear-gradient(0deg, #92400e 0%, #b45309 100%);
+        }
+        
+        .pitch-lines {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .pitch-line {
+            position: absolute;
+            width: 100%;
+            height: 1px;
+            background: white;
+            left: 0;
+        }
+        
+        .airspeed-tape {
+            width: 60px;
+            height: 250px;
+            position: relative;
+            overflow: hidden;
+            background: #1e293b;
+            border: 2px solid #334155;
+            border-radius: 4px;
+        }
+        
+        .airspeed-marks {
+            position: absolute;
+            width: 100%;
+            transition: transform 0.3s ease;
+        }
+        
+        .altimeter-display {
+            font-family: 'Orbitron', monospace;
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: #10b981;
+            text-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+        }
+        
+        .nav-display {
+            width: 300px;
+            height: 300px;
+            background: #111827;
+            border: 2px solid #374151;
+            border-radius: 4px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .warning-light {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+            box-shadow: 0 0 10px currentColor;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .fms-button {
+            background: #374151;
+            border: 1px solid #4b5563;
+            color: #e5e7eb;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            transition: all 0.2s;
+        }
+        
+        .fms-button:hover {
+            background: #4b5563;
+            transform: translateY(-1px);
+        }
+        
+        .fms-button:active {
+            background: #6b7280;
+            transform: translateY(0);
+        }
+        
+        .radio-frequency {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #f59e0b;
+            text-shadow: 0 0 5px rgba(245, 158, 11, 0.5);
+        }
+        
+        .engine-gauge {
+            width: 120px;
+            height: 120px;
+            position: relative;
+        }
+        
+        .gauge-needle {
+            position: absolute;
+            width: 2px;
+            height: 50%;
+            background: #ef4444;
+            left: 50%;
+            bottom: 50%;
+            transform-origin: bottom center;
+            transform: translateX(-50%) rotate(0deg);
+            transition: transform 0.5s ease;
+        }
+        
+        .gauge-center {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #6b7280;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+        }
+        
+        .waypoint {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #10b981;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 10px rgba(16, 185, 129, 0.8);
+        }
+        
+        .route-line {
+            position: absolute;
+            height: 2px;
+            background: #10b981;
+            transform-origin: left center;
+            box-shadow: 0 0 5px rgba(16, 185, 129, 0.6);
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-200 p-4 h-screen flex flex-col">
+    <div class="flex-1 grid grid-cols-12 gap-4 h-full">
+        <!-- Left Panel - PFD -->
+        <div class="col-span-4 cockpit-panel p-4 flex flex-col">
+            <h2 class="text-lg font-bold text-sky-400 mb-4 text-center">PRIMARY FLIGHT DISPLAY</h2>
+            
+            <div class="flex-1 flex items-center justify-center">
+                <div class="grid grid-cols-3 gap-4 w-full max-w-lg">
+                    <!-- Airspeed -->
+                    <div class="flex flex-col items-center">
+                        <div class="airspeed-tape" id="airspeedTape">
+                            <div class="airspeed-marks" id="airspeedMarks">
+                                <div class="absolute w-full h-0.5 bg-white top-0"></div>
+                                <div class="absolute w-full h-0.5 bg-white top-5"></div>
+                                <div class="absolute w-full h-0.5 bg-white top-10"></div>
+                                <div class="absolute w-full h-0.5 bg-white top-15"></div>
+                                <div class="absolute w-full h-0.5 bg-white top-20"></div>
+                                <div class="absolute w-full h-0.5 bg-white top-25"></div>
+                                <div class="absolute w-full h-0.5 bg-white top-30"></div>
+                                <div class="absolute w-full h-0.5 bg-white top-35"></div>
+                            </div>
+                            <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                                <div class="w-full h-1 bg-red-500"></div>
+                            </div>
+                        </div>
+                        <div class="mt-4 text-center">
+                            <div class="text-2xl font-bold text-green-400" id="airspeedValue">250</div>
+                            <div class="text-xs text-slate-400">KTS</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Attitude Indicator -->
+                    <div class="flex flex-col items-center">
+                        <div class="attitude-indicator" id="attitudeIndicator">
+                            <div class="horizon" id="horizon">
+                                <div class="horizon-sky"></div>
+                                <div class="horizon-ground"></div>
+                                <div class="pitch-lines">
+                                    <div class="pitch-line" style="top: 30%"></div>
+                                    <div class="pitch-line" style="top: 35%"></div>
+                                    <div class="pitch-line" style="top: 40%"></div>
+                                    <div class="pitch-line" style="top: 45%"></div>
+                                    <div class="pitch-line" style="top: 55%"></div>
+                                    <div class="pitch-line" style="top: 60%"></div>
+                                    <div class="pitch-line" style="top: 65%"></div>
+                                    <div class="pitch-line" style="top: 70%"></div>
+                                </div>
+                            </div>
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <div class="w-1 h-full bg-yellow-400"></div>
+                            </div>
+                            <div class="absolute top-4 left-1/2 transform -translate-x-1/2 text-white text-xs font-bold">
+                                <span id="pitchValue">0</span>°
+                            </div>
+                            <div class="absolute left-4 top-1/2 transform -translate-y-1/2 text-white text-xs font-bold">
+                                <span id="rollValue">0</span>°
+                            </div>
+                        </div>
+                        <div class="mt-4 text-center">
+                            <div class="text-xl font-bold text-cyan-400">ATTITUDE</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Altimeter -->
+                    <div class="flex flex-col items-center">
+                        <div class="gauge-container">
+                            <svg viewBox="0 0 150 150" class="w-full h-full">
+                                <circle cx="75" cy="75" r="70" fill="#1e293b" stroke="#334155" stroke-width="2"/>
+                                <path d="M 75 5 A 70 70 0 0 1 75 145" fill="none" stroke="#10b981" stroke-width="3"/>
+                                <path d="M 75 5 A 70 70 0 0 1 145 75" fill="none" stroke="#3b82f6" stroke-width="3"/>
+                                <path d="M 75 5 A 70 70 0 0 1 125 35" fill="none" stroke="#ef4444" stroke-width="3"/>
+                                
+                                <!-- Altitude marks -->
+                                <line x1="75" y1="10" x2="75" y2="20" stroke="white" stroke-width="1"/>
+                                <text x="85" y="15" fill="white" font-size="10">0</text>
+                                
+                                <line x1="125" y1="35" x2="115" y2="40" stroke="white" stroke-width="1"/>
+                                <text x="125" y="40" fill="white" font-size="10">10</text>
+                                
+                                <line x1="145" y1="75" x2="135" y2="75" stroke="white" stroke-width="1"/>
+                                <text x="125" y="80" fill="white" font-size="10">20</text>
+                                
+                                <line x1="125" y1="115" x2="115" y2="110" stroke="white" stroke-width="1"/>
+                                <text x="125" y="115" fill="white" font-size="10">30</text>
+                                
+                                <line x1="75" y1="140" x2="75" y2="130" stroke="white" stroke-width="1"/>
+                                <text x="85" y="135" fill="white" font-size="10">40</text>
+                                
+                                <!-- Needle -->
+                                <line x1="75" y1="75" x2="75" y2="30" stroke="#f59e0b" stroke-width="2" transform="rotate(-45 75 75)" id="altNeedle"/>
+                                <circle cx="75" cy="75" r="5" fill="#6b7280"/>
+                            </svg>
+                        </div>
+                        <div class="mt-4 text-center">
+                            <div class="altimeter-display" id="altimeterValue">8500</div>
+                            <div class="text-xs text-slate-400">FEET</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Heading Indicator -->
+            <div class="mt-4 cockpit-panel p-3">
+                <div class="flex items-center justify-between">
+                    <span class="text-sm text-slate-400">HEADING</span>
+                    <div class="text-2xl font-bold text-purple-400" id="headingValue">180</div>
+                    <span class="text-sm text-slate-400">°</span>
+                </div>
+                <div class="mt-2 relative h-8 bg-slate-800 rounded overflow-hidden">
+                    <div class="absolute inset-0 flex items-center" id="headingTape">
+                        <div class="absolute text-xs text-slate-300" style="left: 10%">N</div>
+                        <div class="absolute text-xs text-slate-300" style="left: 30%">45°</div>
+                        <div class="absolute text-xs text-slate-300" style="left: 50%">E</div>
+                        <div class="absolute text-xs text-slate-300" style="left: 70%">135°</div>
+                        <div class="absolute text-xs text-slate-300" style="left: 90%">S</div>
+                    </div>
+                    <div class="absolute inset-y-0 left-1/2 transform -translate-x-1/2 w-0.5 bg-red-500"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Center Panel - Navigation Display -->
+        <div class="col-span-4 cockpit-panel p-4 flex flex-col">
+            <h2 class="text-lg font-bold text-emerald-400 mb-4 text-center">NAVIGATION DISPLAY</h2>
+            
+            <div class="flex-1 flex items-center justify-center">
+                <div class="nav-display" id="navDisplay">
+                    <!-- Route lines and waypoints will be added dynamically -->
+                    <div class="waypoint" style="top: 20%; left: 20%;" title="DEP"></div>
+                    <div class="route-line" style="top: 20%; left: 20%; width: 60px; transform: rotate(45deg);"></div>
+                    <div class="waypoint" style="top: 40%; left: 40%;" title="V1"></div>
+                    <div class="route-line" style="top: 40%; left: 40%; width: 60px; transform: rotate(30deg);"></div>
+                    <div class="waypoint" style="top: 50%; left: 65%;" title="V2"></div>
+                    <div class="route-line" style="top: 50%; left: 65%; width: 60px; transform: rotate(-20deg);"></div>
+                    <div class="waypoint" style="top: 40%; left: 85%;" title="ARR"></div>
+                    
+                    <!-- Aircraft symbol -->
+                    <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                        <svg width="30" height="30" viewBox="0 0 30 30">
+                            <polygon points="15,5 10,20 15,15 20,20" fill="#f59e0b"/>
+                            <circle cx="15" cy="15" r="3" fill="#ef4444"/>
+                        </svg>
+                    </div>
+                    
+                    <!-- Distance rings -->
+                    <svg class="absolute inset-0 w-full h-full" viewBox="0 0 300 300">
+                        <circle cx="150" cy="150" r="75" fill="none" stroke="#475569" stroke-width="1" stroke-dasharray="5,5"/>
+                        <circle cx="150" cy="150" r="120" fill="none" stroke="#475569" stroke-width="1" stroke-dasharray="5,5"/>
+                        <text x="150" y="85" text-anchor="middle" fill="#64748b" font-size="10">10 NM</text>
+                        <text x="150" y="35" text-anchor="middle" fill="#64748b" font-size="10">20 NM</text>
+                    </svg>
+                </div>
+            </div>
+            
+            <!-- Waypoint Information -->
+            <div class="mt-4 grid grid-cols-2 gap-2 text-sm">
+                <div class="cockpit-panel p-2">
+                    <div class="text-slate-400">CURRENT</div>
+                    <div class="font-bold text-green-400">V1</div>
+                    <div class="text-xs text-slate-400">Distance: 15.2 NM</div>
+                </div>
+                <div class="cockpit-panel p-2">
+                    <div class="text-slate-400">NEXT</div>
+                    <div class="font-bold text-amber-400">V2</div>
+                    <div class="text-xs text-slate-400">Distance: 28.7 NM</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Right Panel - Engine Instruments -->
+        <div class="col-span-4 cockpit-panel p-4 flex flex-col">
+            <h2 class="text-lg font-bold text-amber-400 mb-4 text-center">ENGINE INSTRUMENTS</h2>
+            
+            <div class="grid grid-cols-2 gap-4 flex-1">
+                <!-- Engine 1 -->
+                <div class="cockpit-panel p-4 flex flex-col items-center">
+                    <h3 class="text-lg font-bold text-blue-400 mb-2">ENGINE 1</h3>
+                    
+                    <!-- N1 Gauge -->
+                    <div class="engine-gauge mb-4">
+                        <svg viewBox="0 0 120 120" class="w-full h-full">
+                            <circle cx="60" cy="60" r="55" fill="#1e293b" stroke="#334155" stroke-width="2"/>
+                            <path d="M 60 5 A 55 55 0 0 1 115 60" fill="none" stroke="#3b82f6" stroke-width="3"/>
+                            <path d="M 60 5 A 55 55 0 0 1 95 30" fill="none" stroke="#ef4444" stroke-width="3"/>
+                            
+                            <line x1="60" y1="10" x2="60" y2="20" stroke="white" stroke-width="1"/>
+                            <text x="65" y="15" fill="white" font-size="10">0</text>
+                            
+                            <line x1="95" y1="30" x2="88" y2="35" stroke="white" stroke-width="1"/>
+                            <text x="98" y="35" fill="white" font-size="10">50</text>
+                            
+                            <line x1="115" y1="60" x2="105" y2="60" stroke="white" stroke-width="1"/>
+                            <text x="110" y="65" fill="white" font-size="10">100</text>
+                            
+                            <div class="gauge-needle" id="n1Needle1"></div>
+                            <div class="gauge-center"></div>
+                        </svg>
+                    </div>
+                    <div class="text-xl font-bold text-blue-400" id="n1Value1">85.2</div>
+                    <div class="text-xs text-slate-400">N1 %</div>
+                </div>
+                
+                <!-- Engine 2 -->
+                <div class="cockpit-panel p-4 flex flex-col items-center">
+                    <h3 class="text-lg font-bold text-blue-400 mb-2">ENGINE 2</h3>
+                    
+                    <!-- N1 Gauge -->
+                    <div class="engine-gauge mb-4">
+                        <svg viewBox="0 0 120 120" class="w-full h-full">
+                            <circle cx="60" cy="60" r="55" fill="#1e293b" stroke="#334155" stroke-width="2"/>
+                            <path d="M 60 5 A 55 55 0 0 1 115 60" fill="none" stroke="#3b82f6" stroke-width="3"/>
+                            <path d="M 60 5 A 55 55 0 0 1 95 30" fill="none" stroke="#ef4444" stroke-width="3"/>
+                            
+                            <line x1="60" y1="10" x2="60" y2="20" stroke="white" stroke-width="1"/>
+                            <text x="65" y="15" fill="white" font-size="10">0</text>
+                            
+                            <line x1="95" y1="30" x2="88" y2="35" stroke="white" stroke-width="1"/>
+                            <text x="98" y="35" fill="white" font-size="10">50</text>
+                            
+                            <line x1="115" y1="60" x2="105" y2="60" stroke="white" stroke-width="1"/>
+                            <text x="110" y="65" fill="white" font-size="10">100</text>
+                            
+                            <div class="gauge-needle" id="n1Needle2"></div>
+                            <div class="gauge-center"></div>
+                        </svg>
+                    </div>
+                    <div class="text-xl font-bold text-blue-400" id="n1Value2">84.7</div>
+                    <div class="text-xs text-slate-400">N1 %</div>
+                </div>
+                
+                <!-- EGT (Exhaust Gas Temperature) -->
+                <div class="cockpit-panel p-4">
+                    <h3 class="text-lg font-bold text-red-400 mb-2">EGT</h3>
+                    <div class="space-y-2">
+                        <div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-slate-400">ENG 1</span>
+                                <span class="font-bold text-red-400">650°C</span>
+                            </div>
+                            <div class="w-full h-2 bg-slate-700 rounded-full mt-1 overflow-hidden">
+                                <div class="h-full bg-gradient-to-r from-green-400 via-yellow-400 to-red-500 rounded-full" style="width: 65%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-slate-400">ENG 2</span>
+                                <span class="font-bold text-red-400">645°C</span>
+                            </div>
+                            <div class="w-full h-2 bg-slate-700 rounded-full mt-1 overflow-hidden">
+                                <div class="h-full bg-gradient-to-r from-green-400 via-yellow-400 to-red-500 rounded-full" style="width: 64%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Oil Pressure -->
+                <div class="cockpit-panel p-4">
+                    <h3 class="text-lg font-bold text-purple-400 mb-2">OIL PRESSURE</h3>
+                    <div class="space-y-2">
+                        <div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-slate-400">ENG 1</span>
+                                <span class="font-bold text-purple-400">45 PSI</span>
+                            </div>
+                            <div class="w-full h-2 bg-slate-700 rounded-full mt-1 overflow-hidden">
+                                <div class="h-full bg-gradient-to-r from-blue-400 to-purple-500 rounded-full" style="width: 75%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-slate-400">ENG 2</span>
+                                <span class="font-bold text-purple-400">44 PSI</span>
+                            </div>
+                            <div class="w-full h-2 bg-slate-700 rounded-full mt-1 overflow-hidden">
+                                <div class="h-full bg-gradient-to-r from-blue-400 to-purple-500 rounded-full" style="width: 73%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Bottom Panel - Controls -->
+    <div class="grid grid-cols-12 gap-4 mt-4">
+        <!-- Autopilot Controls -->
+        <div class="col-span-3 cockpit-panel p-4">
+            <h2 class="text-lg font-bold text-indigo-400 mb-3">AUTOPILOT</h2>
+            
+            <div class="grid grid-cols-2 gap-2">
+                <button class="cockpit-panel p-2 text-center hover:bg-slate-700 transition-colors" onclick="toggleAP()">
+                    <div class="text-xs text-slate-400">AP</div>
+                    <div class="font-bold text-green-400" id="apStatus">OFF</div>
+                </button>
+                <button class="cockpit-panel p-2 text-center hover:bg-slate-700 transition-colors" onclick="toggleFD()">
+                    <div class="text-xs text-slate-400">FD</div>
+                    <div class="font-bold text-green-400" id="fdStatus">OFF</div>
+                </button>
+                <button class="cockpit-panel p-2 text-center hover:bg-slate-700 transition-colors" onclick="toggleALT()">
+                    <div class="text-xs text-slate-400">ALT HOLD</div>
+                    <div class="font-bold text-yellow-400" id="altStatus">OFF</div>
+                </button>
+                <button class="cockpit-panel p-2 text-center hover:bg-slate-700 transition-colors" onclick="toggleHDG()">
+                    <div class="text-xs text-slate-400">HDG HOLD</div>
+                    <div class="font-bold text-yellow-400" id="hdgStatus">OFF</div>
+                </button>
+                <button class="cockpit-panel p-2 text-center hover:bg-slate-700 transition-colors" onclick="toggleNAV()">
+                    <div class="text-xs text-slate-400">NAV</div>
+                    <div class="font-bold text-yellow-400" id="navStatus">OFF</div>
+                </button>
+                <button class="cockpit-panel p-2 text-center hover:bg-slate-700 transition-colors" onclick="toggleAPP()">
+                    <div class="text-xs text-slate-400">APPR</div>
+                    <div class="font-bold text-yellow-400" id="appStatus">OFF</div>
+                </button>
+            </div>
+            
+            <div class="mt-3 space-y-2">
+                <div class="flex items-center justify-between">
+                    <span class="text-sm text-slate-400">ALTITUDE</span>
+                    <div class="flex items-center">
+                        <button class="w-6 h-6 bg-slate-700 hover:bg-slate-600 rounded" onclick="adjustAltitude(-100)">-</button>
+                        <span class="mx-2 font-bold text-green-400" id="selectedAltitude">8500</span>
+                        <button class="w-6 h-6 bg-slate-700 hover:bg-slate-600 rounded" onclick="adjustAltitude(100)">+</button>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between">
+                    <span class="text-sm text-slate-400">HEADING</span>
+                    <div class="flex items-center">
+                        <button class="w-6 h-6 bg-slate-700 hover:bg-slate-600 rounded" onclick="adjustHeading(-1)">-</button>
+                        <span class="mx-2 font-bold text-purple-400" id="selectedHeading">180</span>
+                        <button class="w-6 h-6 bg-slate-700 hover:bg-slate-600 rounded" onclick="adjustHeading(1)">+</button>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between">
+                    <span class="text-sm text-slate-400">SPEED</span>
+                    <div class="flex items-center">
+                        <button class="w-6 h-6 bg-slate-700 hover:bg-slate-600 rounded" onclick="adjustSpeed(-1)">-</button>
+                        <span class="mx-2 font-bold text-cyan-400" id="selectedSpeed">250</span>
+                        <button class="w-6 h-6 bg-slate-700 hover:bg-slate-600 rounded" onclick="adjustSpeed(1)">+</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Radio Panel -->
+        <div class="col-span-3 cockpit-panel p-4">
+            <h2 class="text-lg font-bold text-amber-400 mb-3">RADIO</h2>
+            
+            <div class="space-y-3">
+                <div class="cockpit-panel p-3">
+                    <div class="flex justify-between items-center mb-1">
+                        <span class="text-sm text-slate-400">COM1</span>
+                        <button class="text-xs text-blue-400 hover:text-blue-300" onclick="swapCom1()">SWAP</button>
+                    </div>
+                    <div class="text-center">
+                        <div class="radio-frequency" id="com1Active">121.500</div>
+                        <div class="text-xs text-slate-500" id="com1Standby">121.900</div>
+                    </div>
+                </div>
+                
+                <div class="cockpit-panel p-3">
+                    <div class="flex justify-between items-center mb-1">
+                        <span class="text-sm text-slate-400">COM2</span>
+                        <button class="text-xs text-blue-400 hover:text-blue-300" onclick="swapCom2()">SWAP</button>
+                    </div>
+                    <div class="text-center">
+                        <div class="radio-frequency text-amber-500" id="com2Active">123.300</div>
+                        <div class="text-xs text-slate-500" id="com2Standby">121.050</div>
+                    </div>
+                </div>
+                
+                <div class="cockpit-panel p-3">
+                    <div class="flex justify-between items-center mb-1">
+                        <span class="text-sm text-slate-400">NAV1</span>
+                        <button class="text-xs text-blue-400 hover:text-blue-300" onclick="swapNav1()">SWAP</button>
+                    </div>
+                    <div class="text-center">
+                        <div class="radio-frequency text-green-400" id="nav1Active">110.30</div>
+                        <div class="text-xs text-slate-500" id="nav1Standby">108.10</div>
+                    </div>
+                </div>
+                
+                <div class="cockpit-panel p-3">
+                    <div class="flex justify-between items-center mb-1">
+                        <span class="text-sm text-slate-400">Transponder</span>
+                        <button class="text-xs text-blue-400 hover:text-blue-300" onclick="toggleXpdrMode()">MODE</button>
+                    </div>
+                    <div class="text-center">
+                        <div class="radio-frequency text-purple-400" id="xpdrCode">1200</div>
+                        <div class="text-xs text-slate-500" id="xpdrMode">STBY</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Warning/Caution Annunciators -->
+        <div class="col-span-3 cockpit-panel p-4">
+            <h2 class="text-lg font-bold text-red-400 mb-3">ANNUNCIATORS</h2>
+            
+            <div class="space-y-2">
+                <div class="flex items-center p-2 bg-red-900/30 border border-red-700 rounded">
+                    <span class="warning-light" style="background-color: #ef4444;"></span>
+                    <span class="text-sm font-bold text-red-400">MASTER WARNING</span>
+                </div>
+                <div class="flex items-center p-2 bg-amber-900/30 border border-amber-700 rounded">
+                    <span class="warning-light" style="background-color: #f59e0b;"></span>
+                    <span class="text-sm font-bold text-amber-400">MASTER CAUTION</span>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-2 mt-3">
+                    <div class="cockpit-panel p-2 text-center">
+                        <div class="flex items-center justify-center">
+                            <span class="warning-light" style="background-color: #ef4444;"></span>
+                            <span class="text-xs font-bold text-red-400">FIRE</span>
+                        </div>
+                    </div>
+                    <div class="cockpit-panel p-2 text-center">
+                        <div class="flex items-center justify-center">
+                            <span class="warning-light" style="background-color: #f59e0b;"></span>
+                            <span class="text-xs font-bold text-amber-400">OVHT</span>
+                        </div>
+                    </div>
+                    <div class="cockpit-panel p-2 text-center">
+                        <div class="flex items-center justify-center">
+                            <span class="warning-light" style="background-color: #3b82f6;"></span>
+                            <span class="text-xs font-bold text-blue-400">PRESS</span>
+                        </div>
+                    </div>
+                    <div class="cockpit-panel p-2 text-center">
+                        <div class="flex items-center justify-center">
+                            <span class="warning-light" style="background-color: #10b981;"></span>
+                            <span class="text-xs font-bold text-green-400">DOORS</span>
+                        </div>
+                    </div>
+                    <div class="cockpit-panel p-2 text-center">
+                        <div class="flex items-center justify-center">
+                            <span class="warning-light" style="background-color: #8b5cf6;"></span>
+                            <span class="text-xs font-bold text-purple-400">FUEL</span>
+                        </div>
+                    </div>
+                    <div class="cockpit-panel p-2 text-center">
+                        <div class="flex items-center justify-center">
+                            <span class="warning-light" style="background-color: #ec4899;"></span>
+                            <span class="text-xs font-bold text-pink-400">ICE</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- FMS Route Planning -->
+        <div class="col-span-3 cockpit-panel p-4">
+            <h2 class="text-lg font-bold text-emerald-400 mb-3">FMS</h2>
+            
+            <div class="bg-slate-800 rounded p-3 mb-3">
+                <div class="text-sm text-slate-400">ROUTE</div>
+                <div class="font-mono text-sm text-emerald-400" id="fmsRoute">KLAX KSFO DIRECT</div>
+            </div>
+            
+            <div class="grid grid-cols-3 gap-2 mb-3">
+                <button class="fms-button" onclick="fmsInput('A')">A</button>
+                <button class="fms-button" onclick="fmsInput('B')">B</button>
+                <button class="fms-button" onclick="fmsInput('C')">C</button>
+                <button class="fms-button" onclick="fmsInput('D')">D</button>
+                <button class="fms-button" onclick="fmsInput('E')">E</button>
+                <button class="fms-button" onclick="fmsInput('F')">F</button>
+                <button class="fms-button" onclick="fmsInput('1')">1</button>
+                <button class="fms-button" onclick="fmsInput('2')">2</button>
+                <button class="fms-button" onclick="fmsInput('3')">3</button>
+                <button class="fms-button" onclick="fmsInput('CLR')">CLR</button>
+                <button class="fms-button" onclick="fmsInput('0')">0</button>
+                <button class="fms-button" onclick="fmsInput('ENT')">ENT</button>
+            </div>
+            
+            <div class="space-y-2 text-sm">
+                <div class="flex justify-between">
+                    <span class="text-slate-400">DIST</span>
+                    <span class="font-bold text-emerald-400">337 NM</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-slate-400">ETE</span>
+                    <span class="font-bold text-emerald-400">01:25</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-slate-400">FUEL</span>
+                    <span class="font-bold text-emerald-400">2500 KG</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Simulate flight data
+        let airspeed = 250;
+        let altitude = 8500;
+        let heading = 180;
+        let pitch = 0;
+        let roll = 0;
+        let n1Engine1 = 85.2;
+        let n1Engine2 = 84.7;
+        
+        // Autopilot states
+        let apOn = false;
+        let fdOn = false;
+        let altHold = false;
+        let hdgHold = false;
+        let navOn = false;
+        let appOn = false;
+        
+        // Selected values
+        let selectedAltitude = 8500;
+        let selectedHeading = 180;
+        let selectedSpeed = 250;
+        
+        // Radio frequencies
+        let com1Active = "121.500";
+        let com1Standby = "121.900";
+        let com2Active = "123.300";
+        let com2Standby = "121.050";
+        let nav1Active = "110.30";
+        let nav1Standby = "108.10";
+        let xpdrCode = "1200";
+        let xpdrMode = "STBY";
+        
+        // Update PFD
+        function updatePFD() {
+            // Update airspeed tape
+            const airspeedOffset = 125 - (airspeed % 10) * 25;
+            document.getElementById('airspeedMarks').style.transform = `translateY(${airspeedOffset}px)`;
+            document.getElementById('airspeedValue').textContent = airspeed.toFixed(0);
+            
+            // Update attitude indicator
+            document.getElementById('horizon').style.transform = `rotate(${roll}deg) translateY(${pitch * 2}px)`;
+            document.getElementById('pitchValue').textContent = pitch.toFixed(0);
+            document.getElementById('rollValue').textContent = roll.toFixed(0);
+            
+            // Update altimeter
+            document.getElementById('altimeterValue').textContent = altitude.toFixed(0);
+            const altNeedleAngle = -90 + (altitude % 10000) / 10000 * 180;
+            document.getElementById('altNeedle').setAttribute('transform', `rotate(${altNeedleAngle} 75 75)`);
+            
+            // Update heading
+            document.getElementById('headingValue').textContent = heading.toFixed(0);
+            const headingOffset = -heading * 0.8;
+            document.getElementById('headingTape').style.transform = `translateX(${headingOffset}px)`;
+        }
+        
+        // Update engine gauges
+        function updateEngines() {
+            // Update N1 needles
+            const n1Angle1 = -90 + (n1Engine1 / 100) * 180;
+            const n1Angle2 = -90 + (n1Engine2 / 100) * 180;
+            document.getElementById('n1Needle1').style.transform = `translateX(-50%) rotate(${n1Angle1}deg)`;
+            document.getElementById('n1Needle2').style.transform = `translateX(-50%) rotate(${n1Angle2}deg)`;
+            
+            document.getElementById('n1Value1').textContent = n1Engine1.toFixed(1);
+            document.getElementById('n1Value2').textContent = n1Engine2.toFixed(1);
+        }
+        
+        // Autopilot controls
+        function toggleAP() {
+            apOn = !apOn;
+            document.getElementById('apStatus').textContent = apOn ? 'ON' : 'OFF';
+            document.getElementById('apStatus').className = apOn ? 'font-bold text-green-400' : 'font-bold text-slate-400';
+        }
+        
+        function toggleFD() {
+            fdOn = !fdOn;
+            document.getElementById('fdStatus').textContent = fdOn ? 'ON' : 'OFF';
+            document.getElementById('fdStatus').className = fdOn ? 'font-bold text-green-400' : 'font-bold text-slate-400';
+        }
+        
+        function toggleALT() {
+            altHold = !altHold;
+            document.getElementById('altStatus').textContent = altHold ? 'ON' : 'OFF';
+            document.getElementById('altStatus').className = altHold ? 'font-bold text-yellow-400' : 'font-bold text-slate-400';
+        }
+        
+        function toggleHDG() {
+            hdgHold = !hdgHold;
+            document.getElementById('hdgStatus').textContent = hdgHold ? 'ON' : 'OFF';
+            document.getElementById('hdgStatus').className = hdgHold ? 'font-bold text-yellow-400' : 'font-bold text-slate-400';
+        }
+        
+        function toggleNAV() {
+            navOn = !navOn;
+            document.getElementById('navStatus').textContent = navOn ? 'ON' : 'OFF';
+            document.getElementById('navStatus').className = navOn ? 'font-bold text-yellow-400' : 'font-bold text-slate-400';
+        }
+        
+        function toggleAPP() {
+            appOn = !appOn;
+            document.getElementById('appStatus').textContent = appOn ? 'ON' : 'OFF';
+            document.getElementById('appStatus').className = appOn ? 'font-bold text-yellow-400' : 'font-bold text-slate-400';
+        }
+        
+        function adjustAltitude(delta) {
+            selectedAltitude += delta;
+            document.getElementById('selectedAltitude').textContent = selectedAltitude.toFixed(0);
+        }
+        
+        function adjustHeading(delta) {
+            selectedHeading = (selectedHeading + delta + 360) % 360;
+            document.getElementById('selectedHeading').textContent = selectedHeading.toFixed(0);
+        }
+        
+        function adjustSpeed(delta) {
+            selectedSpeed += delta;
+            document.getElementById('selectedSpeed').textContent = selectedSpeed.toFixed(0);
+        }
+        
+        // Radio functions
+        function swapCom1() {
+            const temp = com1Active;
+            com1Active = com1Standby;
+            com1Standby = temp;
+            document.getElementById('com1Active').textContent = com1Active;
+            document.getElementById('com1Standby').textContent = com1Standby;
+        }
+        
+        function swapCom2() {
+            const temp = com2Active;
+            com2Active = com2Standby;
+            com2Standby = temp;
+            document.getElementById('com2Active').textContent = com2Active;
+            document.getElementById('com2Standby').textContent = com2Standby;
+        }
+        
+        function swapNav1() {
+            const temp = nav1Active;
+            nav1Active = nav1Standby;
+            nav1Standby = temp;
+            document.getElementById('nav1Active').textContent = nav1Active;
+            document.getElementById('nav1Standby').textContent = nav1Standby;
+        }
+        
+        function toggleXpdrMode() {
+            const modes = ['STBY', 'ON', 'ALT', 'TA', 'TCAS'];
+            const currentIndex = modes.indexOf(xpdrMode);
+            xpdrMode = modes[(currentIndex + 1) % modes.length];
+            document.getElementById('xpdrMode').textContent = xpdrMode;
+        }
+        
+        // FMS functions
+        function fmsInput(input) {
+            const routeElement = document.getElementById('fmsRoute');
+            if (input === 'CLR') {
+                routeElement.textContent = '';
+            } else if (input === 'ENT') {
+                // Execute route or action
+                console.log('FMS Entry:', routeElement.textContent);
+            } else {
+                routeElement.textContent += input;
+            }
+        }
+        
+        // Simulate flight
+        function simulateFlight() {
+            // Small random variations
+            airspeed += (Math.random() - 0.5) * 2;
+            altitude += (Math.random() - 0.5) * 50;
+            heading += (Math.random() - 0.5) * 2;
+            pitch += (Math.random() - 0.5) * 0.5;
+            roll += (Math.random() - 0.5) * 0.5;
+            
+            n1Engine1 += (Math.random() - 0.5) * 0.5;
+            n1Engine2 += (Math.random() - 0.5) * 0.5;
+            
+            // Keep values in reasonable ranges
+            airspeed = Math.max(180, Math.min(320, airspeed));
+            altitude = Math.max(1000, Math.min(35000, altitude));
+            heading = (heading + 360) % 360;
+            pitch = Math.max(-10, Math.min(10, pitch));
+            roll = Math.max(-30, Math.min(30, roll));
+            
+            n1Engine1 = Math.max(60, Math.min(95, n1Engine1));
+            n1Engine2 = Math.max(60, Math.min(95, n1Engine2));
+            
+            updatePFD();
+            updateEngines();
+        }
+        
+        // Initialize and start simulation
+        updatePFD();
+        updateEngines();
+        setInterval(simulateFlight, 200);
+    </script>
+</body>
+</html>
